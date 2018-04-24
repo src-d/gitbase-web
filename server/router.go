@@ -1,6 +1,7 @@
 package server
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/src-d/gitbase-playground/server/handler"
@@ -17,6 +18,7 @@ func Router(
 	logger *logrus.Logger,
 	static *handler.Static,
 	version string,
+	db *sql.DB,
 ) http.Handler {
 
 	// cors options
@@ -32,6 +34,8 @@ func Router(
 	r.Use(middleware.Recoverer)
 	r.Use(cors.New(corsOptions).Handler)
 	r.Use(lg.RequestLogger(logger))
+
+	r.Post("/query", handler.APIHandlerFunc(handler.Query(db)))
 
 	r.Get("/version", handler.APIHandlerFunc(handler.Version(version)))
 

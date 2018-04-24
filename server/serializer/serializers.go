@@ -15,13 +15,15 @@ type HTTPError interface {
 type Response struct {
 	Status int         `json:"status"`
 	Data   interface{} `json:"data,omitempty"`
+	Meta   interface{} `json:"meta,omitempty"`
 	Errors []HTTPError `json:"errors,omitempty"`
 }
 
 type httpError struct {
-	Status  int    `json:"status"`
-	Title   string `json:"title"`
-	Details string `json:"details,omitempty"`
+	Status    int    `json:"status"`
+	Title     string `json:"title"`
+	Details   string `json:"details,omitempty"`
+	MySQLCode uint16 `json:"mysqlCode,omitempty"`
 }
 
 // StatusCode returns the Status of the httpError
@@ -47,8 +49,13 @@ func NewHTTPError(statusCode int, msg ...string) HTTPError {
 	return httpError{Status: statusCode, Title: strings.Join(msg, " ")}
 }
 
-func newResponse(c interface{}) *Response {
-	if c == nil {
+// NewHTTPError returns an Error with the MySQL error code
+func NewMySQLError(statusCode int, mysqlCode uint16, msg ...string) HTTPError {
+	return httpError{Status: statusCode, MySQLCode: mysqlCode, Title: strings.Join(msg, " ")}
+}
+
+func newResponse(data interface{}, meta interface{}) *Response {
+	if data == nil {
 		return &Response{
 			Status: http.StatusNoContent,
 		}
@@ -56,7 +63,8 @@ func newResponse(c interface{}) *Response {
 
 	return &Response{
 		Status: http.StatusOK,
-		Data:   c,
+		Data:   data,
+		Meta:   meta,
 	}
 }
 
@@ -71,5 +79,15 @@ type versionResponse struct {
 
 // NewVersionResponse returns a Response with current version of the server
 func NewVersionResponse(version string) *Response {
-	return newResponse(versionResponse{version})
+	return newResponse(versionResponse{version}, nil)
+}
+
+type queryMetaResponse struct {
+	Headers []string `json:"headers"`
+	Types   []string `json:"types"`
+}
+
+// NewQueryResponse returns a Response with table headers and row contents
+func NewQueryResponse(rows []map[string]interface{}, columnNames, columnTypes []string) *Response {
+	return newResponse(rows, queryMetaResponse{columnNames, columnTypes})
 }
