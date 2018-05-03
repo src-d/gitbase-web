@@ -1,5 +1,49 @@
 # Rest API
 
+## GET /tables
+
+Returns the list of tables.
+
+Alias for `/query` with `SHOW TABLES` query. See below for more details.
+
+```bash
+curl -X GET http://localhost:8080/tables
+```
+
+```json
+{
+    "status": 200,
+    "data": [
+        {
+            "table": "blobs"
+        },
+        {
+            "table": "commits"
+        },
+        {
+            "table": "refs"
+        },
+        {
+            "table": "remotes"
+        },
+        {
+            "table": "repositories"
+        },
+        {
+            "table": "tree_entries"
+        }
+    ],
+    "meta": {
+        "headers": [
+            "table"
+        ],
+        "types": [
+            "TEXT"
+        ]
+    }
+}
+```
+
 ## POST /query
 
 Receives an SQL query and forwards it to the `gitbase` server.
@@ -173,4 +217,3 @@ curl -X POST \
     }
 }
 ```
-

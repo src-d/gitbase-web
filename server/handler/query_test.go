@@ -32,17 +32,23 @@ type QuerySuite struct {
 	handler http.Handler
 }
 
-func (suite *QuerySuite) SetupSuite() {
+func setupDB(require *require.Assertions) *sql.DB {
 	var conf appConfig
 	envconfig.MustProcess("GITBASEPG", &conf)
 
 	// db
 	var err error
-	suite.db, err = sql.Open("mysql", conf.DBConn)
-	suite.Require().Nil(err)
+	db, err := sql.Open("mysql", conf.DBConn)
+	require.Nil(err)
 
-	err = suite.db.Ping()
-	suite.Require().Nil(err)
+	err = db.Ping()
+	require.Nil(err)
+
+	return db
+}
+
+func (suite *QuerySuite) SetupSuite() {
+	suite.db = setupDB(suite.Require())
 
 	// logger
 	logger := logrus.New()

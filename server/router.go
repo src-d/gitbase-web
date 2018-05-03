@@ -36,6 +36,7 @@ func Router(
 	r.Use(lg.RequestLogger(logger))
 
 	r.Post("/query", handler.APIHandlerFunc(handler.Query(db)))
+	r.Get("/tables", handler.APIHandlerFunc(handler.Tables(db)))
 
 	r.Get("/version", handler.APIHandlerFunc(handler.Version(version)))
 
