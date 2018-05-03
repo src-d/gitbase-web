@@ -38,6 +38,9 @@ func Router(
 	r.Post("/query", handler.APIHandlerFunc(handler.Query(db)))
 	r.Get("/tables", handler.APIHandlerFunc(handler.Tables(db)))
 
+	r.Post("/parse", handler.APIHandlerFunc(handler.Parse()))
+	r.Post("/filter", handler.APIHandlerFunc(handler.Filter()))
+
 	r.Get("/version", handler.APIHandlerFunc(handler.Version(version)))
 
 	r.Get("/static/*", static.ServeHTTP)
