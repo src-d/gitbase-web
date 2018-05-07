@@ -71,3 +71,14 @@ $ make serve
 ```
 
 This will start a server locally, which you can access on [http://localhost:8080](http://localhost:8080)
+
+
+## Integration Tests
+
+It will test that `gitbase` and `bblfshd` are running and available for the playground.
+
+To let the tests succeed, it will be also needed to configure the running `gitbase` to serve a copy of the `https://github.com/src-d/gitbase-playground` repository.
+
+```bash
+$ make back-test-integration
+```
