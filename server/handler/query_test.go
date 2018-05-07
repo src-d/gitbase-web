@@ -11,6 +11,7 @@ import (
 
 	"github.com/src-d/gitbase-playground/server/handler"
 	"github.com/src-d/gitbase-playground/server/serializer"
+	"github.com/src-d/gitbase-playground/server/service"
 
 	"github.com/kelseyhightower/envconfig"
 	"github.com/pressly/lg"
@@ -28,11 +29,11 @@ type appConfig struct {
 
 type QuerySuite struct {
 	suite.Suite
-	db      *sql.DB
+	db      service.SQLDB
 	handler http.Handler
 }
 
-func setupDB(require *require.Assertions) *sql.DB {
+func setupDB(require *require.Assertions) service.SQLDB {
 	var conf appConfig
 	envconfig.MustProcess("GITBASEPG", &conf)
 
