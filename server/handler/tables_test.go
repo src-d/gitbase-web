@@ -1,13 +1,13 @@
 package handler_test
 
 import (
-	"database/sql"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/sirupsen/logrus"
 	"github.com/src-d/gitbase-playground/server/handler"
+	"github.com/src-d/gitbase-playground/server/service"
 
 	"github.com/pressly/lg"
 	"github.com/stretchr/testify/suite"
@@ -18,7 +18,7 @@ import (
 
 type TablesSuite struct {
 	suite.Suite
-	db      *sql.DB
+	db      service.SQLDB
 	handler http.Handler
 }
 

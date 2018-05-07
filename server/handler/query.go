@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/src-d/gitbase-playground/server/serializer"
+	"github.com/src-d/gitbase-playground/server/service"
 	"gopkg.in/bblfsh/sdk.v1/uast"
 
 	"github.com/go-sql-driver/mysql"
@@ -46,7 +47,7 @@ func genericVals(colTypes []string) []interface{} {
 
 // Query returns a function that forwards an SQL query to gitbase and returns
 // the rows as JSON
-func Query(db *sql.DB) RequestProcessFunc {
+func Query(db service.SQLDB) RequestProcessFunc {
 	return func(r *http.Request) (*serializer.Response, error) {
 		var queryRequest queryRequest
 		body, err := ioutil.ReadAll(r.Body)
