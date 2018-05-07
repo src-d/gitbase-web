@@ -1,49 +1,61 @@
-## Development
+[![Build Status](https://travis-ci.org/src-d/gitbase-playground.svg)](https://travis-ci.org/src-d/gitbase-playground)
+[![codecov.io](https://codecov.io/github/src-d/gitbase-playground/coverage.svg)](https://codecov.io/github/src-d/gitbase-playground)
+![unstable](https://svg-badge.appspot.com/badge/stability/unstable?a)
 
-### Dependencies
+# Gitbase Playground
 
-Launch [bblfshd](https://github.com/bblfsh/bblfshd) and install the drivers. More info in the [bblfshd documentation](https://doc.bblf.sh/user/getting-started.html).
+Web application to query git repositories using SQL. Powered by [gitbase](https://github.com/src-d/gitbase).
 
-```bash
-docker run -d --name bblfshd --privileged -p 9432:9432 -v /var/lib/bblfshd:/var/lib/bblfshd bblfsh/bblfshd
-docker exec -it bblfshd bblfshctl driver install --all
-```
+![Screenshot](.github/screenshot.png?raw=true)
 
-Install [gitbase](https://github.com/src-d/gitbase), populate a repository directory, and start it.
 
-```bash
-go get github.com/src-d/gitbase/...
-cd $GOPATH/src/github.com/src-d/gitbase
-make dependencies
-mkdir repos
-git clone https://github.com/src-d/gitbase-playground.git repos/gitbase-playground
-go run cli/gitbase/main.go server -v --git=repos
-```
+# Usage
 
-### Build
+## Dependencies
 
-```bash
-go build -o gitbase-playground cmd/server/main.go
-```
+The playground will run the queries against a [gitbase](https://github.com/src-d/gitbase) server, and will request UASTs to a [bblfsh](https://doc.bblf.sh/) server; both should be accessible for the playground; you can check its default [configuration values](docs/CONTRIBUTING.md#configuration).
 
-### Run
 
-Use `GITBASEPG_ENV=dev` for extra logs information.
+## Run the Playground
 
-Development:
+You can run the app from a docker image, a released binary or installing and building the project.
+
+Once the server is running &ndash;with its default values&ndash;, it will be accessible through: http://localhost:8080
+
+Read [more about how to run bblfsh and gitbase dependencies](docs/quickstart.md).
+
+### Run with Docker
 
 ```bash
-GITBASEPG_ENV=dev go run cmd/server/main.go
+$ docker run -d
+    --publish 8080:8080
+    --link gitbase
+    --env GITBASEPG_ENV=dev
+    --env GITBASEPG_DB_CONNECTION="gitbase@tcp(gitbase:3306)/none?maxAllowedPacket=4194304"
+    --name gitbasePlayground
+    src-d/gitbase-playground:latest
 ```
 
-Built binary:
+
+### Run the Binary
+
+Download a binary from our [releases section](https://github.com/src-d/gitbase-playground/releases), and run it:
 
 ```bash
-GITBASEPG_ENV=dev ./gitbase-playground
+$ /download/path/gitbase-playground
 ```
 
-### Run the Tests
 
-```bash
-go test -v server/handler/*
-```
+# Contribute
+
+[Contributions](https://github.com/src-d/gitbase-playground/issues) are more than welcome, if you are interested please take a look to our [Contributing Guidelines](docs/CONTRIBUTING.md). You have more information on how to run it locally for [development purposes here](docs/CONTRIBUTING.md#development).
+
+
+# Code of Conduct
+
+All activities under source{d} projects are governed by the [source{d} code of conduct](https://github.com/src-d/guide/blob/master/.github/CODE_OF_CONDUCT.md).
+
+
+## License
+
+GPL v3.0, see [LICENSE](LICENSE)
