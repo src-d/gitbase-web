@@ -1,7 +1,6 @@
 package server_test
 
 import (
-	"database/sql"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -46,14 +45,4 @@ func (c *ClientTestSuite) AssertResponseStatus(resp *http.Response, expectedStat
 func (c *ClientTestSuite) AssertResponseBodyStatus(resp *http.Response, expectedStatus int, expectedContent string, msg string) {
 	c.AssertResponseBody(resp, expectedContent, msg)
 	c.AssertResponseStatus(resp, expectedStatus, "")
-}
-
-type mockDB struct{}
-
-func (db *mockDB) Close() error {
-	return nil
-}
-
-func (db *mockDB) Query(query string, args ...interface{}) (*sql.Rows, error) {
-	return nil, nil
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/src-d/gitbase-playground/server"
 	"github.com/src-d/gitbase-playground/server/handler"
 	"github.com/src-d/gitbase-playground/server/service"
+	testingTools "github.com/src-d/gitbase-playground/server/testing"
 
 	"github.com/stretchr/testify/suite"
 )
@@ -30,7 +31,7 @@ const version = "test-version"
 func (s *RouterTestSuite) SetupSuite() {
 	logger := service.NewLogger("dev")
 	staticHandler := &handler.Static{}
-	s.db = &mockDB{}
+	s.db = &testingTools.MockDB{}
 	s.router = server.Router(
 		logger,
 		staticHandler,
