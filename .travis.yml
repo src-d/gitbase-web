@@ -1,0 +1,52 @@
+language: go
+
+services:
+  - docker
+
+go:
+  - "1.10.x"
+
+before_install:
+  - . $HOME/.nvm/nvm.sh
+  - nvm install 8
+  - nvm use 8
+  - npm install -g yarn
+
+install:
+  - make dependencies
+
+stages:
+  - name: validate and build
+  - name: release to github
+    if: tag IS present
+  - name: push to dockerhub
+    if: tag IS present
+
+jobs:
+  include:
+    # validate and build
+    - stage: validate and build
+      script:
+        - make test
+        - make lint
+        - make coverage
+        - make validate-commit
+    - script:
+        - make packages
+    # release to github
+    - stage: release to github
+      script:
+        - make packages
+      deploy:
+        provider: releases
+        api_key: $GITHUB_TOKEN
+        file_glob: true
+        file: build/*.tar.gz
+        skip_cleanup: true
+        on:
+          all_branches: true
+    # push to dockerhub
+    - stage: push to dockerhub
+      script:
+        - PKG_OS=linux make build
+        - DOCKER_PUSH_LATEST=true make docker-push
