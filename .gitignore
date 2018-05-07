@@ -1,0 +1,29 @@
+# default internal db
+/repos
+
+# dependencies
+/node_modules
+
+# builds
+/build
+
+# testing, logs, caches...
+/coverage
+coverage.txt
+profile.out
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+
+# misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ci files
+.ci
+.docsrv-resources
