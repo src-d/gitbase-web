@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "3",
+    "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.3.2",
@@ -28,5 +29,6 @@
     "prettier": "^1.12.1",
     "react-app-rewire-less": "^2.1.1",
     "react-app-rewired": "^1.5.2"
-  }
+  },
+  "proxy": "http://localhost:8080"
 }
