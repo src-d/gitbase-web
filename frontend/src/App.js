@@ -44,6 +44,9 @@ GROUP BY committer_email, month, repo_id`,
   }
 
   render() {
+    const { response } = this.state;
+    const ok = response && response.status === 200;
+
     return (
       <div className="App">
         <Helmet>
@@ -59,13 +62,16 @@ GROUP BY committer_email, month, repo_id`,
               />
             </Col>
           </Row>
+          {ok && (
+            <Row>
+              <Col xs={12}>
+                <ResultsTable response={response} />
+              </Col>
+            </Row>
+          )}
           <Row>
             <Col xs={10} xsOffset={1}>
-              <ResultsTable response={this.state.response} />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={10} xsOffset={1}>
+              <br />
               <div>
                 <pre>{this.state.debug}</pre>
               </div>

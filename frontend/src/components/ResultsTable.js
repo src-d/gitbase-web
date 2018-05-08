@@ -1,14 +1,39 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import './ResultsTable.css';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
+import './ResultsTable.less';
 
 class ResultsTable extends Component {
   render() {
-    return <pre>{JSON.stringify(this.props.response, null, 2)}</pre>;
+    const columns = this.props.response.meta.headers.map(col => ({
+      Header: col,
+      id: col,
+      accessor: row => {
+        const v = row[col];
+        switch (typeof v) {
+          case 'boolean':
+            return v.toString();
+          case 'object':
+            return JSON.stringify(v, null, 2);
+          default:
+            return v;
+        }
+      }
+    }));
+
+    return (
+      <ReactTable
+        className="ResultsTable"
+        data={this.props.response.data}
+        columns={columns}
+      />
+    );
   }
 }
 
 ResultsTable.propTypes = {
+  // Must be a success response
   response: PropTypes.object.isRequired
 };
 
