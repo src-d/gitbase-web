@@ -20,7 +20,7 @@ DIFF := diff
 all:
 
 # Including ci Makefile
-CI_REPOSITORY ?= https://github.com/src-d/ci.git
+CI_REPOSITORY ?= https://github.com/dpordomingo/ci.git
 CI_BRANCH ?= v1
 CI_PATH ?= $(shell pwd)/.ci
 MAKEFILE := $(CI_PATH)/Makefile.main
