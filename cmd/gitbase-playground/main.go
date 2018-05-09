@@ -27,7 +27,7 @@ type appConfig struct {
 	Host      string `envconfig:"HOST" default:"0.0.0.0"`
 	Port      int    `envconfig:"PORT" default:"8080"`
 	ServerURL string `envconfig:"SERVER_URL"`
-	DBConn    string `envconfig:"DB_CONNECTION" default:"root@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
+	DBConn    string `envconfig:"DB_CONNECTION" default:"gitbase@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
 }
 
 func main() {

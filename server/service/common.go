@@ -6,4 +6,5 @@ import "database/sql"
 type SQLDB interface {
 	Close() error
 	Query(query string, args ...interface{}) (*sql.Rows, error)
+	Ping() error
 }
