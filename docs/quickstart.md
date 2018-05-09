@@ -26,13 +26,15 @@ $ git clone git@github.com:src-d/go-git-fixtures.git ~/gitbase/repos/go-git-fixt
 Install and run [gitbase](https://github.com/src-d/gitbase):
 
 ```bash
+# This quickstart is using a custom gitbase image until the official `srcd/gitbase` image is provided
+# See: https://github.com/src-d/gitbase/issues/262
 $ docker run
     --publish 3306:3306
     --link bblfsh
     --volume ~/gitbase/repos:/opt/repos
     --env BBLFSH_ENDPOINT=bblfsh:9432
     --name gitbase
-    srcd/gitbase:latest
+    dpordomingo/gitbase:latest
 ```
 
 
