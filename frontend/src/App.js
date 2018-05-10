@@ -50,7 +50,7 @@ GROUP BY committer_email, month, repo_id`,
     return (
       <div className="App">
         <Helmet>
-          <title>gitbase-playground</title>
+          <title>Gitbase Playground</title>
         </Helmet>
         <Grid>
           <Row>
