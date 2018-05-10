@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import { Grid, Row, Col, Alert } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import QueryBox from './components/QueryBox';
-import ResultsTable from './components/ResultsTable';
-import Loader from './components/Loader';
+import TabbedResults from './components/TabbedResults';
 import api from './api';
 import './App.less';
 
@@ -12,19 +11,19 @@ class App extends Component {
     super(props);
     this.state = {
       sql: `SELECT COUNT(*) as num_commits, month, repo_id, committer_email FROM (
-    SELECT MONTH(committer_when) as month, r.id as repo_id, committer_email
-    FROM repositories r
-    INNER JOIN refs ON refs.repository_id = r.id AND refs.name = 'HEAD'
-    INNER JOIN commits c ON YEAR(committer_when) = 2018 AND history_idx(refs.hash, c.hash) >= 0
+  SELECT MONTH(committer_when) as month, r.id as repo_id, committer_email
+  FROM repositories r
+  INNER JOIN refs ON refs.repository_id = r.id AND refs.name = 'HEAD'
+  INNER JOIN commits c ON YEAR(committer_when) = 2018 AND history_idx(refs.hash, c.hash) >= 0
 ) as t
 GROUP BY committer_email, month, repo_id`,
-      response: undefined,
-      loading: false,
-      error: undefined
+      results: [],
+      loading: false
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleRemoveResult = this.handleRemoveResult.bind(this);
   }
 
   handleTextChange(text) {
@@ -32,46 +31,61 @@ GROUP BY committer_email, month, repo_id`,
   }
 
   handleSubmit() {
+    if (this.state.loading) {
+      // Should not happen, but just in case
+      return;
+    }
+
+    const { sql } = this.state;
+
     this.setState({
-      response: undefined,
       loading: true,
-      error: undefined
+      results: [...this.state.results, { sql, loading: true }]
     });
 
+    // After a success or failure we pop the last entry {loading:true} and
+    // push a new result. This works because the 'run' button is disabled
+    // until the request finishes
     api
       .query(this.state.sql)
-      .then(json => {
+      .then(response => {
         this.setState({
-          response: json,
+          results: [...this.state.results.slice(0, -1), { sql, response }],
           loading: false
         });
       })
       .catch(msgArr => {
-        this.setState({ loading: false, error: msgArr.join('; ') });
+        this.setState({
+          results: [
+            ...this.state.results.slice(0, -1),
+            { sql, errorMsg: msgArr.join('; ') }
+          ],
+          loading: false
+        });
       });
   }
 
+  handleRemoveResult(index) {
+    this.setState({
+      results: [
+        ...this.state.results.slice(0, index),
+        ...this.state.results.slice(index + 1)
+      ]
+    });
+  }
+
   render() {
-    const { response } = this.state;
+    const { results } = this.state;
 
-    let results = '';
-
-    if (this.state.loading) {
-      results = (
-        <Col className="text-center loader-col" xs={12}>
-          <Loader />
-        </Col>
-      );
-    } else if (response && response.status === 200) {
-      results = (
+    let resultsElem = '';
+    if (results.length > 0) {
+      resultsElem = (
         <Col xs={12}>
-          <ResultsTable response={response} />
-        </Col>
-      );
-    } else if (this.state.error) {
-      results = (
-        <Col xs={10} xsOffset={1}>
-          <Alert bsStyle="danger">{this.state.error}</Alert>
+          <TabbedResults
+            results={results}
+            handleRemoveResult={this.handleRemoveResult}
+            handleEditQuery={this.handleTextChange}
+          />
         </Col>
       );
     }
@@ -92,7 +106,7 @@ GROUP BY committer_email, month, repo_id`,
               />
             </Col>
           </Row>
-          <Row className="results-row">{results}</Row>
+          <Row className="results-row">{resultsElem}</Row>
         </Grid>
       </div>
     );
