@@ -15,18 +15,20 @@ type Static struct {
 }
 
 // NewStatic creates new Static
-func NewStatic(dir, serverURL string) *Static {
+func NewStatic(dir, serverURL string, selectLimit int) *Static {
 	return &Static{
 		dir: dir,
 		options: options{
-			ServerURL: serverURL,
+			ServerURL:   serverURL,
+			SelectLimit: selectLimit,
 		},
 	}
 }
 
 // struct which will be marshalled and exposed to frontend
 type options struct {
-	ServerURL string `json:"SERVER_URL"`
+	ServerURL   string `json:"SERVER_URL"`
+	SelectLimit int    `json:"SELECT_LIMIT"`
 }
 
 // ServeHTTP serves any static file from static directory or fallbacks on index.hml

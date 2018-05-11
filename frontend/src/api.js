@@ -1,3 +1,10 @@
+const envVars = window.gitbasepg || { SERVER_URL: '', SELECT_LIMIT: 100 };
+
+const serverUrl = envVars.SERVER_URL;
+const selectLimit = envVars.SELECT_LIMIT;
+
+const apiUrl = url => `${serverUrl}${url}`;
+
 function checkStatus(resp) {
   if (resp.status < 200 || resp.status >= 300) {
     return resp
@@ -58,7 +65,7 @@ function apiCall(url, options = {}) {
     }
   }
 
-  return fetch(url, fetchOptions)
+  return fetch(apiUrl(url), fetchOptions)
     .then(checkStatus)
     .then(resp => resp.json())
     .then(json => {
@@ -73,7 +80,10 @@ function apiCall(url, options = {}) {
 function query(sql) {
   return apiCall(`/query`, {
     method: 'POST',
-    body: { query: sql }
+    body: {
+      query: sql,
+      limit: selectLimit
+    }
   });
 }
 
