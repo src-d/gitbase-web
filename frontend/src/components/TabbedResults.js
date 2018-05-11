@@ -17,20 +17,22 @@ class TabbedResults extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const nextNTabs = nextProps.results.length;
+    const nextNTabs = nextProps.results.size;
 
     if (prevState.nTabs === nextNTabs) {
       return null;
     }
 
-    // New tab, make it active
-    if (prevState.nTabs < nextNTabs) {
-      return { activeKey: nextNTabs - 1, nTabs: nextNTabs };
-    }
+    // Make the last tab active when a new one is added,
+    // or when the current active tab is deleted
+    const newTab = prevState.nTabs < nextNTabs;
+    const lostTab = !nextProps.results.has(prevState.activeKey);
 
-    // Tab removed, and last tab is active
-    if (prevState.activeKey >= nextNTabs) {
-      return { activeKey: nextNTabs - 1, nTabs: nextNTabs };
+    if (newTab || lostTab) {
+      return {
+        activeKey: Array.from(nextProps.results.keys())[nextNTabs - 1],
+        nTabs: nextNTabs
+      };
     }
 
     return { nTabs: nextNTabs };
@@ -47,16 +49,15 @@ class TabbedResults extends Component {
         activeKey={this.state.activeKey}
         onSelect={this.handleSelect}
       >
-        {this.props.results.map((query, i) => {
+        {Array.from(this.props.results.entries()).map(([key, query]) => {
           const title = (
             <div>
               <span className="tab-title">{query.sql}</span>
               <Button
                 className="close"
-                disabled={query.loading === true}
                 onClick={e => {
                   e.stopPropagation();
-                  this.props.handleRemoveResult(i);
+                  this.props.handleRemoveResult(key);
                 }}
               >
                 <span aria-hidden="true">&times;</span>
@@ -87,7 +88,7 @@ class TabbedResults extends Component {
           }
 
           return (
-            <Tab key={i} eventKey={i} title={title}>
+            <Tab key={key} eventKey={key} title={title}>
               <Row className="query-row">
                 <Col xs={12}>
                   <div className="query-text">
@@ -112,12 +113,12 @@ class TabbedResults extends Component {
 }
 
 TabbedResults.propTypes = {
-  // Each array object can contain
+  // results is a Map of objects, each object may contain:
   // sql: 'string'      Required
   // loading: true      Optional, tab will show a loading animation
   // errorMsg: 'string' Optional
   // response: object   Required if loading and errorMsg are not present
-  results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  results: PropTypes.instanceOf(Map).isRequired,
   handleRemoveResult: PropTypes.func.isRequired,
   handleEditQuery: PropTypes.func.isRequired
 };

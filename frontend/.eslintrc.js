@@ -18,7 +18,7 @@ module.exports = {
     'import/no-unresolved': 0,
     'import/extensions': 0,
     'func-names': 0,
-    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+    'no-plusplus': 0,
     'class-methods-use-this': 0, // strange rule. It doesn't allow to create method render() without this
     'no-case-declarations': 0, // otherwise code is very ugly
   },

@@ -17,68 +17,61 @@ class App extends Component {
   INNER JOIN commits c ON YEAR(committer_when) = 2018 AND history_idx(refs.hash, c.hash) >= 0
 ) as t
 GROUP BY committer_email, month, repo_id`,
-      results: [],
-      loading: false
+      results: new Map()
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRemoveResult = this.handleRemoveResult.bind(this);
+
+    this.uniqueKey = 0;
   }
 
   handleTextChange(text) {
     this.setState({ sql: text });
   }
 
-  handleSubmit() {
-    if (this.state.loading) {
-      // Should not happen, but just in case
+  setResult(key, result) {
+    if (!this.state.results.has(key)) {
+      // Tab was removed, ignore results
       return;
     }
 
-    const { sql } = this.state;
+    const newResults = new Map(this.state.results);
+    newResults.set(key, result);
 
-    this.setState({
-      loading: true,
-      results: [...this.state.results, { sql, loading: true }]
-    });
-
-    // After a success or failure we pop the last entry {loading:true} and
-    // push a new result. This works because the 'run' button is disabled
-    // until the request finishes
-    api
-      .query(this.state.sql)
-      .then(response => {
-        this.setState({
-          results: [...this.state.results.slice(0, -1), { sql, response }],
-          loading: false
-        });
-      })
-      .catch(msgArr => {
-        this.setState({
-          results: [
-            ...this.state.results.slice(0, -1),
-            { sql, errorMsg: msgArr.join('; ') }
-          ],
-          loading: false
-        });
-      });
+    this.setState({ results: newResults });
   }
 
-  handleRemoveResult(index) {
-    this.setState({
-      results: [
-        ...this.state.results.slice(0, index),
-        ...this.state.results.slice(index + 1)
-      ]
-    });
+  handleSubmit() {
+    const { sql } = this.state;
+    const key = ++this.uniqueKey;
+
+    const loadingResults = new Map(this.state.results);
+    loadingResults.set(key, { sql, loading: true });
+
+    this.setState({ results: loadingResults });
+
+    api
+      .query(sql)
+      .then(response => this.setResult(key, { sql, response }))
+      .catch(msgArr =>
+        this.setResult(key, { sql, errorMsg: msgArr.join('; ') })
+      );
+  }
+
+  handleRemoveResult(key) {
+    const newResults = new Map(this.state.results);
+    newResults.delete(key);
+
+    this.setState({ results: newResults });
   }
 
   render() {
     const { results } = this.state;
 
     let resultsElem = '';
-    if (results.length > 0) {
+    if (results.size > 0) {
       resultsElem = (
         <Col xs={12}>
           <TabbedResults
@@ -100,7 +93,6 @@ GROUP BY committer_email, month, repo_id`,
             <Col xs={12}>
               <QueryBox
                 sql={this.state.sql}
-                enabled={!this.state.loading}
                 handleTextChange={this.handleTextChange}
                 handleSubmit={this.handleSubmit}
               />
