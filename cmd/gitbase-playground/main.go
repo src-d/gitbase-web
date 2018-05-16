@@ -46,7 +46,7 @@ func main() {
 	}
 	defer db.Close()
 
-	static := handler.NewStatic("frontend/build", conf.ServerURL, conf.SelectLimit)
+	static := handler.NewStatic("build/public", conf.ServerURL, conf.SelectLimit)
 
 	// start the router
 	router := server.Router(logger, static, version, db)

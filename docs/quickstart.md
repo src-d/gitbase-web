@@ -34,7 +34,7 @@ $ docker run
     --volume ~/gitbase/repos:/opt/repos
     --env BBLFSH_ENDPOINT=bblfsh:9432
     --name gitbase
-    dpordomingo/gitbase:latest
+    srcd/gitbase:latest
 ```
 
 

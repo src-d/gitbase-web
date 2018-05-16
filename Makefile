@@ -1,13 +1,15 @@
 # Package configuration
 PROJECT := gitbase-playground
 COMMANDS := cmd/gitbase-playground
-DOCKER_ORG := src-d
 DEPENDENCIES := \
 	github.com/golang/dep/cmd/dep \
 	github.com/jteeuwen/go-bindata \
 	github.com/golang/lint/golint
+
 GO_LINTABLE_PACKAGES := $(shell go list ./... | grep -v '/vendor/')
 GO_BUILD_ENV := CGO_ENABLED=0
+FRONTEND_PATH := ./frontend
+FRONTEND_BUILD_PATH := $(FRONTEND_PATH)/build
 
 # Tools
 GODEP := dep
@@ -15,6 +17,10 @@ GOLINT := golint
 GOVET := go vet
 BINDATA := go-bindata
 DIFF := diff
+YARN := yarn --cwd $(FRONTEND_PATH)
+REMOVE := rm -rf
+MOVE := mv
+MKDIR := mkdir -p
 
 # Default rule
 all:
@@ -53,6 +59,10 @@ validate-commit: | \
 exit:
 	exit 0;
 
+clean: front-clean
+
+build-path:
+	$(MKDIR) $(BUILD_PATH)
 
 ## Compiles the assets, and serve the tool through its API
 
@@ -73,7 +83,7 @@ back-bindata:
 	$(BINDATA) \
 		-pkg assets \
 		-o $(assets) \
-		build/public/*
+		build/public/...
 
 back-lint: $(GO_LINTABLE_PACKAGES)
 $(GO_LINTABLE_PACKAGES):
@@ -95,20 +105,21 @@ back-test-integration:
 # Frontend
 
 front-dependencies:
-	echo 'SKIP. no frontend dependencies to install'
+	$(YARN) install
 
 front-test:
-	echo 'SKIP. no frontend tests to run'
+	$(YARN) test
 
 front-lint:
-	echo 'SKIP. no frontend linters to run'
+	$(YARN) lint
 
-front-build:
-	mkdir -p build/public
-	cp public/index.html build/public/index.html
-	cp public/secondary.html build/public/secondary.html
+front-build: build-path
+	$(YARN) build
+	$(MOVE) $(FRONTEND_BUILD_PATH) $(BUILD_PATH)/public
 
 front-fix-lint-errors:
-	echo 'SKIP. no fixable code'
+	$(YARN) format
 
-
+front-clean:
+	$(REMOVE) $(FRONTEND_PATH)/node_modules
+	$(REMOVE) $(FRONTEND_BUILD_PATH)
