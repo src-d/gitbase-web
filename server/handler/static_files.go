@@ -4,8 +4,17 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"path"
+	"strings"
 
 	"github.com/src-d/gitbase-playground/server/assets"
+)
+
+const (
+	staticDirName = "static"
+	indexFileName = "index.html"
+
+	serverValuesPlaceholder = "window.REPLACE_BY_SERVER"
 )
 
 // Static contains handlers to serve static using go-bindata
@@ -33,19 +42,25 @@ type options struct {
 
 // ServeHTTP serves any static file from static directory or fallbacks on index.hml
 func (s *Static) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	filepath := s.dir + r.URL.Path
+	filepath := path.Join(s.dir, r.URL.Path)
 	b, err := assets.Asset(filepath)
 	if err != nil {
+		if strings.HasPrefix(filepath, path.Join(s.dir, staticDirName)) {
+			http.NotFound(w, r)
+			return
+		}
+
 		s.ServeIndexHTML(nil)(w, r)
 		return
 	}
+
 	s.serveAsset(w, r, filepath, b)
 }
 
 // ServeIndexHTML serves index.html file
 func (s *Static) ServeIndexHTML(initialState interface{}) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		filepath := s.dir + "/index.html"
+		filepath := path.Join(s.dir, indexFileName)
 		b, err := assets.Asset(filepath)
 		if err != nil {
 			http.NotFound(w, r)
@@ -58,7 +73,7 @@ func (s *Static) ServeIndexHTML(initialState interface{}) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		b = bytes.Replace(b, []byte("window.REPLACE_BY_SERVER"), bData, 1)
+		b = bytes.Replace(b, []byte(serverValuesPlaceholder), bData, 1)
 		s.serveAsset(w, r, filepath, b)
 	}
 }
