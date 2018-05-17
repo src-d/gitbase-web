@@ -17,7 +17,8 @@ class App extends Component {
   INNER JOIN commits c ON YEAR(committer_when) = 2018 AND history_idx(refs.commit_hash, c.commit_hash) >= 0
 ) as t
 GROUP BY committer_email, month, repo_id`,
-      results: new Map()
+      results: new Map(),
+      schema: undefined
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -54,10 +55,38 @@ GROUP BY committer_email, month, repo_id`,
 
     api
       .query(sql)
-      .then(response => this.setResult(key, { sql, response }))
+      .then(response => {
+        this.setResult(key, { sql, response });
+
+        if (!this.state.schema) {
+          // The schema was not loaded for some reason, and we know we just
+          // did a successful call to the backend. Let's retry.
+          this.loadSchema();
+        }
+      })
       .catch(msgArr =>
         this.setResult(key, { sql, errorMsg: msgArr.join('; ') })
       );
+  }
+
+  loadSchema() {
+    api
+      .schema()
+      .then(schema => {
+        if (JSON.stringify(schema) !== JSON.stringify(this.state.schema)) {
+          this.setState({ schema });
+        }
+      })
+      .catch(msgArr => {
+        // TODO (@carlosms): left as console message for now, we may decide to
+        // show it in the interface somehow when we have to populate the sidebar
+        // eslint-disable-next-line no-console
+        console.error(`Error while loading schema: ${msgArr}`);
+      });
+  }
+
+  componentDidMount() {
+    this.loadSchema();
   }
 
   handleRemoveResult(key) {
@@ -93,6 +122,7 @@ GROUP BY committer_email, month, repo_id`,
             <Col xs={12}>
               <QueryBox
                 sql={this.state.sql}
+                schema={this.state.schema}
                 handleTextChange={this.handleTextChange}
                 handleSubmit={this.handleSubmit}
               />
