@@ -115,6 +115,7 @@ front-lint:
 
 front-build: build-path
 	$(YARN) build
+	$(REMOVE) $(BUILD_PATH)/public
 	$(MOVE) $(FRONTEND_BUILD_PATH) $(BUILD_PATH)/public
 
 front-fix-lint-errors:
