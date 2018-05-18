@@ -13,7 +13,7 @@ services:
     environment:
       BBLFSH_ENDPOINT: bblfsh:9432
     volumes:
-      - ${REPOS_FOLDER}:/opt/repos
+      - ${GITBASEPG_REPOS_FOLDER}:/opt/repos
   bblfsh:
     image: "bblfsh/bblfshd"
     privileged: true
