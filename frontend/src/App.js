@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import { Grid, Row, Col, Alert } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import QueryBox from './components/QueryBox';
-import ResultsTable from './components/ResultsTable';
-import Loader from './components/Loader';
+import TabbedResults from './components/TabbedResults';
 import api from './api';
 import './App.less';
 
@@ -12,66 +11,74 @@ class App extends Component {
     super(props);
     this.state = {
       sql: `SELECT COUNT(*) as num_commits, month, repo_id, committer_email FROM (
-    SELECT MONTH(committer_when) as month, r.id as repo_id, committer_email
-    FROM repositories r
-    INNER JOIN refs ON refs.repository_id = r.id AND refs.name = 'HEAD'
-    INNER JOIN commits c ON YEAR(committer_when) = 2018 AND history_idx(refs.hash, c.hash) >= 0
+  SELECT MONTH(committer_when) as month, r.repository_id as repo_id, committer_email
+  FROM repositories r
+  INNER JOIN refs ON refs.repository_id = r.repository_id AND refs.ref_name = 'HEAD'
+  INNER JOIN commits c ON YEAR(committer_when) = 2018 AND history_idx(refs.commit_hash, c.commit_hash) >= 0
 ) as t
 GROUP BY committer_email, month, repo_id`,
-      response: undefined,
-      loading: false,
-      error: undefined
+      results: new Map()
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleRemoveResult = this.handleRemoveResult.bind(this);
+
+    this.uniqueKey = 0;
   }
 
   handleTextChange(text) {
     this.setState({ sql: text });
   }
 
+  setResult(key, result) {
+    if (!this.state.results.has(key)) {
+      // Tab was removed, ignore results
+      return;
+    }
+
+    const newResults = new Map(this.state.results);
+    newResults.set(key, result);
+
+    this.setState({ results: newResults });
+  }
+
   handleSubmit() {
-    this.setState({
-      response: undefined,
-      loading: true,
-      error: undefined
-    });
+    const { sql } = this.state;
+    const key = ++this.uniqueKey;
+
+    const loadingResults = new Map(this.state.results);
+    loadingResults.set(key, { sql, loading: true });
+
+    this.setState({ results: loadingResults });
 
     api
-      .query(this.state.sql)
-      .then(json => {
-        this.setState({
-          response: json,
-          loading: false
-        });
-      })
-      .catch(msgArr => {
-        this.setState({ loading: false, error: msgArr.join('; ') });
-      });
+      .query(sql)
+      .then(response => this.setResult(key, { sql, response }))
+      .catch(msgArr =>
+        this.setResult(key, { sql, errorMsg: msgArr.join('; ') })
+      );
+  }
+
+  handleRemoveResult(key) {
+    const newResults = new Map(this.state.results);
+    newResults.delete(key);
+
+    this.setState({ results: newResults });
   }
 
   render() {
-    const { response } = this.state;
+    const { results } = this.state;
 
-    let results = '';
-
-    if (this.state.loading) {
-      results = (
-        <Col className="text-center loader-col" xs={12}>
-          <Loader />
-        </Col>
-      );
-    } else if (response && response.status === 200) {
-      results = (
+    let resultsElem = '';
+    if (results.size > 0) {
+      resultsElem = (
         <Col xs={12}>
-          <ResultsTable response={response} />
-        </Col>
-      );
-    } else if (this.state.error) {
-      results = (
-        <Col xs={10} xsOffset={1}>
-          <Alert bsStyle="danger">{this.state.error}</Alert>
+          <TabbedResults
+            results={results}
+            handleRemoveResult={this.handleRemoveResult}
+            handleEditQuery={this.handleTextChange}
+          />
         </Col>
       );
     }
@@ -86,13 +93,12 @@ GROUP BY committer_email, month, repo_id`,
             <Col xs={12}>
               <QueryBox
                 sql={this.state.sql}
-                enabled={!this.state.loading}
                 handleTextChange={this.handleTextChange}
                 handleSubmit={this.handleSubmit}
               />
             </Col>
           </Row>
-          <Row className="results-row">{results}</Row>
+          <Row className="results-row">{resultsElem}</Row>
         </Grid>
       </div>
     );

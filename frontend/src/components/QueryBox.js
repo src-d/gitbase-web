@@ -22,7 +22,7 @@ class QueryBox extends Component {
           <Col xsOffset={9} xs={3}>
             <Button
               className="pull-right"
-              disabled={!this.props.enabled}
+              disabled={this.props.enabled === false}
               onClick={this.props.handleSubmit}
             >
               RUN
@@ -36,7 +36,7 @@ class QueryBox extends Component {
 
 QueryBox.propTypes = {
   sql: PropTypes.string.isRequired,
-  enabled: PropTypes.bool.isRequired,
+  enabled: PropTypes.bool,
   handleTextChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired
 };
