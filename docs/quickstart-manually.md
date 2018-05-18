@@ -2,7 +2,7 @@
 
 You can locally build and deploy `gitbase-playground` and its dependencies using [`docker-compose`](https://docs.docker.com/compose/install/)
 
-If you preffer to run `gitbase-playground` with [`docker-compose`](https://docs.docker.com/compose) (without taking care of the app dependencies), you can follow [the playground compose quickstart](quickstart.md)
+If you prefer to run `gitbase-playground` with [`docker-compose`](https://docs.docker.com/compose) (without taking care of the app dependencies), you can follow [the playground compose quickstart](quickstart.md)
 
 
 ## Run bblfsh and gitbase Dependencies
