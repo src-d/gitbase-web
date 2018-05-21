@@ -1,62 +1,65 @@
 # Quickstart
 
-## Run bblfsh and gitbase Dependencies
+You can locally build and deploy `gitbase-playground` and its dependencies using [`docker-compose`](https://docs.docker.com/compose/install/).
+Docker compose will run three different containers: for the playground frontend itself, gitbase and bblfsh services. It will be the [latest gitbase version](https://hub.docker.com/r/srcd/gitbase/tags/) and [latest bblfsh version](https://hub.docker.com/r/bblfsh/bblfshd/tags/).
 
-It is recommended to read about `bblfsh` and `gitbase` from its own documentation, but here is a small guide about how to run both easily:
+If you preffer to run `gitbase-playground` dependencies manually, you can follow [the alternative playground quickstart](quickstart-manually.md)
 
-Launch [bblfshd](https://github.com/bblfsh/bblfshd) and install the drivers. More info in the [bblfshd documentation](https://doc.bblf.sh/user/getting-started.html):
 
-```bash
-$ docker run --privileged
-    --publish 9432:9432
-    --volume /var/lib/bblfshd:/var/lib/bblfshd
-    --name bblfsh
-    bblfsh/bblfshd
-$ docker exec -it bblfsh
-    bblfshctl driver install --recommended
-```
-
-[gitbase](https://github.com/src-d/gitbase) will serve git repositories, so it is needed to populate a directory with them:
+## Download the project
 
 ```bash
-$ mkdir -p ~/gitbase/repos
-$ git clone git@github.com:src-d/go-git-fixtures.git ~/gitbase/repos/go-git-fixtures
+$ git clone git@github.com:src-d/gitbase-playground.git gitbase-playground
+$ cd gitbase-playground
 ```
 
-Install and run [gitbase](https://github.com/src-d/gitbase):
+This guide will assume you're running all commands from `gitbase-playground` sources directory
+
+
+## Populate the database
+
+It is needed to populate a directory with some git repositories to be served by [gitbase](https://github.com/src-d/gitbase) before running it.
+
+example:
 
 ```bash
-# This quickstart is using a custom gitbase image until the official `srcd/gitbase` image is provided
-# See: https://github.com/src-d/gitbase/issues/262
-$ docker run
-    --publish 3306:3306
-    --link bblfsh
-    --volume ~/gitbase/repos:/opt/repos
-    --env BBLFSH_ENDPOINT=bblfsh:9432
-    --name gitbase
-    srcd/gitbase:latest
+$ git clone git@github.com:src-d/gitbase-playground.git ./repos/gitbase-playground
+$ git clone git@github.com:src-d/go-git-fixtures.git ./repos/go-git-fixtures
 ```
 
+Everytime you want to add a new repository to gitbase, the application should be restarted.
 
-## Run gitbase-playground
 
-Once bblfsh and gitbase are running and accessible, you can serve the playground:
+## Run the application
+
+Run the [latest released version of the frontend](https://hub.docker.com/r/srcd/gitbase-playground/tags/):
 
 ```bash
-$ docker run -d
-    --publish 8080:8080
-    --link gitbase
-    --env GITBASEPG_ENV=dev
-    --env GITBASEPG_DB_CONNECTION="gitbase@tcp(gitbase:3306)/none?maxAllowedPacket=4194304"
-    --name gitbase_playground
-   srcd/gitbase-playground:latest
+$ GITBASEPG_REPOS_FOLDER=./repos docker-compose up --force-recreate
 ```
+
+If you want to build and run the playground from sources instead of using the last released version you can do so:
+
+<details>
+<pre>
+$ GITBASEPG_REPOS_FOLDER=./repos make compose-serve
+</pre>
+</details>
+
+## Stop the Application
+
+To kill the running containers just `Ctrl+C`
+
+To delete the containers run `docker-compose rm -f`
+
+
+## Access to the Playground and Run a Query
 
 Once the server is running &ndash;with its default values&ndash;, it will be accessible through: http://localhost:8080
 
-You have more information about the [playground architecture](CONTRIBUTING.md#architecture), [development guides](CONTRIBUTING.md#development) and [configuration options](CONTRIBUTING.md#configuration) in the [CONTRIBUTING.md](CONTRIBUTING.md).
-
-
-## Run a Query
-
 You will find more info about how to run queries using the playground API on the [rest-api guide](rest-api.md)
+
+
+## More Info
+
+You have more information about the [playground architecture](CONTRIBUTING.md#architecture), [development guides](CONTRIBUTING.md#development) and [configuration options](CONTRIBUTING.md#configuration) in the [CONTRIBUTING.md](CONTRIBUTING.md).

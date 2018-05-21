@@ -21,6 +21,7 @@ YARN := yarn --cwd $(FRONTEND_PATH)
 REMOVE := rm -rf
 MOVE := mv
 MKDIR := mkdir -p
+COMPOSE_UP := docker-compose
 
 # Default rule
 all:
@@ -68,6 +69,16 @@ build-path:
 
 serve: | front-build back-start
 
+compose-serve: | require-repos-folder front-dependencies build
+	GITBASEPG_REPOS_FOLDER=${GITBASEPG_REPOS_FOLDER} \
+		$(COMPOSE_UP) -f docker-compose.yml -f docker-compose.build.yml up --force-recreate --build
+
+require-repos-folder:
+	@if [[ -z "$(GITBASEPG_REPOS_FOLDER)" ]]; then \
+		echo "error. undefined 'GITBASEPG_REPOS_FOLDER' to be served under gitbase"; \
+		exit 1; \
+	fi
+	$(MKDIR) $(GITBASEPG_REPOS_FOLDER)
 
 # Backend
 
@@ -115,6 +126,7 @@ front-lint:
 
 front-build: build-path
 	$(YARN) build
+	$(REMOVE) $(BUILD_PATH)/public
 	$(MOVE) $(FRONTEND_BUILD_PATH) $(BUILD_PATH)/public
 
 front-fix-lint-errors:

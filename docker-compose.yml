@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+  playground:
+    image: "srcd/gitbase-playground"
+    ports:
+      - "8080:8080"
+    environment:
+      GITBASEPG_ENV: ${GITBASEPG_ENV}
+      GITBASEPG_DB_CONNECTION: gitbase@tcp(gitbase:3306)/none?maxAllowedPacket=4194304
+  gitbase:
+    image: "srcd/gitbase"
+    environment:
+      BBLFSH_ENDPOINT: bblfsh:9432
+    volumes:
+      - ${GITBASEPG_REPOS_FOLDER}:/opt/repos
+  bblfsh:
+    image: "bblfsh/bblfshd"
+    privileged: true
+    volumes:
+      - type: volume
+        source: drivers
+        target: /var/lib/bblfshd
+    entrypoint: ["/bin/sh"]
+    command:
+    - "-c"
+    - "bblfshd & sleep 5 && bblfshctl driver install --recommended && tail -f /dev/null"
+
+volumes:
+  drivers:

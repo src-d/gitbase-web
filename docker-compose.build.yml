@@ -1,0 +1,6 @@
+version: '3.3'
+
+services:
+  playground:
+    image: gitbase-playground-dev
+    build: .
