@@ -87,6 +87,42 @@ function query(sql) {
   });
 }
 
+function tables() {
+  return apiCall(`/tables`);
+}
+
+/* Returns an array in the form:
+[
+  {
+    "table": "refs",
+    "columns": [
+      {
+        "name": "repository_id",
+        "type": "TEXT"
+      },
+      ...
+    ]
+  },
+  ...
+]
+*/
+function schema() {
+  return tables()
+    .then(res =>
+      Promise.all(
+        res.data.map(e =>
+          query(`DESCRIBE TABLE ${e.table}`).then(tableRes => ({
+            table: e.table,
+            columns: tableRes.data
+          }))
+        )
+      )
+    )
+    .catch(err => Promise.reject(normalizeErrors(err)));
+}
+
 export default {
-  query
+  query,
+  tables,
+  schema
 };
