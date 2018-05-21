@@ -35,28 +35,28 @@ body,
 }
 
 // react-split-pane
-.SplitPane .Pane {
-    overflow: auto;
-}
-
 .SplitPane {
     position: relative !important;
-}
 
-.SplitPane .Resizer {
-    margin-top: 1em;
-    margin-bottom: 1em;
-    padding: 2px 0;
+    .Pane {
+        overflow: auto;
+    }
 
-    color: @gray;
-    background: @gray-lighter;
+    .Resizer {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        padding: 2px 0;
 
-    cursor: row-resize;
+        color: @gray;
+        background: @gray-lighter;
 
-    &:before {
-        display: block;
-        content: '● ● ●';
-        text-align: center;
-        line-height: 11px;
+        cursor: row-resize;
+
+        &:before {
+            display: block;
+            content: '● ● ●';
+            text-align: center;
+            line-height: 11px;
+        }
     }
 }

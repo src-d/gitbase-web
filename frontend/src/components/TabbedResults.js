@@ -46,6 +46,7 @@ class TabbedResults extends Component {
     return (
       <Tabs
         id="tabbed-results"
+        className="full-height"
         activeKey={this.state.activeKey}
         onSelect={this.handleSelect}
       >
