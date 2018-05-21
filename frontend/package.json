@@ -12,6 +12,7 @@
     "react-dom": "^16.3.2",
     "react-helmet": "^5.2.0",
     "react-scripts": "1.1.4",
+    "react-split-pane": "^0.1.77",
     "react-table": "^6.8.2"
   },
   "scripts": {

@@ -26,6 +26,7 @@ class ResultsTable extends Component {
         className="results-table"
         data={this.props.response.data}
         columns={columns}
+        defaultPageSize={10}
       />
     );
   }

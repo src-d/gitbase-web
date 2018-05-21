@@ -69,8 +69,8 @@ class QueryBox extends Component {
 
     return (
       <div className="query-box">
-        <Row>
-          <Col xs={12}>
+        <Row className="codemirror-row">
+          <Col xs={12} className="codemirror-col">
             <CodeMirror
               value={this.props.sql}
               options={options}
@@ -80,7 +80,7 @@ class QueryBox extends Component {
             />
           </Col>
         </Row>
-        <Row>
+        <Row className="button-row">
           <Col xsOffset={9} xs={3}>
             <Button
               className="pull-right"
