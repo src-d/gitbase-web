@@ -42,6 +42,16 @@ jobs:
         - make coverage
         - make validate-commit
     - script:
+      - docker run -d --name bblfshd --privileged --volume $HOME/bblfsh-drivers:/var/lib/bblfshd -p "9432:9432" bblfsh/bblfshd
+      - sleep 5
+      - docker exec -it bblfshd bblfshctl driver install go docker://bblfsh/go-driver:latest
+      - docker exec -it bblfshd bblfshctl driver install javascript docker://bblfsh/javascript-driver:latest
+      - mkdir $HOME/repos
+      - git clone https://github.com/src-d/gitbase-playground.git $HOME/repos/gitbase-playground
+      - docker run -d --name gitbase -p "3367:3306" -e "BBLFSH_ENDPOINT=bblfshd:9432" --volume $HOME/repos:/opt/repos --link bblfshd srcd/gitbase
+      - sleep 15
+      - GITBASEPG_DB_CONNECTION='gitbase@tcp(localhost:3367)/none' make back-test-integration
+    - script:
         - make packages
     # release to github
     - stage: release to github
@@ -60,3 +70,11 @@ jobs:
       script:
         - PKG_OS=linux make build
         - DOCKER_PUSH_LATEST=true make docker-push
+
+cache:
+  directories:
+    - $HOME/bblfsh-drivers/images
+
+before_cache:
+  # make bblfsh images readable
+  - sudo chmod -R 777 $HOME/bblfsh-drivers/images
