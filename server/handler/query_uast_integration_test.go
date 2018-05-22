@@ -28,6 +28,8 @@ func TestUastFunctions(t *testing.T) {
 	suite.Run(t, q)
 }
 
+// This test requires that gitbase can reach bblfshd and that it's serving the
+// repository https://github.com/src-d/gitbase-playground
 func (suite *QueryUast) TestUastFunctions() {
 	req, _ := http.NewRequest("POST", "/query", strings.NewReader(
 		`{ "query": "SELECT hash, content, uast(content, 'go') as uast FROM blobs WHERE hash='fd30cea52792da5ece9156eea4022bdd87565633'" }`))

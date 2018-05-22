@@ -32,6 +32,13 @@ jobs:
         - make coverage
         - make validate-commit
     - script:
+      - docker run -d --name bblfshd --privileged carlosms/bblfsh-ci-test:v0.0.1
+      - mkdir $HOME/repos
+      - git clone https://github.com/src-d/gitbase-playground.git $HOME/repos/gitbase-playground
+      - docker run -d --name gitbase -p "3367:3306" -e "BBLFSH_ENDPOINT=bblfshd:9432" --volume $HOME/repos:/opt/repos --link bblfshd srcd/gitbase
+      - sleep 15
+      - GITBASEPG_DB_CONNECTION='gitbase@tcp(localhost:3367)/none' make back-test-integration
+    - script:
         - make packages
     # release to github
     - stage: release to github
