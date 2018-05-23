@@ -1,12 +1,62 @@
+@import '../node_modules/bootstrap/less/variables.less';
+
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 .app {
-  margin-top: 3em;
-  margin-bottom: 3em;
+    height: 100%;
+    padding-top: 3em;
+    padding-bottom: 1em;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.query-box-row {
+    .full-height;
 }
 
 .results-row {
-  margin-top: 3em;
+    .full-height;
 }
 
 .loader-col {
-  margin-top: 3em;
+    margin-top: 3em;
+}
+
+// react-split-pane
+.SplitPane {
+    position: relative !important;
+
+    .Pane {
+        overflow: auto;
+    }
+
+    .Resizer {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        padding: 2px 0;
+
+        color: @gray;
+        background: @gray-lighter;
+
+        cursor: row-resize;
+
+        &:before {
+            display: block;
+            content: '● ● ●';
+            text-align: center;
+            line-height: 11px;
+        }
+    }
 }

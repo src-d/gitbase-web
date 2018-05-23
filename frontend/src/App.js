@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Grid, Row, Col } from 'react-bootstrap';
+import SplitPane from 'react-split-pane';
 import QueryBox from './components/QueryBox';
 import TabbedResults from './components/TabbedResults';
 import api from './api';
@@ -102,7 +103,7 @@ GROUP BY committer_email, month, repo_id`,
     let resultsElem = '';
     if (results.size > 0) {
       resultsElem = (
-        <Col xs={12}>
+        <Col xs={12} className="full-height">
           <TabbedResults
             results={results}
             handleRemoveResult={this.handleRemoveResult}
@@ -111,24 +112,33 @@ GROUP BY committer_email, month, repo_id`,
         </Col>
       );
     }
-
     return (
       <div className="app">
         <Helmet>
           <title>Gitbase Playground</title>
         </Helmet>
-        <Grid>
-          <Row className="query-row">
-            <Col xs={12}>
-              <QueryBox
-                sql={this.state.sql}
-                schema={this.state.schema}
-                handleTextChange={this.handleTextChange}
-                handleSubmit={this.handleSubmit}
-              />
+        <Grid className="full-height">
+          <Row className="full-height">
+            <Col xs={12} className="full-height">
+              <SplitPane split="horizontal" defaultSize={250} minSize={100}>
+                <Grid className="full-height full-width">
+                  <Row className="query-box-row">
+                    <Col xs={12} className="full-height">
+                      <QueryBox
+                        sql={this.state.sql}
+                        schema={this.state.schema}
+                        handleTextChange={this.handleTextChange}
+                        handleSubmit={this.handleSubmit}
+                      />
+                    </Col>
+                  </Row>
+                </Grid>
+                <Grid className="full-height full-width">
+                  <Row className="results-row">{resultsElem}</Row>
+                </Grid>
+              </SplitPane>
             </Col>
           </Row>
-          <Row className="results-row">{resultsElem}</Row>
         </Grid>
       </div>
     );
