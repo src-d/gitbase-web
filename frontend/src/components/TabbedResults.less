@@ -9,25 +9,18 @@
 }
 
 .tab-content {
-    flex: auto 1;
+    flex: 1 1 auto;
 
     display: flex;
     flex-direction: column;
 
     > .tab-pane {
-        height: 100%;
-        flex: auto 1;
+        flex: 1 1 auto;
         padding-top: 2em;
 
         &[aria-hidden='false'] {
             display: flex;
             flex-direction: column;
-        }
-
-        .results-table {
-            flex-grow: 1;
-            flex-basis: 150px;
-            min-height: 150px;
         }
     }
 }

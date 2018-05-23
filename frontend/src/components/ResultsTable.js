@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import './ResultsTable.less';
 
 class ResultsTable extends Component {
   render() {
