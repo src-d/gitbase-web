@@ -91,3 +91,25 @@ type queryMetaResponse struct {
 func NewQueryResponse(rows []map[string]interface{}, columnNames, columnTypes []string) *Response {
 	return newResponse(rows, queryMetaResponse{columnNames, columnTypes})
 }
+
+type Column struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+type Table struct {
+	Table   string   `json:"table"`
+	Columns []Column `json:"columns"`
+}
+
+// NewTablesResponse returns a Response with tables schema
+func NewTablesResponse(tables map[string][]Column) *Response {
+	var res []Table
+	for table, columns := range tables {
+		res = append(res, Table{
+			Table:   table,
+			Columns: columns,
+		})
+	}
+	return newResponse(res, nil)
+}

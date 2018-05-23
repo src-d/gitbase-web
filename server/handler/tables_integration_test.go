@@ -1,12 +1,14 @@
 package handler_test
 
 import (
+	"encoding/json"
 	"flag"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/src-d/gitbase-playground/server/handler"
+	"github.com/src-d/gitbase-playground/server/serializer"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -33,8 +35,18 @@ func (suite *TablesSuite) TestGet() {
 	res := httptest.NewRecorder()
 	suite.handler.ServeHTTP(res, req)
 
-	okResponse(suite.Require(), res)
+	suite.Equal(http.StatusOK, res.Code)
+
+	var resBody serializer.Response
+	err := json.Unmarshal(res.Body.Bytes(), &resBody)
+	suite.Nil(err)
+
+	suite.Equal(res.Code, resBody.Status)
+	suite.NotEmpty(resBody.Data)
 
 	firstRow := firstRow(suite.Require(), res)
 	suite.IsType("string", firstRow["table"])
+
+	var interfaceSlice []interface{}
+	suite.IsType(interfaceSlice, firstRow["columns"])
 }
