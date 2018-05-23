@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Grid, Row, Col } from 'react-bootstrap';
 import SplitPane from 'react-split-pane';
+import Sidebar from './components/Sidebar';
 import QueryBox from './components/QueryBox';
 import TabbedResults from './components/TabbedResults';
 import api from './api';
@@ -117,9 +118,12 @@ GROUP BY committer_email, month, repo_id`,
         <Helmet>
           <title>Gitbase Playground</title>
         </Helmet>
-        <Grid className="full-height">
+        <Grid className="full-height" fluid={true}>
           <Row className="full-height">
-            <Col xs={12} className="full-height">
+            <Col xs={3} className="full-height">
+              <Sidebar schema={this.state.schema} />
+            </Col>
+            <Col xs={9} className="full-height">
               <SplitPane split="horizontal" defaultSize={250} minSize={100}>
                 <Grid className="full-height full-width">
                   <Row className="query-box-row">
