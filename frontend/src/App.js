@@ -26,6 +26,8 @@ GROUP BY committer_email, month, repo_id`,
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRemoveResult = this.handleRemoveResult.bind(this);
+    this.handleTableClick = this.handleTableClick.bind(this);
+    this.handleExampleClick = this.handleExampleClick.bind(this);
 
     this.uniqueKey = 0;
   }
@@ -69,6 +71,14 @@ GROUP BY committer_email, month, repo_id`,
       .catch(msgArr =>
         this.setResult(key, { sql, errorMsg: msgArr.join('; ') })
       );
+  }
+
+  handleTableClick(table) {
+    this.setState({ sql: `DESCRIBE TABLE ${table}` }, this.handleSubmit);
+  }
+
+  handleExampleClick(sql) {
+    this.setState({ sql }, this.handleSubmit);
   }
 
   loadSchema() {
@@ -121,7 +131,11 @@ GROUP BY committer_email, month, repo_id`,
         <Grid className="full-height" fluid={true}>
           <Row className="full-height">
             <Col xs={3} className="full-height">
-              <Sidebar schema={this.state.schema} />
+              <Sidebar
+                schema={this.state.schema}
+                onTableClick={this.handleTableClick}
+                onExampleClick={this.handleExampleClick}
+              />
             </Col>
             <Col xs={9} className="full-height">
               <SplitPane split="horizontal" defaultSize={250} minSize={100}>
