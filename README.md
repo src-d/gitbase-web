@@ -27,13 +27,14 @@ Read [more about how to run bblfsh and gitbase dependencies](docs/quickstart.md)
 ### Run with Docker
 
 ```bash
-$ docker run -d
-    --publish 8080:8080
-    --link gitbase
-    --env GITBASEPG_ENV=dev
-    --env GITBASEPG_DB_CONNECTION="gitbase@tcp(gitbase:3306)/none?maxAllowedPacket=4194304"
-    --name gitbasePlayground
-    src-d/gitbase-playground:latest
+$ docker pull srcd/gitbase-playground:latest
+$ docker run -d \
+    --publish 8080:8080 \
+    --link gitbase \
+    --env GITBASEPG_ENV=dev \
+    --env GITBASEPG_DB_CONNECTION="gitbase@tcp(gitbase:3306)/none?maxAllowedPacket=4194304" \
+    --name gitbasePlayground \
+    srcd/gitbase-playground:latest
 ```
 
 
