@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/go-sql-driver/mysql"
+
 	"github.com/src-d/gitbase-playground/server/serializer"
 	"github.com/src-d/gitbase-playground/server/service"
 )
