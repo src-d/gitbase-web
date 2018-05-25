@@ -5,9 +5,11 @@ DEPENDENCIES := \
 	github.com/golang/dep/cmd/dep \
 	github.com/jteeuwen/go-bindata \
 	github.com/golang/lint/golint
+DEPENDENCIES_DIRECTORY := ./vendor
+
+PKG_OS = linux
 
 GO_LINTABLE_PACKAGES := $(shell go list ./... | grep -v '/vendor/')
-GO_BUILD_ENV := CGO_ENABLED=0
 FRONTEND_PATH := ./frontend
 FRONTEND_BUILD_PATH := $(FRONTEND_PATH)/build
 
@@ -91,6 +93,7 @@ assets_back := $(assets).bak
 
 back-dependencies:
 	$(GODEP) ensure
+	$(MAKE) -C $(DEPENDENCIES_DIRECTORY)/gopkg.in/bblfsh/client-go.v2 dependencies
 
 back-build: back-bindata
 
