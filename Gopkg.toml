@@ -6,6 +6,10 @@
   unused-packages = true
   non-go = true
 
+  [[prune.project]]
+    name = "gopkg.in/bblfsh/client-go.v2"
+    non-go = false
+
 [[constraint]]
   name = "github.com/go-chi/chi"
   version = "3.3.2"
