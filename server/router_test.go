@@ -37,6 +37,7 @@ func (s *RouterTestSuite) SetupSuite() {
 		staticHandler,
 		version,
 		s.db,
+		"",
 	)
 }
 
