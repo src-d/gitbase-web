@@ -3,6 +3,8 @@ package serializer
 import (
 	"net/http"
 	"strings"
+
+	"gopkg.in/bblfsh/sdk.v1/protocol"
 )
 
 // HTTPError defines an Error message as it will be written in the http.Response
@@ -114,4 +116,9 @@ func NewSchemaResponse(tables map[string][]Column) *Response {
 		})
 	}
 	return newResponse(res, nil)
+}
+
+// NewParseResponse returns a Response with UAST
+func NewParseResponse(resp *protocol.ParseResponse) *Response {
+	return newResponse(resp.UAST, nil)
 }

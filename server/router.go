@@ -19,6 +19,7 @@ func Router(
 	static *handler.Static,
 	version string,
 	db service.SQLDB,
+	bbblfshServerURL string,
 ) http.Handler {
 
 	// cors options
@@ -38,7 +39,7 @@ func Router(
 	r.Post("/query", handler.APIHandlerFunc(handler.Query(db)))
 	r.Get("/schema", handler.APIHandlerFunc(handler.Schema(db)))
 
-	r.Post("/parse", handler.APIHandlerFunc(handler.Parse()))
+	r.Post("/parse", handler.APIHandlerFunc(handler.Parse(bbblfshServerURL)))
 	r.Post("/filter", handler.APIHandlerFunc(handler.Filter()))
 
 	r.Get("/version", handler.APIHandlerFunc(handler.Version(version)))
