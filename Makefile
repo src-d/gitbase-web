@@ -21,7 +21,7 @@ YARN := yarn --cwd $(FRONTEND_PATH)
 REMOVE := rm -rf
 MOVE := mv
 MKDIR := mkdir -p
-COMPOSE_UP := docker-compose
+COMPOSE := docker-compose
 
 # Default rule
 all:
@@ -69,9 +69,13 @@ build-path:
 
 serve: | front-build back-start
 
+compose-serve-latest:
+	$(COMPOSE) pull && \
+	GITBASEPG_REPOS_FOLDER=./repos $(COMPOSE) up --force-recreate
+
 compose-serve: | require-repos-folder front-dependencies build
 	GITBASEPG_REPOS_FOLDER=${GITBASEPG_REPOS_FOLDER} \
-		$(COMPOSE_UP) -f docker-compose.yml -f docker-compose.build.yml up --force-recreate --build
+		$(COMPOSE) -f docker-compose.yml -f docker-compose.build.yml up --force-recreate --build
 
 require-repos-folder:
 	@if [[ -z "$(GITBASEPG_REPOS_FOLDER)" ]]; then \

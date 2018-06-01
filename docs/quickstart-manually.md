@@ -46,6 +46,7 @@ $ docker run \
 Once bblfsh and gitbase are running and accessible, you can serve the playground:
 
 ```bash
+$ docker pull srcd/gitbase-playground:latest
 $ docker run -d \
     --publish 8080:8080 \
     --link gitbase \
