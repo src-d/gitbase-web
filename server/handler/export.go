@@ -20,7 +20,7 @@ func Export(db service.SQLDB) http.HandlerFunc {
 			query := r.URL.Query().Get("query")
 			if query == "" {
 				return serializer.NewHTTPError(http.StatusBadRequest,
-					`Bad Request. Expected body: { "query": "SQL statement" }`)
+					`Bad Request. Query can't be empty.`)
 			}
 
 			rows, err := db.Query(query)
