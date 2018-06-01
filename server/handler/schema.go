@@ -7,8 +7,8 @@ import (
 	"github.com/src-d/gitbase-playground/server/service"
 )
 
-// Tables returns DB schema
-func Tables(db service.SQLDB) RequestProcessFunc {
+// Schema returns DB schema
+func Schema(db service.SQLDB) RequestProcessFunc {
 	return func(r *http.Request) (res *serializer.Response, err error) {
 		rows, err := db.Query("SHOW TABLES")
 		if err != nil {
@@ -54,6 +54,6 @@ func Tables(db service.SQLDB) RequestProcessFunc {
 			tables[table] = columns
 		}
 
-		return serializer.NewTablesResponse(tables), nil
+		return serializer.NewSchemaResponse(tables), nil
 	}
 }

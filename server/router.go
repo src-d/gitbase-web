@@ -36,7 +36,7 @@ func Router(
 	r.Use(lg.RequestLogger(logger))
 
 	r.Post("/query", handler.APIHandlerFunc(handler.Query(db)))
-	r.Get("/tables", handler.APIHandlerFunc(handler.Tables(db)))
+	r.Get("/schema", handler.APIHandlerFunc(handler.Schema(db)))
 
 	r.Post("/parse", handler.APIHandlerFunc(handler.Parse()))
 	r.Post("/filter", handler.APIHandlerFunc(handler.Filter()))

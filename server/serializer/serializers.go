@@ -49,7 +49,7 @@ func NewHTTPError(statusCode int, msg ...string) HTTPError {
 	return httpError{Status: statusCode, Title: strings.Join(msg, " ")}
 }
 
-// NewHTTPError returns an Error with the MySQL error code
+// NewMySQLError returns an Error with the MySQL error code
 func NewMySQLError(statusCode int, mysqlCode uint16, msg ...string) HTTPError {
 	return httpError{Status: statusCode, MySQLCode: mysqlCode, Title: strings.Join(msg, " ")}
 }
@@ -92,18 +92,20 @@ func NewQueryResponse(rows []map[string]interface{}, columnNames, columnTypes []
 	return newResponse(rows, queryMetaResponse{columnNames, columnTypes})
 }
 
+// Column describes a table column in DB
 type Column struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
 }
 
+// Table struct describes a schema of one table in DB
 type Table struct {
 	Table   string   `json:"table"`
 	Columns []Column `json:"columns"`
 }
 
-// NewTablesResponse returns a Response with tables schema
-func NewTablesResponse(tables map[string][]Column) *Response {
+// NewSchemaResponse returns a Response with tables schema
+func NewSchemaResponse(tables map[string][]Column) *Response {
 	var res []Table
 	for table, columns := range tables {
 		res = append(res, Table{

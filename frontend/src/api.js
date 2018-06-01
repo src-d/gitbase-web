@@ -87,10 +87,6 @@ function query(sql) {
   });
 }
 
-function tables() {
-  return apiCall(`/tables`);
-}
-
 /* Returns an array in the form:
 [
   {
@@ -107,11 +103,10 @@ function tables() {
 ]
 */
 function schema() {
-  return tables().then(res => res.data);
+  return apiCall(`/schema`).then(res => res.data);
 }
 
 export default {
   query,
-  tables,
   schema
 };

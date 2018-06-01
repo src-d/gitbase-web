@@ -25,12 +25,12 @@ func TestTablesSuite(t *testing.T) {
 		return
 	}
 	q := new(TablesSuite)
-	q.requestProcessFunc = handler.Tables
+	q.requestProcessFunc = handler.Schema
 	suite.Run(t, q)
 }
 
 func (suite *TablesSuite) TestGet() {
-	req, _ := http.NewRequest("GET", "/tables", nil)
+	req, _ := http.NewRequest("GET", "/schema", nil)
 
 	res := httptest.NewRecorder()
 	suite.handler.ServeHTTP(res, req)
