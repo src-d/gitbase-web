@@ -87,10 +87,6 @@ function query(sql) {
   });
 }
 
-function tables() {
-  return apiCall(`/tables`);
-}
-
 /* Returns an array in the form:
 [
   {
@@ -107,22 +103,10 @@ function tables() {
 ]
 */
 function schema() {
-  return tables()
-    .then(res =>
-      Promise.all(
-        res.data.map(e =>
-          query(`DESCRIBE TABLE ${e.table}`).then(tableRes => ({
-            table: e.table,
-            columns: tableRes.data
-          }))
-        )
-      )
-    )
-    .catch(err => Promise.reject(normalizeErrors(err)));
+  return apiCall(`/schema`).then(res => res.data);
 }
 
 export default {
   query,
-  tables,
   schema
 };

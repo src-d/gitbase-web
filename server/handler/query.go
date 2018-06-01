@@ -64,14 +64,7 @@ func Query(db service.SQLDB) RequestProcessFunc {
 		query := addLimit(queryRequest.Query, queryRequest.Limit)
 		rows, err := db.Query(query)
 		if err != nil {
-			if mysqlErr, ok := err.(*mysql.MySQLError); ok {
-				return nil, serializer.NewMySQLError(
-					http.StatusBadRequest,
-					mysqlErr.Number,
-					mysqlErr.Message)
-			}
-
-			return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
+			return nil, dbError(err)
 		}
 		defer rows.Close()
 
@@ -196,4 +189,16 @@ func addLimit(query string, limit int) string {
 	}
 
 	return query
+}
+
+// dbError transform DB error to HTTP error
+func dbError(err error) error {
+	if mysqlErr, ok := err.(*mysql.MySQLError); ok {
+		return serializer.NewMySQLError(
+			http.StatusBadRequest,
+			mysqlErr.Number,
+			mysqlErr.Message)
+	}
+
+	return serializer.NewHTTPError(http.StatusBadRequest, err.Error())
 }

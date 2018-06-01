@@ -1,13 +1,12 @@
 # Rest API
 
-## GET /tables
+## GET /schema
 
-Returns the list of tables.
-
-Alias for `/query` with `SHOW TABLES` query. See below for more details.
+Returns the database schema as a list of tables and columns for each table.
+See below for more details.
 
 ```bash
-curl -X GET http://localhost:8080/tables
+curl -X GET http://localhost:8080/schema
 ```
 
 ```json
@@ -15,31 +14,23 @@ curl -X GET http://localhost:8080/tables
     "status": 200,
     "data": [
         {
-            "table": "blobs"
+            "table": "tree_entries",
+            "columns": [
+                { "name": "tree_hash", "type": "TEXT" },
+                { "name": "entry_hash", "type": "TEXT" },
+                { "name": "mode", "type": "TEXT" },
+                { "name": "name", "type": "TEXT" }
+            ]
         },
         {
-            "table": "commits"
+            "table": "blobs",
+            "columns": [
+                { "name": "hash", "type": "TEXT" },
+                { "name": "size", "type": "INT64" },
+                { "name": "content", "type": "BLOB" }
+            ]
         },
-        {
-            "table": "refs"
-        },
-        {
-            "table": "remotes"
-        },
-        {
-            "table": "repositories"
-        },
-        {
-            "table": "tree_entries"
-        }
-    ],
-    "meta": {
-        "headers": [
-            "table"
-        ],
-        "types": [
-            "TEXT"
-        ]
+        [...]
     }
 }
 ```
