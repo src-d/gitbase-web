@@ -133,6 +133,7 @@ GROUP BY committer_email, month, repo_id`,
                         schema={this.state.schema}
                         handleTextChange={this.handleTextChange}
                         handleSubmit={this.handleSubmit}
+                        exportUrl={api.queryExport(this.state.sql)}
                       />
                     </Col>
                   </Row>

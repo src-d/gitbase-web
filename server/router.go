@@ -38,6 +38,7 @@ func Router(
 
 	r.Post("/query", handler.APIHandlerFunc(handler.Query(db)))
 	r.Get("/schema", handler.APIHandlerFunc(handler.Schema(db)))
+	r.Get("/export", handler.Export(db))
 
 	r.Post("/parse", handler.APIHandlerFunc(handler.Parse(bbblfshServerURL)))
 	r.Post("/filter", handler.APIHandlerFunc(handler.Filter()))

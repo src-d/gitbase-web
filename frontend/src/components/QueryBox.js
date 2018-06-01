@@ -81,7 +81,17 @@ class QueryBox extends Component {
           </Col>
         </Row>
         <Row className="button-row">
-          <Col xsOffset={9} xs={3}>
+          <Col xsOffset={6} xs={3}>
+            <Button
+              className="pull-right"
+              disabled={!this.props.exportUrl}
+              href={this.props.exportUrl}
+              target="_blank"
+            >
+              EXPORT
+            </Button>
+          </Col>
+          <Col xs={3}>
             <Button
               className="pull-right"
               disabled={this.props.enabled === false}
@@ -111,7 +121,8 @@ QueryBox.propTypes = {
   ),
   enabled: PropTypes.bool,
   handleTextChange: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  exportUrl: PropTypes.string
 };
 
 export default QueryBox;
