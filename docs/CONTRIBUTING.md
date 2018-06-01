@@ -30,7 +30,7 @@ There are two main different ways to run the app:
 | `GITBASEPG_PORT` | | `8080` | Port address to bind the HTTP server |
 | `GITBASEPG_SERVER_URL` | | `<GITBASEPG_HOST>:<GITBASEPG_PORT>` | URL used to access the application (i.e. public hostname) |
 | `GITBASEPG_DB_CONNECTION` | | `gitbase@tcp(localhost:3306)/none?maxAllowedPacket=4194304` | gitbase connection string |
-| `GITBASEPG_BBLFSHD_URL` | | `127.0.0.1:9432` | Address where bblfsh server is listening |
+| `GITBASEPG_BBLFSH_SERVER_URL` | | `127.0.0.1:9432` | Address where bblfsh server is listening |
 | `GITBASEPG_ENV` | | `production` | Sets the log level. Use `dev` to enable debug log messages |
 
 
