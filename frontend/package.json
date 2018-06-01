@@ -35,5 +35,15 @@
     "react-app-rewired": "^1.5.2",
     "whatwg-url": "^6.4.1"
   },
-  "proxy": "http://localhost:8080"
+  "proxy": {
+    "/query": {
+      "target": "http://localhost:8080"
+    },
+    "/export": {
+      "target": "http://localhost:8080"
+    },
+    "/schema": {
+      "target": "http://localhost:8080"
+    }
+  }
 }
