@@ -43,6 +43,8 @@ class TabbedResults extends Component {
   }
 
   render() {
+    const { showCode, showUAST } = this.props;
+
     return (
       <Tabs
         id="tabbed-results"
@@ -85,7 +87,13 @@ class TabbedResults extends Component {
               </Row>
             );
           } else {
-            content = <ResultsTable response={query.response} />;
+            content = (
+              <ResultsTable
+                response={query.response}
+                showCode={showCode}
+                showUAST={showUAST}
+              />
+            );
           }
 
           return (
@@ -121,7 +129,9 @@ TabbedResults.propTypes = {
   // response: object   Required if loading and errorMsg are not present
   results: PropTypes.instanceOf(Map).isRequired,
   handleRemoveResult: PropTypes.func.isRequired,
-  handleEditQuery: PropTypes.func.isRequired
+  handleEditQuery: PropTypes.func.isRequired,
+  showCode: PropTypes.func.isRequired,
+  showUAST: PropTypes.func.isRequired
 };
 
 export default TabbedResults;
