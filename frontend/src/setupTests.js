@@ -2,7 +2,10 @@ import path from 'path';
 import os from 'os';
 
 const { LocalStorage } = require('node-localstorage');
+// URL API for node
+const { URL } = require('whatwg-url');
 
+global.URL = URL;
 global.fetch = require('jest-fetch-mock');
 
 global.localStorage = new LocalStorage(

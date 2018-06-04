@@ -247,3 +247,17 @@ The endpoint also receives additional parameters:
 - `serverUrl` - allows to override bblfsh server url.
 - `filename` - can be used instead of language. Then the bblfsh server would try to guess the language.
 - `filter` - [xpath query](https://doc.bblf.sh/user/uast-querying.html) to filter the results.
+
+## GET /export
+
+This endpoint is similar to `/query` but returns results as CSV file without LIMIT.
+
+```bash
+curl -X GET http://localhost:8080/export?query=select+*+from+repositories
+```
+
+```json
+id
+/opt/repos/gitbase-playground
+/opt/repos/go-git-fixtures
+```

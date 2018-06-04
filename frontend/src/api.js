@@ -1,6 +1,6 @@
 const envVars = window.gitbasepg || { SERVER_URL: '', SELECT_LIMIT: 100 };
 
-const serverUrl = envVars.SERVER_URL;
+const serverUrl = envVars.SERVER_URL || window.location.origin;
 const selectLimit = envVars.SELECT_LIMIT;
 
 const apiUrl = url => `${serverUrl}${url}`;
@@ -87,6 +87,12 @@ function query(sql) {
   });
 }
 
+function queryExport(sql) {
+  const url = new URL(apiUrl('/export'));
+  url.searchParams.append('query', sql);
+  return url.toString();
+}
+
 /* Returns an array in the form:
 [
   {
@@ -108,5 +114,6 @@ function schema() {
 
 export default {
   query,
-  schema
+  schema,
+  queryExport
 };
