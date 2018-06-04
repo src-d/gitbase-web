@@ -51,7 +51,7 @@ func (suite *HandlerSuite) TearDownSuite() {
 }
 
 type appConfig struct {
-	DBConn string `envconfig:"DB_CONNECTION" default:"root@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
+	DBConn string `envconfig:"DB_CONNECTION" default:"gitbase@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
 }
 
 func getDB(isIntegration bool) (service.SQLDB, error) {
@@ -85,11 +85,11 @@ func firstRow(require *require.Assertions, res *httptest.ResponseRecorder) map[s
 }
 
 func okResponse(require *require.Assertions, res *httptest.ResponseRecorder) {
-	require.Equal(http.StatusOK, res.Code)
-
 	var resBody serializer.Response
 	err := json.Unmarshal(res.Body.Bytes(), &resBody)
 	require.Nil(err)
+
+	require.Equal(http.StatusOK, res.Code, resBody.Errors)
 
 	require.Equal(res.Code, resBody.Status)
 	require.NotEmpty(resBody.Data)
