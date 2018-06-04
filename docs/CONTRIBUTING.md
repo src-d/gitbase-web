@@ -75,10 +75,15 @@ This will start a server locally, which you can access on [http://localhost:8080
 
 ## Integration Tests
 
-It will test that `gitbase` and `bblfshd` are running and available for the playground.
+The integration tests require that `gitbase` and `bblfshd` are running and available for the playground.
 
-To let the tests succeed, it will be also needed to configure the running `gitbase` to serve a copy of the `https://github.com/src-d/gitbase-playground` repository.
+It is also required to configure the running `gitbase` to serve a copy of the `https://github.com/src-d/gitbase-playground` repository.
 
 ```bash
-$ make back-test-integration
+$ docker run -d --name bblfshd --privileged -p "9432:9432" bblfsh/bblfshd
+$ docker exec -it bblfshd bblfshctl driver install --recommended
+$ mkdir $HOME/repos
+$ git clone https://github.com/src-d/gitbase-playground.git $HOME/repos/gitbase-playground
+$ docker run -d --name gitbase -p "3306:3306" -e "BBLFSH_ENDPOINT=bblfshd:9432" --volume $HOME/repos:/opt/repos --link bblfshd srcd/gitbase
+$ GITBASEPG_INTEGRATION_TESTS=true make test
 ```
