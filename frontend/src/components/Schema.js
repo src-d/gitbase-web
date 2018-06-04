@@ -17,14 +17,16 @@ class SchemaTable extends Component {
   }
 
   render() {
-    const { table, columns } = this.props;
+    const { table, columns, onTableClick } = this.props;
     const glyph = this.state.expanded ? 'minus' : 'plus';
 
     return (
       <div className="schema-table">
         <div className="name">
           <Glyphicon glyph={glyph} onClick={this.toggle} />
-          {table}
+          <span onClick={() => onTableClick && onTableClick(table)}>
+            {table}
+          </span>
         </div>
         {this.state.expanded && (
           <div className="columns">
@@ -47,17 +49,20 @@ SchemaTable.propTypes = {
       name: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired
     })
-  ).isRequired
+  ).isRequired,
+  onTableClick: PropTypes.func
 };
 
-function Schema({ schema }) {
+function Schema({ schema, onTableClick }) {
   if (!schema) {
     return null;
   }
 
   return (
     <div className="schema">
-      {schema.map(item => <SchemaTable key={item.table} {...item} />)}
+      {schema.map(item => (
+        <SchemaTable key={item.table} {...item} onTableClick={onTableClick} />
+      ))}
     </div>
   );
 }
@@ -68,7 +73,8 @@ Schema.propTypes = {
       table: SchemaTable.propTypes.table,
       columns: SchemaTable.propTypes.columns
     })
-  )
+  ),
+  onTableClick: PropTypes.func
 };
 
 export default Schema;

@@ -1,17 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import Schema from './Schema';
 import SampleQueries from './SampleQueries';
 import './Sidebar.less';
 
-function Sidebar({ schema }) {
+function Sidebar({ schema, onTableClick, onExampleClick }) {
   return (
     <div className="sidebar">
       <h3 className="header">{'{d}'} Gitbase Playground</h3>
       <div className="main">
         <SplitPane split="horizontal" defaultSize={200} minSize={100}>
-          <Schema schema={schema} />
-          <SampleQueries />
+          <Schema schema={schema} onTableClick={onTableClick} />
+          <SampleQueries onExampleClick={onExampleClick} />
         </SplitPane>
       </div>
       <div className="footer">
@@ -45,7 +46,9 @@ function Sidebar({ schema }) {
 }
 
 Sidebar.propTypes = {
-  schema: Schema.propTypes.schema
+  schema: Schema.propTypes.schema,
+  onTableClick: PropTypes.func,
+  onExampleClick: PropTypes.func
 };
 
 export default Sidebar;
