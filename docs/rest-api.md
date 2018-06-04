@@ -208,3 +208,42 @@ curl -X POST \
     }
 }
 ```
+
+## POST /parse
+
+Receives a file content and returns UAST.
+
+```bash
+curl -X POST \
+  http://localhost:8080/parse \
+  -H 'content-type: application/json' \
+  -d '{
+  "language": "javascript",
+  "content": "console.log(test)"
+}'
+```
+
+```json
+{
+    "status": 200,
+    "data": {
+        "InternalType": "File",
+        "Children": [
+            {
+                "InternalType": "Program",
+                "Properties": {
+                    "internalRole": "program",
+                    "sourceType": "module"
+                },
+                [...]
+            }
+        ]
+    }
+}
+```
+
+The endpoint also receives additional parameters:
+
+- `serverUrl` - allows to override bblfsh server url.
+- `filename` - can be used instead of language. Then the bblfsh server would try to guess the language.
+- `filter` - [xpath query](https://doc.bblf.sh/user/uast-querying.html) to filter the results.

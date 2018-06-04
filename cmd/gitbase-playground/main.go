@@ -23,12 +23,13 @@ var version = "dev"
 // The next release should make this parameter optional for us:
 // https://github.com/go-sql-driver/mysql/pull/680
 type appConfig struct {
-	Env         string `envconfig:"ENV" default:"production"`
-	Host        string `envconfig:"HOST" default:"0.0.0.0"`
-	Port        int    `envconfig:"PORT" default:"8080"`
-	ServerURL   string `envconfig:"SERVER_URL"`
-	DBConn      string `envconfig:"DB_CONNECTION" default:"gitbase@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
-	SelectLimit int    `envconfig:"SELECT_LIMIT" default:"100"`
+	Env             string `envconfig:"ENV" default:"production"`
+	Host            string `envconfig:"HOST" default:"0.0.0.0"`
+	Port            int    `envconfig:"PORT" default:"8080"`
+	ServerURL       string `envconfig:"SERVER_URL"`
+	DBConn          string `envconfig:"DB_CONNECTION" default:"gitbase@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
+	SelectLimit     int    `envconfig:"SELECT_LIMIT" default:"100"`
+	BblfshServerURL string `envconfig:"BBLFSH_SERVER_URL" default:"127.0.0.1:9432"`
 }
 
 func main() {
@@ -49,7 +50,7 @@ func main() {
 	static := handler.NewStatic("build/public", conf.ServerURL, conf.SelectLimit)
 
 	// start the router
-	router := server.Router(logger, static, version, db)
+	router := server.Router(logger, static, version, db, conf.BblfshServerURL)
 	logger.Infof("listening on %s:%d", conf.Host, conf.Port)
 	err = http.ListenAndServe(fmt.Sprintf("%s:%d", conf.Host, conf.Port), router)
 	logger.Fatal(err)

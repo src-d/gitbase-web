@@ -3,6 +3,14 @@ language: go
 services:
   - docker
 
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-6
+    - g++-6
+
 go:
   - "1.10.x"
 
@@ -13,6 +21,8 @@ before_install:
   - npm install -g yarn
 
 install:
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 90
   - make dependencies
 
 stages:
