@@ -18,7 +18,7 @@ class ResultsTable extends Component {
             return v.toString();
           case 'string':
             // assume any multiline string is code
-            if (v.indexOf('\n') > 1) {
+            if (v.indexOf('\n') > -1) {
               return <Button onClick={() => showCode(v)}>Code</Button>;
             }
             return v;
