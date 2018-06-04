@@ -6,15 +6,15 @@ import './SampleQueries.less';
 const queries = [
   {
     name: 'load all java files',
-    sql: 'select * from files where lang="java"'
+    sql: '/* To be done */'
   },
   {
     name: 'get uast from code',
-    sql: 'select uast from code'
+    sql: '/* To be done */'
   },
   {
     name: 'top 50 repositories by something very long string',
-    sql: 'select * from repositories limit 50'
+    sql: '/* To be done */'
   }
 ];
 
