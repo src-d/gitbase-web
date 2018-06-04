@@ -2,7 +2,6 @@ package handler_test
 
 import (
 	"encoding/csv"
-	"flag"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -20,25 +19,22 @@ type ExportSuite struct {
 }
 
 func TestExportSuite(t *testing.T) {
-	flag.Parse()
-	if !*gitbase {
-		return
-	}
-
-	db, err := getDB(true)
+	db, err := getDB()
 	if err != nil {
-		t.Fatal(db)
+		t.Fatal(err)
 	}
 	err = db.Ping()
 	if err != nil {
-		t.Fatal(db)
+		t.Fatal(err)
 	}
 
 	s := new(ExportSuite)
 	s.db = db
 	s.handler = handler.Export(db)
 
-	suite.Run(t, s)
+	if isIntegration() {
+		suite.Run(t, s)
+	}
 }
 
 func (suite *ExportSuite) TestSuccess() {

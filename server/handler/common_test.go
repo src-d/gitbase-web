@@ -3,7 +3,6 @@ package handler_test
 import (
 	"database/sql"
 	"encoding/json"
-	"flag"
 	"net/http"
 	"net/http/httptest"
 
@@ -19,21 +18,19 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-var bblfshd = flag.Bool("test.integration.bblfshd", false, "run bblfshd integration tests")
-var gitbase = flag.Bool("test.integration.gitbase", false, "run gitbase integration tests")
-
 type HandlerSuite struct {
 	suite.Suite
 	db                 service.SQLDB
 	handler            http.Handler
 	requestProcessFunc func(db service.SQLDB) handler.RequestProcessFunc
+	IsIntegration      bool
 }
 
 func (suite *HandlerSuite) SetupSuite() {
 	require := suite.Require()
 
 	//db
-	db, err := getDB(true)
+	db, err := getDB()
 	require.Nil(err)
 	require.Nil(db.Ping())
 	suite.db = db
@@ -51,14 +48,15 @@ func (suite *HandlerSuite) TearDownSuite() {
 }
 
 type appConfig struct {
-	DBConn string `envconfig:"DB_CONNECTION" default:"gitbase@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
+	DBConn        string `envconfig:"DB_CONNECTION" default:"gitbase@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
+	IsIntegration bool   `envconfig:"INTEGRATION_TESTS" default:"false"`
 }
 
-func getDB(isIntegration bool) (service.SQLDB, error) {
+func getDB() (service.SQLDB, error) {
 	var conf appConfig
 	envconfig.MustProcess("GITBASEPG", &conf)
 
-	if isIntegration {
+	if conf.IsIntegration {
 		return sql.Open("mysql", conf.DBConn)
 	}
 
@@ -94,4 +92,11 @@ func okResponse(require *require.Assertions, res *httptest.ResponseRecorder) {
 	require.Equal(res.Code, resBody.Status)
 	require.NotEmpty(resBody.Data)
 	require.NotEmpty(resBody.Meta)
+}
+
+func isIntegration() bool {
+	var conf appConfig
+	envconfig.MustProcess("GITBASEPG", &conf)
+
+	return conf.IsIntegration
 }

@@ -1,7 +1,6 @@
 package handler_test
 
 import (
-	"flag"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -19,13 +18,12 @@ type QueryUast struct {
 // -----------------------------------------------------------------------------
 
 func TestUastFunctions(t *testing.T) {
-	flag.Parse()
-	if !*gitbase || !*bblfshd {
-		return
-	}
 	q := new(QueryUast)
 	q.requestProcessFunc = handler.Query
-	suite.Run(t, q)
+
+	if isIntegration() {
+		suite.Run(t, q)
+	}
 }
 
 // This test requires that gitbase can reach bblfshd and that it's serving the

@@ -2,7 +2,6 @@ package handler_test
 
 import (
 	"encoding/json"
-	"flag"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -20,13 +19,12 @@ type TablesSuite struct {
 // -----------------------------------------------------------------------------
 
 func TestTablesSuite(t *testing.T) {
-	flag.Parse()
-	if !*gitbase {
-		return
-	}
 	q := new(TablesSuite)
 	q.requestProcessFunc = handler.Schema
-	suite.Run(t, q)
+
+	if isIntegration() {
+		suite.Run(t, q)
+	}
 }
 
 func (suite *TablesSuite) TestGet() {

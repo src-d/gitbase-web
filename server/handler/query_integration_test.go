@@ -1,7 +1,6 @@
 package handler_test
 
 import (
-	"flag"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -22,13 +21,12 @@ type QuerySuite struct {
 // -----------------------------------------------------------------------------
 
 func TestQuerySuite(t *testing.T) {
-	flag.Parse()
-	if !*gitbase {
-		return
-	}
 	q := new(QuerySuite)
 	q.requestProcessFunc = handler.Query
-	suite.Run(t, q)
+
+	if isIntegration() {
+		suite.Run(t, q)
+	}
 }
 
 func (suite *QuerySuite) TestSelectAll() {

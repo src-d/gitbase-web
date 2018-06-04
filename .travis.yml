@@ -50,7 +50,7 @@ jobs:
       - git clone https://github.com/src-d/gitbase-playground.git $HOME/repos/gitbase-playground
       - docker run -d --name gitbase -p "3367:3306" -e "BBLFSH_ENDPOINT=bblfshd:9432" --volume $HOME/repos:/opt/repos --link bblfshd srcd/gitbase
       - sleep 15
-      - GITBASEPG_DB_CONNECTION='gitbase@tcp(localhost:3367)/none' make back-test-integration
+      - GITBASEPG_DB_CONNECTION='gitbase@tcp(localhost:3367)/none' GITBASEPG_INTEGRATION_TESTS=true make test
     - script:
         - make packages
     # release to github

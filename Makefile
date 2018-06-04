@@ -114,12 +114,6 @@ back-start:
 back-ensure-assets-proxy:
 	$(DIFF) $(assets) $(assets_back) || exit 1
 
-go-test-integration-packages := ./server/handler
-go-test-integration-flags := -v -args -test.integration.gitbase -test.integration.bblfshd
-back-test-integration:
-	go test $(go-test-integration-packages) $(go-test-integration-flags)
-
-
 # Frontend
 
 front-dependencies:
