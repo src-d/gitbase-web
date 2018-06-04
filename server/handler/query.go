@@ -10,7 +10,6 @@ import (
 
 	"github.com/src-d/gitbase-playground/server/serializer"
 	"github.com/src-d/gitbase-playground/server/service"
-	"gopkg.in/bblfsh/sdk.v1/uast"
 
 	"github.com/go-sql-driver/mysql"
 )
@@ -155,26 +154,6 @@ func columnsInfo(rows *sql.Rows) ([]string, []string, error) {
 	}
 
 	return names, typesStr, nil
-}
-
-// unmarshallUAST tries to cast data as [][]byte and unmarshall uast nodes
-func unmarshallUAST(data interface{}) ([]*uast.Node, error) {
-	var protobufs [][]byte
-	if err := json.Unmarshal(*data.(*[]byte), &protobufs); err != nil {
-		return nil, err
-	}
-
-	nodes := make([]*uast.Node, len(protobufs))
-
-	for i, v := range protobufs {
-		node := uast.NewNode()
-		if err := node.Unmarshal(v); err != nil {
-			return nil, err
-		}
-		nodes[i] = node
-	}
-
-	return nodes, nil
 }
 
 // addLimit adds LIMIT to the query if it's a SELECT, avoiding '; limit'
