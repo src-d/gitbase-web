@@ -113,7 +113,11 @@ func Export(db service.SQLDB) http.HandlerFunc {
 		}(w, r)
 
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			if httpError, ok := err.(serializer.HTTPError); ok {
+				http.Error(w, httpError.Error(), httpError.StatusCode())
+			} else {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
 		}
 	}
 }
