@@ -12,16 +12,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sql: `SELECT COUNT(*) as num_commits, month, repo_id, committer_email FROM (
-  SELECT MONTH(committer_when) as month, r.repository_id as repo_id, committer_email
+      sql: `/* Contributor's number of commits, each month of 2018, for each repository */
+
+SELECT COUNT(*) as num_commits, month, repo_id, committer_name FROM (
+  SELECT MONTH(committer_when) as month, r.id as repo_id, committer_name
   FROM repositories r
-  INNER JOIN refs ON refs.repository_id = r.repository_id AND refs.ref_name = 'HEAD'
-  INNER JOIN commits c ON YEAR(committer_when) = 2018 AND history_idx(refs.commit_hash, c.commit_hash) >= 0
+  INNER JOIN refs ON refs.repository_id = r.id AND refs.name = 'HEAD'
+  INNER JOIN commits c ON YEAR(committer_when) = 2018 AND history_idx(refs.hash, c.hash) >= 0
 ) as t
-GROUP BY committer_email, month, repo_id`,
+GROUP BY committer_name, month, repo_id`,
       results: new Map(),
       schema: undefined,
-
       // modal
       showModal: false,
       modalTitle: null,
