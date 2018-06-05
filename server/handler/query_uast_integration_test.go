@@ -32,7 +32,7 @@ func TestUastFunctions(t *testing.T) {
 // repository https://github.com/src-d/gitbase-playground
 func (suite *QueryUast) TestUastFunctions() {
 	req, _ := http.NewRequest("POST", "/query", strings.NewReader(
-		`{ "query": "SELECT hash, content, uast(content, 'go') as uast FROM blobs WHERE hash='fd30cea52792da5ece9156eea4022bdd87565633'" }`))
+		`{ "query": "SELECT blob_hash, blob_content, uast(blob_content, 'go') as uast FROM blobs WHERE blob_hash='fd30cea52792da5ece9156eea4022bdd87565633'" }`))
 
 	res := httptest.NewRecorder()
 	suite.handler.ServeHTTP(res, req)
@@ -40,8 +40,8 @@ func (suite *QueryUast) TestUastFunctions() {
 	okResponse(suite.Require(), res)
 
 	firstRow := firstRow(suite.Require(), res)
-	suite.IsType("string", firstRow["hash"])
-	suite.IsType("string", firstRow["content"])
+	suite.IsType("string", firstRow["blob_hash"])
+	suite.IsType("string", firstRow["blob_content"])
 
 	var arr []interface{}
 	suite.IsType(arr, firstRow["uast"])

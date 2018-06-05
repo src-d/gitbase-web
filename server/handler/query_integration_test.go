@@ -75,7 +75,7 @@ func (suite *QueryIntegrationSuite) TestLimit() {
 
 func (suite *QueryIntegrationSuite) TestBoolFunctions() {
 	req, _ := http.NewRequest("POST", "/query", strings.NewReader(
-		`{ "query": "select name, is_remote(name) as remote, is_tag(name) as tag from refs" }`))
+		`{ "query": "select ref_name, is_remote(ref_name) as remote, is_tag(ref_name) as tag from refs" }`))
 
 	res := httptest.NewRecorder()
 	suite.handler.ServeHTTP(res, req)
@@ -83,7 +83,7 @@ func (suite *QueryIntegrationSuite) TestBoolFunctions() {
 	okResponse(suite.Require(), res)
 
 	firstRow := firstRow(suite.Require(), res)
-	suite.IsType("string", firstRow["name"])
+	suite.IsType("string", firstRow["ref_name"])
 	suite.IsType(true, firstRow["remote"])
 	suite.IsType(true, firstRow["tag"])
 }

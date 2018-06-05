@@ -37,6 +37,7 @@ func (suite *HandlerSuite) SetupSuite() {
 
 	// logger
 	logger := logrus.New()
+	logger.SetLevel(logrus.FatalLevel)
 
 	// handler
 	queryHandler := handler.APIHandlerFunc(suite.requestProcessFunc(db))
@@ -86,7 +87,7 @@ func firstRow(require *require.Assertions, res *httptest.ResponseRecorder) map[s
 func okResponse(require *require.Assertions, res *httptest.ResponseRecorder) {
 	var resBody serializer.Response
 	err := json.Unmarshal(res.Body.Bytes(), &resBody)
-	require.Nil(err)
+	require.Nil(err, res.Body.String())
 
 	require.Equal(http.StatusOK, res.Code, resBody.Errors)
 

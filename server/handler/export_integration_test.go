@@ -51,7 +51,7 @@ func (suite *ExportIntegrationSuite) TestSuccess() {
 
 	record, err := r.Read()
 	suite.Nil(err)
-	suite.Equal(record, []string{"id"})
+	suite.Equal(record, []string{"repository_id"})
 
 	record, err = r.Read()
 	suite.Nil(err)
@@ -64,7 +64,7 @@ func (suite *ExportIntegrationSuite) TestError() {
 	res := httptest.NewRecorder()
 	suite.handler.ServeHTTP(res, req)
 
-	suite.Equal(http.StatusInternalServerError, res.Code)
+	suite.Equal(http.StatusBadRequest, res.Code)
 }
 
 func (suite *ExportIntegrationSuite) TearDownSuite() {
