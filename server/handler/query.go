@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/src-d/gitbase-playground/server/serializer"
@@ -183,7 +184,10 @@ func addLimit(query string, limit int) string {
 		return query
 	}
 
-	query = strings.TrimRight(strings.TrimSpace(query), ";")
+	re := regexp.MustCompile(`\/\*(?s:.)*?\*\/`)
+	noComments := re.ReplaceAllLiteralString(query, "")
+
+	query = strings.TrimRight(strings.TrimSpace(noComments), ";")
 	if strings.HasPrefix(strings.ToUpper(query), "SELECT") {
 		return fmt.Sprintf("%s LIMIT %d", query, limit)
 	}
