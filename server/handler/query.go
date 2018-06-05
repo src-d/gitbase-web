@@ -56,7 +56,7 @@ func Query(db service.SQLDB) RequestProcessFunc {
 		}
 
 		err = json.Unmarshal(body, &queryRequest)
-		if err != nil {
+		if err != nil || queryRequest.Query == "" {
 			return nil, serializer.NewHTTPError(http.StatusBadRequest,
 				`Bad Request. Expected body: { "query": "SQL statement", "limit": 1234 }`)
 		}
