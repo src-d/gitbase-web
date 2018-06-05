@@ -65,3 +65,16 @@ body {
         }
     }
 }
+
+// make modal window "fullscreen"
+// margins are hard-coded in bootstrap, so it's hard-coded here too
+.modal-body {
+    max-height: ~'calc(100vh - 80px)';
+    overflow-y: auto;
+}
+
+@media (min-width: @screen-sm-min) {
+    .modal-body {
+        max-height: ~'calc(100vh - 120px)';
+    }
+}
