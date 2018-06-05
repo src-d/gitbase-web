@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Modal } from 'react-bootstrap';
 import SplitPane from 'react-split-pane';
 import Sidebar from './components/Sidebar';
 import QueryBox from './components/QueryBox';
@@ -20,7 +20,12 @@ class App extends Component {
 ) as t
 GROUP BY committer_email, month, repo_id`,
       results: new Map(),
-      schema: undefined
+      schema: undefined,
+
+      // modal
+      showModal: false,
+      modalTitle: null,
+      modalContent: null
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -28,6 +33,10 @@ GROUP BY committer_email, month, repo_id`,
     this.handleRemoveResult = this.handleRemoveResult.bind(this);
     this.handleTableClick = this.handleTableClick.bind(this);
     this.handleExampleClick = this.handleExampleClick.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
+
+    this.showCode = this.showCode.bind(this);
+    this.showUAST = this.showUAST.bind(this);
 
     this.uniqueKey = 0;
   }
@@ -97,6 +106,26 @@ GROUP BY committer_email, month, repo_id`,
       });
   }
 
+  handleModalClose() {
+    this.setState({ showModal: false, modalTitle: null, modalContent: null });
+  }
+
+  showCode(code) {
+    this.setState({
+      showModal: true,
+      modalTitle: 'Source code',
+      modalContent: <pre>{code}</pre>
+    });
+  }
+
+  showUAST(uast) {
+    this.setState({
+      showModal: true,
+      modalTitle: 'UAST',
+      modalContent: <pre>{JSON.stringify(uast, null, 2)}</pre>
+    });
+  }
+
   componentDidMount() {
     this.loadSchema();
   }
@@ -119,6 +148,8 @@ GROUP BY committer_email, month, repo_id`,
             results={results}
             handleRemoveResult={this.handleRemoveResult}
             handleEditQuery={this.handleTextChange}
+            showCode={this.showCode}
+            showUAST={this.showUAST}
           />
         </Col>
       );
@@ -159,6 +190,16 @@ GROUP BY committer_email, month, repo_id`,
             </Col>
           </Row>
         </Grid>
+        <Modal
+          show={this.state.showModal}
+          onHide={this.handleModalClose}
+          bsSize="large"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>{this.state.modalTitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{this.state.modalContent}</Modal.Body>
+        </Modal>
       </div>
     );
   }
