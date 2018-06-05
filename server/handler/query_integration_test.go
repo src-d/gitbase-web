@@ -13,23 +13,25 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type QuerySuite struct {
+type QueryIntegrationSuite struct {
 	HandlerSuite
 }
 
 // Tests
 // -----------------------------------------------------------------------------
 
-func TestQuerySuite(t *testing.T) {
-	q := new(QuerySuite)
+func TestQueryIntegrationSuite(t *testing.T) {
+	q := new(QueryIntegrationSuite)
 	q.requestProcessFunc = handler.Query
 
-	if isIntegration() {
-		suite.Run(t, q)
+	if !isIntegration() {
+		t.Skip("use the env var GITBASEPG_INTEGRATION_TESTS=true to run this test")
 	}
+
+	suite.Run(t, q)
 }
 
-func (suite *QuerySuite) TestSelectAll() {
+func (suite *QueryIntegrationSuite) TestSelectAll() {
 	testCases := []string{
 		"blobs",
 		"commits",
@@ -52,7 +54,7 @@ func (suite *QuerySuite) TestSelectAll() {
 	}
 }
 
-func (suite *QuerySuite) TestLimit() {
+func (suite *QueryIntegrationSuite) TestLimit() {
 	testCases := []string{
 		`{ "query": "select * from refs", "limit": 100 }`,
 		`{ "query": "select * from refs", "limit": 0 }`,
@@ -71,7 +73,7 @@ func (suite *QuerySuite) TestLimit() {
 	}
 }
 
-func (suite *QuerySuite) TestBoolFunctions() {
+func (suite *QueryIntegrationSuite) TestBoolFunctions() {
 	req, _ := http.NewRequest("POST", "/query", strings.NewReader(
 		`{ "query": "select name, is_remote(name) as remote, is_tag(name) as tag from refs" }`))
 
@@ -86,7 +88,7 @@ func (suite *QuerySuite) TestBoolFunctions() {
 	suite.IsType(true, firstRow["tag"])
 }
 
-func (suite *QuerySuite) TestWrongSQLSyntax() {
+func (suite *QueryIntegrationSuite) TestWrongSQLSyntax() {
 	jsonRequest := `{ "query": "selectSELECT * from commits", "limit": 100 }`
 	req, _ := http.NewRequest("POST", "/query", strings.NewReader(jsonRequest))
 
@@ -105,7 +107,7 @@ func (suite *QuerySuite) TestWrongSQLSyntax() {
 	suite.Contains(firstErr["title"], "syntax error")
 }
 
-func (suite *QuerySuite) TestWrongLimit() {
+func (suite *QueryIntegrationSuite) TestWrongLimit() {
 	testCases := []string{
 		`[1, 2]`,
 		`"10"`,

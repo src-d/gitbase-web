@@ -21,9 +21,11 @@ func TestUastFunctions(t *testing.T) {
 	q := new(QueryUast)
 	q.requestProcessFunc = handler.Query
 
-	if isIntegration() {
-		suite.Run(t, q)
+	if !isIntegration() {
+		t.Skip("use the env var GITBASEPG_INTEGRATION_TESTS=true to run this test")
 	}
+
+	suite.Run(t, q)
 }
 
 // This test requires that gitbase can reach bblfshd and that it's serving the
