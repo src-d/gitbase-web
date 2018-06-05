@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Grid, Row, Col, Modal } from 'react-bootstrap';
 import SplitPane from 'react-split-pane';
+import UASTViewer, { transformer } from 'uast-viewer';
+import 'uast-viewer/dist/default-theme.css';
 import Sidebar from './components/Sidebar';
 import QueryBox from './components/QueryBox';
 import TabbedResults from './components/TabbedResults';
@@ -125,7 +127,14 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.setState({
       showModal: true,
       modalTitle: 'UAST',
-      modalContent: <pre>{JSON.stringify(uast, null, 2)}</pre>
+      modalContent:
+        // currently github returns only 1 item, UAST of the file
+        // but just in case if there is more or less we show it without viewer
+        uast.length === 1 ? (
+          <UASTViewer uast={transformer(uast[0])} />
+        ) : (
+          <pre>{uast}</pre>
+        )
     });
   }
 
