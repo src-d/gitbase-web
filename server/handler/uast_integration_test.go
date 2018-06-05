@@ -2,7 +2,6 @@ package handler_test
 
 import (
 	"encoding/json"
-	"flag"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -22,14 +21,12 @@ type UASTSuite struct {
 }
 
 func TestUASTSuite(t *testing.T) {
-	flag.Parse()
-	if !*bblfshd {
-		return
-	}
-
 	q := new(UASTSuite)
-	q.handler = lg.RequestLogger(logrus.New())(handler.APIHandlerFunc(handler.Parse("127.0.0.1:9432")))
-	suite.Run(t, q)
+	q.handler = lg.RequestLogger(logrus.New())(handler.APIHandlerFunc(handler.Parse(bblfshServerURL())))
+
+	if isIntegration() {
+		suite.Run(t, q)
+	}
 }
 
 func (suite *UASTSuite) TestSuccess() {
@@ -39,7 +36,7 @@ func (suite *UASTSuite) TestSuccess() {
 	res := httptest.NewRecorder()
 	suite.handler.ServeHTTP(res, req)
 
-	suite.Equal(http.StatusOK, res.Code)
+	suite.Require().Equal(http.StatusOK, res.Code, res.Body.String())
 
 	var resBody serializer.Response
 	err := json.Unmarshal(res.Body.Bytes(), &resBody)
