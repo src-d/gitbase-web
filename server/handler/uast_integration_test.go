@@ -24,9 +24,11 @@ func TestUASTSuite(t *testing.T) {
 	q := new(UASTSuite)
 	q.handler = lg.RequestLogger(logrus.New())(handler.APIHandlerFunc(handler.Parse(bblfshServerURL())))
 
-	if isIntegration() {
-		suite.Run(t, q)
+	if !isIntegration() {
+		t.Skip("use the env var GITBASEPG_INTEGRATION_TESTS=true to run this test")
 	}
+
+	suite.Run(t, q)
 }
 
 func (suite *UASTSuite) TestSuccess() {

@@ -11,23 +11,25 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type TablesSuite struct {
+type SchemaIntegrationSuite struct {
 	HandlerSuite
 }
 
 // Tests
 // -----------------------------------------------------------------------------
 
-func TestTablesSuite(t *testing.T) {
-	q := new(TablesSuite)
+func TestSchemaIntegrationSuite(t *testing.T) {
+	q := new(SchemaIntegrationSuite)
 	q.requestProcessFunc = handler.Schema
 
-	if isIntegration() {
-		suite.Run(t, q)
+	if !isIntegration() {
+		t.Skip("use the env var GITBASEPG_INTEGRATION_TESTS=true to run this test")
 	}
+
+	suite.Run(t, q)
 }
 
-func (suite *TablesSuite) TestGet() {
+func (suite *SchemaIntegrationSuite) TestGet() {
 	req, _ := http.NewRequest("GET", "/schema", nil)
 
 	res := httptest.NewRecorder()

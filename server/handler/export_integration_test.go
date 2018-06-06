@@ -12,14 +12,15 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type ExportSuite struct {
+type ExportIntegrationSuite struct {
 	suite.Suite
 	db      service.SQLDB
 	handler http.HandlerFunc
 }
 
-func TestExportSuite(t *testing.T) {
+func TestExportIntegrationSuite(t *testing.T) {
 	db, err := getDB()
+
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -28,16 +29,18 @@ func TestExportSuite(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	s := new(ExportSuite)
+	s := new(ExportIntegrationSuite)
 	s.db = db
 	s.handler = handler.Export(db)
 
-	if isIntegration() {
-		suite.Run(t, s)
+	if !isIntegration() {
+		t.Skip("use the env var GITBASEPG_INTEGRATION_TESTS=true to run this test")
 	}
+
+	suite.Run(t, s)
 }
 
-func (suite *ExportSuite) TestSuccess() {
+func (suite *ExportIntegrationSuite) TestSuccess() {
 	req, _ := http.NewRequest("GET", "/export/?query=select+*+from+repositories", nil)
 	res := httptest.NewRecorder()
 	suite.handler.ServeHTTP(res, req)
@@ -48,7 +51,7 @@ func (suite *ExportSuite) TestSuccess() {
 
 	record, err := r.Read()
 	suite.Nil(err)
-	suite.Equal(record, []string{"id"})
+	suite.Equal(record, []string{"repository_id"})
 
 	record, err = r.Read()
 	suite.Nil(err)
@@ -56,14 +59,14 @@ func (suite *ExportSuite) TestSuccess() {
 	suite.True(len(record[0]) > 0)
 }
 
-func (suite *ExportSuite) TestError() {
+func (suite *ExportIntegrationSuite) TestError() {
 	req, _ := http.NewRequest("GET", "/export/?query=select+*+from+not_exist", nil)
 	res := httptest.NewRecorder()
 	suite.handler.ServeHTTP(res, req)
 
-	suite.Equal(http.StatusInternalServerError, res.Code)
+	suite.Equal(http.StatusBadRequest, res.Code)
 }
 
-func (suite *ExportSuite) TearDownSuite() {
+func (suite *ExportIntegrationSuite) TearDownSuite() {
 	suite.db.Close()
 }
