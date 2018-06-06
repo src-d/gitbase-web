@@ -157,14 +157,15 @@ func columnsInfo(rows *sql.Rows) ([]string, []string, error) {
 	return names, typesStr, nil
 }
 
+var noCommentsRegexp = regexp.MustCompile(`\/\*(?s:.)*?\*\/`)
+
 // addLimit adds LIMIT to the query if it's a SELECT, avoiding '; limit'
 func addLimit(query string, limit int) string {
 	if limit <= 0 {
 		return query
 	}
 
-	re := regexp.MustCompile(`\/\*(?s:.)*?\*\/`)
-	noComments := re.ReplaceAllLiteralString(query, "")
+	noComments := noCommentsRegexp.ReplaceAllLiteralString(query, "")
 
 	query = strings.TrimRight(strings.TrimSpace(noComments), ";")
 	if strings.HasPrefix(strings.ToUpper(query), "SELECT") {
