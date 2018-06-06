@@ -1,7 +1,11 @@
-FROM alpine:3.7
-ADD ./build/bin /bin
+FROM debian:stretch-slim
 
-RUN apk --update upgrade && \
-    apk add --no-cache ca-certificates
+RUN apt-get update && \
+  apt-get install -y --no-install-recommends --no-install-suggests \
+  ca-certificates \
+  libxml2 \
+  && apt-get clean
+
+ADD ./build/bin /bin
 
 ENTRYPOINT ["/bin/gitbase-playground"]
