@@ -7,44 +7,23 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pressly/lg"
-	"github.com/sirupsen/logrus"
-	"github.com/src-d/gitbase-playground/server/service"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
 )
 
 type QuerySuite struct {
-	suite.Suite
-	db      service.SQLDB
-	mock    sqlmock.Sqlmock
-	handler http.Handler
-}
-
-func (suite *QuerySuite) SetupTest() {
-	var err error
-	suite.db, suite.mock, err = sqlmock.New()
-	if err != nil {
-		suite.T().Fatalf("failed to initialize the mock DB. '%s'", err)
-	}
-
-	logger := logrus.New()
-	logger.SetLevel(logrus.FatalLevel)
-
-	h := APIHandlerFunc(Query(suite.db))
-	suite.handler = lg.RequestLogger(logger)(h)
-}
-
-func (suite *QuerySuite) TearDownTest() {
-	suite.db.Close()
+	HandlerUnitSuite
 }
 
 // Tests
 // -----------------------------------------------------------------------------
 
 func TestQuerySuite(t *testing.T) {
-	suite.Run(t, new(QuerySuite))
+	s := new(HandlerUnitSuite)
+	s.requestProcessFunc = Query
+
+	suite.Run(t, s)
 }
 
 func (suite *QuerySuite) TestAddLimit() {
