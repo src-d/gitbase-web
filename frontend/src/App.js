@@ -14,13 +14,15 @@ class App extends Component {
     this.state = {
       sql: `/* Contributor's number of commits, each month of 2018, for each repository */
 
-SELECT COUNT(*) as num_commits, month, repo_id, committer_name FROM (
-  SELECT MONTH(committer_when) as month, r.id as repo_id, committer_name
-  FROM repositories r
-  INNER JOIN refs ON refs.repository_id = r.id AND refs.name = 'HEAD'
-  INNER JOIN commits c ON YEAR(committer_when) = 2018 AND history_idx(refs.hash, c.hash) >= 0
-) as t
-GROUP BY committer_name, month, repo_id`,
+SELECT COUNT(*) as num_commits, month, repo_id, committer_name
+FROM ( SELECT MONTH(committer_when) as month,
+              r.repository_id as repo_id,
+              committer_name
+    FROM ref_commits r
+    INNER JOIN commits c
+        ON YEAR(c.committer_when) = 2018 AND r.commit_hash = c.commit_hash
+    WHERE r.ref_name = 'HEAD'
+) as t GROUP BY committer_name, month, repo_id`,
       results: new Map(),
       schema: undefined,
       // modal
