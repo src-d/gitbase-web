@@ -8,6 +8,8 @@ services:
     environment:
       GITBASEPG_ENV: ${GITBASEPG_ENV}
       GITBASEPG_DB_CONNECTION: gitbase@tcp(gitbase:3306)/none?maxAllowedPacket=4194304
+    depends_on:
+      - gitbase
   gitbase:
     image: "srcd/gitbase"
     environment:
@@ -15,7 +17,7 @@ services:
     volumes:
       - ${GITBASEPG_REPOS_FOLDER}:/opt/repos
   bblfsh:
-    image: "bblfsh/bblfshd"
+    image: "bblfsh/bblfshd:v2.5.0"
     privileged: true
     volumes:
       - type: volume
