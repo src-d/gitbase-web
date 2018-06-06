@@ -35,7 +35,7 @@ Everytime you want to add a new repository to gitbase, the application should be
 Run the [latest released version of the frontend](https://hub.docker.com/r/srcd/gitbase-playground/tags/):
 
 ```bash
-$ docker-compose pull playground
+$ docker-compose pull --include-deps playground
 $ GITBASEPG_REPOS_FOLDER=./repos docker-compose up --force-recreate
 ```
 
