@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Grid, Row, Col, Modal } from 'react-bootstrap';
 import SplitPane from 'react-split-pane';
-import UASTViewer, { transformer } from 'uast-viewer';
+import UASTViewer, { Editor, transformer } from 'uast-viewer';
 import 'uast-viewer/dist/default-theme.css';
 import Sidebar from './components/Sidebar';
 import QueryBox from './components/QueryBox';
@@ -119,7 +119,7 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.setState({
       showModal: true,
       modalTitle: 'Source code',
-      modalContent: <pre>{code}</pre>
+      modalContent: <Editor code={code} />
     });
   }
 
@@ -128,7 +128,7 @@ FROM ( SELECT MONTH(committer_when) as month,
       showModal: true,
       modalTitle: 'UAST',
       modalContent:
-        // currently github returns only 1 item, UAST of the file
+        // currently gitbase returns only 1 item, UAST of the file
         // but just in case if there is more or less we show it without viewer
         uast.length === 1 ? (
           <UASTViewer uast={transformer(uast[0])} />
