@@ -27,6 +27,15 @@ body {
     width: 100%;
 }
 
+.main-row {
+    display: flex;
+
+    & > div {
+        margin-left: @grid-gutter-width / 2;
+        margin-right: @grid-gutter-width / 2;
+    }
+}
+
 .query-box-row {
     .full-height;
 }
