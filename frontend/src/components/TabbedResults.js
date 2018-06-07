@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Alert, Tabs, Tab, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ResultsTable from './ResultsTable';
+import HistoryTable from './HistoryTable';
 import Loader from './Loader';
 import './TabbedResults.less';
 
@@ -43,7 +44,7 @@ class TabbedResults extends Component {
   }
 
   render() {
-    const { showCode, showUAST } = this.props;
+    const { showCode, showUAST, history } = this.props;
 
     return (
       <Tabs
@@ -116,6 +117,12 @@ class TabbedResults extends Component {
             </Tab>
           );
         })}
+        <Tab key="history" eventKey="history" title="History">
+          <HistoryTable
+            items={history}
+            onOpenQuery={this.props.handleEditQuery}
+          />
+        </Tab>
       </Tabs>
     );
   }
@@ -128,6 +135,7 @@ TabbedResults.propTypes = {
   // errorMsg: 'string' Optional
   // response: object   Required if loading and errorMsg are not present
   results: PropTypes.instanceOf(Map).isRequired,
+  history: HistoryTable.propTypes.items,
   handleRemoveResult: PropTypes.func.isRequired,
   handleEditQuery: PropTypes.func.isRequired,
   showCode: PropTypes.func.isRequired,
