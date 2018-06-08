@@ -6,7 +6,7 @@ import { STATUS_LOADING, STATUS_ERROR, STATUS_SUCCESS } from '../state/query';
 
 class HistoryTable extends Component {
   render() {
-    const { items, onOpenQuery } = this.props;
+    const { items, onOpenQuery, handleReset } = this.props;
     const columns = [
       { Header: 'query', accessor: 'sql' },
       {
@@ -40,12 +40,17 @@ class HistoryTable extends Component {
     ];
 
     return (
-      <ReactTable
-        className="results-table"
-        data={items}
-        columns={columns}
-        defaultPageSize={10}
-      />
+      <div>
+        <div>
+          <a onClick={handleReset}>Reset history</a>
+        </div>
+        <ReactTable
+          className="results-table"
+          data={items}
+          columns={columns}
+          defaultPageSize={10}
+        />
+      </div>
     );
   }
 }
@@ -58,7 +63,8 @@ HistoryTable.propTypes = {
       datetime: PropTypes.object
     })
   ),
-  onOpenQuery: PropTypes.func.isRequired
+  onOpenQuery: PropTypes.func.isRequired,
+  handleReset: PropTypes.func.isRequired
 };
 
 export default HistoryTable;

@@ -42,6 +42,7 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.handleTableClick = this.handleTableClick.bind(this);
     this.handleExampleClick = this.handleExampleClick.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleResetHistory = this.handleResetHistory.bind(this);
 
     this.showCode = this.showCode.bind(this);
     this.showUAST = this.showUAST.bind(this);
@@ -181,6 +182,10 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.setState({ results: newResults });
   }
 
+  handleResetHistory() {
+    this.setState({ history: [] });
+  }
+
   render() {
     const { results, history } = this.state;
 
@@ -193,6 +198,7 @@ FROM ( SELECT MONTH(committer_when) as month,
             history={history}
             handleRemoveResult={this.handleRemoveResult}
             handleEditQuery={this.handleTextChange}
+            handleResetHistory={this.handleResetHistory}
             showCode={this.showCode}
             showUAST={this.showUAST}
           />

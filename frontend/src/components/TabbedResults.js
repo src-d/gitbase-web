@@ -121,6 +121,7 @@ class TabbedResults extends Component {
           <HistoryTable
             items={history}
             onOpenQuery={this.props.handleEditQuery}
+            handleReset={this.props.handleResetHistory}
           />
         </Tab>
       </Tabs>
@@ -138,6 +139,7 @@ TabbedResults.propTypes = {
   history: HistoryTable.propTypes.items,
   handleRemoveResult: PropTypes.func.isRequired,
   handleEditQuery: PropTypes.func.isRequired,
+  handleResetHistory: PropTypes.func.isRequired,
   showCode: PropTypes.func.isRequired,
   showUAST: PropTypes.func.isRequired
 };
