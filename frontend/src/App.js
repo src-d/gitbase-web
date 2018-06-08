@@ -189,22 +189,6 @@ FROM ( SELECT MONTH(committer_when) as month,
   render() {
     const { results, history } = this.state;
 
-    let resultsElem = '';
-    if (results.size > 0) {
-      resultsElem = (
-        <Col xs={12} className="full-height">
-          <TabbedResults
-            results={results}
-            history={history}
-            handleRemoveResult={this.handleRemoveResult}
-            handleEditQuery={this.handleTextChange}
-            handleResetHistory={this.handleResetHistory}
-            showCode={this.showCode}
-            showUAST={this.showUAST}
-          />
-        </Col>
-      );
-    }
     return (
       <div className="app">
         <Helmet>
@@ -235,7 +219,19 @@ FROM ( SELECT MONTH(committer_when) as month,
                   </Row>
                 </Grid>
                 <Grid className="full-height full-width">
-                  <Row className="results-row">{resultsElem}</Row>
+                  <Row className="results-row">
+                    <Col xs={12} className="full-height">
+                      <TabbedResults
+                        results={results}
+                        history={history}
+                        handleRemoveResult={this.handleRemoveResult}
+                        handleEditQuery={this.handleTextChange}
+                        handleResetHistory={this.handleResetHistory}
+                        showCode={this.showCode}
+                        showUAST={this.showUAST}
+                      />
+                    </Col>
+                  </Row>
                 </Grid>
               </SplitPane>
             </Col>
