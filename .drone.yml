@@ -9,13 +9,10 @@ branches: [master]
 build: &build
   image: golang:1.10-stretch
   commands:
-    - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-    - . $HOME/.nvm/nvm.sh
-    - nvm install 8
-    - nvm use 8
-    - npm install -g yarn
+    - curl -sL https://deb.nodesource.com/setup_8.x | bash
     - apt-get update
-    - apt-get install -y --no-install-recommends --no-install-suggests libxml2-dev 
+    - apt-get install -y --no-install-recommends --no-install-suggests nodejs libxml2-dev
+    - npm install -g yarn
     - make dependencies
     - PKG_OS=linux DOCKER_OS=linux DOCKER_ARCH=amd64 make packages
   debug: true
@@ -66,7 +63,8 @@ pipeline:
     <<: *helm_deploy
     prefix: STG
     secrets: [ STG_API_SERVER, STG_KUBERNETES_TOKEN ]
-    values: gitbasePlayground.image.tag=commit-${DRONE_COMMIT_SHA:0:7},gitbaseServer.image.tag=v0.12.1-rc1,ingress.globalStaticIpName=gitbase-playground-staging,ingress.hostname=gitbase-playground-staging.srcd.run
+    values: gitbasePlayground.image.tag=commit-${DRONE_COMMIT_SHA:0:7},ingress.globalStaticIpName=gitbase-playground-staging,ingress.hostname=gitbase-playground-staging.srcd.run
+    values_files: [.helm-staging.yml]
     when:
       branch: [master]
       event: [push]
