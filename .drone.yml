@@ -1,0 +1,87 @@
+workspace:
+  base: /go
+  path: src/github.com/src-d/gitbase-playground
+
+branches: [master]
+
+# ANCHORS
+
+build: &build
+  image: golang:1.10-stretch
+  commands:
+    - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+    - . $HOME/.nvm/nvm.sh
+    - nvm install 8
+    - nvm use 8
+    - npm install -g yarn
+    - apt-get update
+    - apt-get install -y --no-install-recommends --no-install-suggests libxml2-dev 
+    - make dependencies
+    - PKG_OS=linux DOCKER_OS=linux DOCKER_ARCH=amd64 make packages
+  debug: true
+
+docker_image: &docker_image
+  group: docker
+  image: plugins/docker
+  registry: docker.io
+  repo: srcd/gitbase-playground
+  secrets: [ docker_username, docker_password ]
+  dockerfile: Dockerfile
+  debug: true
+
+helm_deploy: &helm_deploy
+  image: quay.io/ipedrazas/drone-helm:master-9b37211
+  skip_tls_verify: true
+  helm_repos: charts=https://github.com/src-d/charts.git
+  chart: charts/gitbase-playground
+  release: gitbase-playground
+  tiller_ns: kube-system
+  wait: true
+
+# PIPELINE STEPS
+
+pipeline:
+
+  clone:
+    image: plugins/git
+    debug: true
+
+  # deployment to staging environment when master is pushed
+
+  build_stg:
+    <<: *build
+    when:
+      branch: [master]
+      event: [push]
+
+  docker_image_stg:
+    <<: *docker_image
+    # workaround for bug https://github.com/kubernetes/helm/issues/1707
+    tag: 'commit-${DRONE_COMMIT_SHA:0:7}'
+    when:
+      branch: [master]
+      event: [push]
+
+  helm_deploy_stg:
+    <<: *helm_deploy
+    prefix: STG
+    secrets: [ STG_API_SERVER, STG_KUBERNETES_TOKEN ]
+    values: gitbasePlayground.image.tag=commit-${DRONE_COMMIT_SHA:0:7},gitbaseServer.image.tag=v0.12.1-rc1,ingress.globalStaticIpName=gitbase-playground-staging,ingress.hostname=gitbase-playground-staging.srcd.run
+    when:
+      branch: [master]
+      event: [push]
+
+  # Push to DockerHub when a new tag is created
+
+  build_release:
+    <<: *build
+    when:
+      event: [tag]
+
+  docker_image_release:
+    <<: *docker_image
+    tags:
+      - '${DRONE_TAG}'
+      - 'latest'
+    when:
+      event: [tag]
