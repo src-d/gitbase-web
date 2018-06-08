@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { STATUS_LOADING, STATUS_ERROR, STATUS_SUCCESS } from '../state/query';
+import './HistoryTable.less';
 
 class HistoryTable extends Component {
   render() {
@@ -40,8 +41,8 @@ class HistoryTable extends Component {
     ];
 
     return (
-      <div>
-        <div>
+      <div className="history">
+        <div className="toolbar">
           <a onClick={handleReset}>Reset history</a>
         </div>
         <ReactTable
