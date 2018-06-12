@@ -261,3 +261,28 @@ id
 /opt/repos/gitbase-playground
 /opt/repos/go-git-fixtures
 ```
+
+## POST /detect-lang
+
+Returns programming language and type of the language by filename and content of a file.
+The type is a enum of [enry](https://godoc.org/gopkg.in/src-d/enry.v1#Type).
+
+```bash
+curl -X POST \
+  http://localhost:8080/detect-lang \
+  -H 'content-type: application/json' \
+  -d '{
+  "filename": "test.js",
+  "content": "console.log(test)"
+}'
+```
+
+```json
+{
+    "status": 200,
+    "data": {
+        "language":"JavaScript",
+        "type":2
+    }
+}
+```
