@@ -8,6 +8,7 @@ import Sidebar from './components/Sidebar';
 import QueryBox from './components/QueryBox';
 import TabbedResults from './components/TabbedResults';
 import api from './api';
+import { STATUS_LOADING, STATUS_ERROR, STATUS_SUCCESS } from './state/query';
 import './App.less';
 
 class App extends Component {
@@ -27,6 +28,8 @@ FROM ( SELECT MONTH(committer_when) as month,
 ) as t GROUP BY committer_name, month, repo_id`,
       results: new Map(),
       schema: undefined,
+      history: [],
+
       // modal
       showModal: false,
       modalTitle: null,
@@ -39,6 +42,7 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.handleTableClick = this.handleTableClick.bind(this);
     this.handleExampleClick = this.handleExampleClick.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleResetHistory = this.handleResetHistory.bind(this);
 
     this.showCode = this.showCode.bind(this);
     this.showUAST = this.showUAST.bind(this);
@@ -51,7 +55,25 @@ FROM ( SELECT MONTH(committer_when) as month,
   }
 
   setResult(key, result) {
-    if (!this.state.results.has(key)) {
+    const { results, history } = this.state;
+    const historyIdx = history.findIndex(i => i.key === key);
+
+    if (historyIdx >= 0) {
+      const status =
+        typeof result.response !== 'undefined' ? STATUS_SUCCESS : STATUS_ERROR;
+      const newHistory = [
+        ...history.slice(0, historyIdx),
+        {
+          ...history[historyIdx],
+          status,
+          errorMsg: result.errorMsg
+        },
+        ...history.slice(historyIdx + 1)
+      ];
+      this.setState({ history: newHistory });
+    }
+
+    if (!results.has(key)) {
       // Tab was removed, ignore results
       return;
     }
@@ -63,13 +85,24 @@ FROM ( SELECT MONTH(committer_when) as month,
   }
 
   handleSubmit() {
-    const { sql } = this.state;
+    const { sql, history } = this.state;
     const key = ++this.uniqueKey;
 
     const loadingResults = new Map(this.state.results);
     loadingResults.set(key, { sql, loading: true });
 
-    this.setState({ results: loadingResults });
+    this.setState({
+      results: loadingResults,
+      history: [
+        {
+          key,
+          sql,
+          datetime: new Date(),
+          status: STATUS_LOADING
+        },
+        ...history
+      ]
+    });
 
     api
       .query(sql)
@@ -149,23 +182,13 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.setState({ results: newResults });
   }
 
-  render() {
-    const { results } = this.state;
+  handleResetHistory() {
+    this.setState({ history: [] });
+  }
 
-    let resultsElem = '';
-    if (results.size > 0) {
-      resultsElem = (
-        <Col xs={12} className="full-height">
-          <TabbedResults
-            results={results}
-            handleRemoveResult={this.handleRemoveResult}
-            handleEditQuery={this.handleTextChange}
-            showCode={this.showCode}
-            showUAST={this.showUAST}
-          />
-        </Col>
-      );
-    }
+  render() {
+    const { results, history } = this.state;
+
     return (
       <div className="app">
         <Helmet>
@@ -196,7 +219,19 @@ FROM ( SELECT MONTH(committer_when) as month,
                   </Row>
                 </Grid>
                 <Grid className="full-height full-width">
-                  <Row className="results-row">{resultsElem}</Row>
+                  <Row className="results-row">
+                    <Col xs={12} className="full-height">
+                      <TabbedResults
+                        results={results}
+                        history={history}
+                        handleRemoveResult={this.handleRemoveResult}
+                        handleEditQuery={this.handleTextChange}
+                        handleResetHistory={this.handleResetHistory}
+                        showCode={this.showCode}
+                        showUAST={this.showUAST}
+                      />
+                    </Col>
+                  </Row>
                 </Grid>
               </SplitPane>
             </Col>
