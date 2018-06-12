@@ -29,8 +29,8 @@ docker_image: &docker_image
 helm_deploy: &helm_deploy
   image: quay.io/ipedrazas/drone-helm:master-9b37211
   skip_tls_verify: true
-  helm_repos: charts=https://github.com/src-d/charts.git
-  chart: charts/gitbase-playground
+  helm_repos: srcd-charts=https://src-d.github.io/charts/
+  chart: srcd-charts/gitbase-playground
   release: gitbase-playground
   tiller_ns: kube-system
   wait: true
