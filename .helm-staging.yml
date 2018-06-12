@@ -1,0 +1,49 @@
+bblfshdServer:
+  image:
+    repository: bblfsh/bblfshd
+    tag: v2.5.0
+    pullPolicy: IfNotPresent
+  drivers:
+    install: true
+    languages:
+      python:
+        repository: bblfsh/python-driver
+        tag: v2.0.0
+      java:
+        repository: bblfsh/java-driver
+        tag: v1.2.6
+      php:
+        repository: bblfsh/php-driver
+        tag: v2.0.0
+      ruby:
+        repository: bblfsh/ruby-driver
+        tag: v2.0.0
+      javascript:
+        repository: bblfsh/javascript-driver
+        tag: v1.2.0
+      typescript:
+        repository: bblfsh/typescript-driver
+        tag: v0.2.0
+      bash:
+        repository: bblfsh/bash-driver
+        tag: v1.1.1
+      go:
+        repository: bblfsh/go-driver
+        tag: v0.4.0
+
+gitbaseServer:
+  # commit defaults to HEAD unless given
+  repositories:
+    go-git:
+      url: https://github.com/src-d/go-git.git
+      #commit: v4.4.0
+    gitbase:
+      url: https://github.com/src-d/gitbase.git
+    gitbase-playground:
+      url: https://github.com/src-d/gitbase-playground.git
+    bblfshd:
+      url: https://github.com/bblfsh/bblfshd.git
+  image:
+    repository: srcd/gitbase
+    tag: v0.12.1-rc1
+    pullPolicy: IfNotPresent
