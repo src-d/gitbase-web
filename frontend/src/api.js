@@ -78,12 +78,16 @@ function apiCall(url, options = {}) {
 }
 
 function query(sql) {
+  const startTime = new Date();
   return apiCall(`/query`, {
     method: 'POST',
     body: {
       query: sql,
       limit: selectLimit
     }
+  }).then(res => {
+    res.meta.elapsedTime = new Date() - startTime;
+    return res;
   });
 }
 

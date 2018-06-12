@@ -49,6 +49,7 @@ class QueryBox extends Component {
   }
 
   render() {
+    const { resultMeta } = this.props;
     const { codeMirrorTables } = this.state;
 
     const options = {
@@ -67,6 +68,12 @@ class QueryBox extends Component {
       }
     };
 
+    let meta = '';
+    if (resultMeta) {
+      meta = `Showing rows (query took ${resultMeta.elapsedTime /
+        1000} seconds)`;
+    }
+
     return (
       <div className="query-box">
         <Row className="codemirror-row">
@@ -81,7 +88,8 @@ class QueryBox extends Component {
           </Col>
         </Row>
         <Row className="button-row">
-          <Col xsOffset={6} xs={3}>
+          <Col xs={6}>{meta}</Col>
+          <Col xs={3}>
             <Button
               className="pull-right"
               disabled={!this.props.exportUrl}
@@ -119,6 +127,7 @@ QueryBox.propTypes = {
       ).isRequired
     })
   ),
+  resultMeta: PropTypes.object,
   enabled: PropTypes.bool,
   handleTextChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
