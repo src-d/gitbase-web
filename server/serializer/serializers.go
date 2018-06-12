@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"gopkg.in/bblfsh/sdk.v1/protocol"
+	enry "gopkg.in/src-d/enry.v1"
 )
 
 // HTTPError defines an Error message as it will be written in the http.Response
@@ -121,4 +122,12 @@ func NewSchemaResponse(tables map[string][]Column) *Response {
 // NewParseResponse returns a Response with UAST
 func NewParseResponse(resp *protocol.ParseResponse) *Response {
 	return newResponse(resp.UAST, nil)
+}
+
+// NewDetectLangResponse returns a Response with detected language
+func NewDetectLangResponse(lang string, langType enry.Type) *Response {
+	return newResponse(struct {
+		Language string `json:"language"`
+		Type     int    `json:"type"`
+	}{lang, int(langType)}, nil)
 }
