@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/src-d/gitbase-playground/server/serializer"
@@ -158,6 +159,7 @@ func columnsInfo(rows *sql.Rows) ([]string, []string, error) {
 }
 
 var noCommentsRegexp = regexp.MustCompile(`\/\*(?s:.)*?\*\/`)
+var limitRegexp = regexp.MustCompile(`\s+LIMIT\s+(\d+)$`)
 
 // addLimit adds LIMIT to the query if it's a SELECT, avoiding '; limit'
 func addLimit(query string, limit int) string {
@@ -168,7 +170,17 @@ func addLimit(query string, limit int) string {
 	noComments := noCommentsRegexp.ReplaceAllLiteralString(query, "")
 
 	query = strings.TrimRight(strings.TrimSpace(noComments), ";")
-	if strings.HasPrefix(strings.ToUpper(query), "SELECT") {
+	upperQuery := strings.ToUpper(query)
+
+	if strings.HasPrefix(upperQuery, "SELECT") {
+		matches := limitRegexp.FindStringSubmatch(upperQuery)
+		if len(matches) == 2 {
+			userLimit, _ := strconv.Atoi(matches[1])
+			if userLimit < limit {
+				return query
+			}
+			query = query[:len(query)-len(matches[0])]
+		}
 		return fmt.Sprintf("%s LIMIT %d", query, limit)
 	}
 
