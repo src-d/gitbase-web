@@ -41,6 +41,7 @@ class TabbedResults extends Component {
 
   handleSelect(activeKey) {
     this.setState({ activeKey });
+    this.props.handleSetActiveResult(activeKey);
   }
 
   render() {
@@ -70,31 +71,43 @@ class TabbedResults extends Component {
           );
 
           let content = '';
-
-          if (query.loading) {
-            content = (
-              <Row>
-                <Col className="text-center loader-col" xs={12}>
-                  <Loader />
-                </Col>
-              </Row>
-            );
-          } else if (query.errorMsg) {
-            content = (
-              <Row className="errors-row">
-                <Col xs={12}>
-                  <Alert bsStyle="danger">{query.errorMsg}</Alert>
-                </Col>
-              </Row>
-            );
-          } else {
-            content = (
-              <ResultsTable
-                response={query.response}
-                showCode={showCode}
-                showUAST={showUAST}
-              />
-            );
+          if (key === this.state.activeKey) {
+            if (query.loading) {
+              content = (
+                <Row>
+                  <Col className="text-center loader-col" xs={12}>
+                    <Loader />
+                  </Col>
+                </Row>
+              );
+            } else if (query.errorMsg) {
+              content = (
+                <Row className="errors-row">
+                  <Col xs={12}>
+                    <Alert bsStyle="danger">{query.errorMsg}</Alert>
+                  </Col>
+                </Row>
+              );
+            } else if (query.response) {
+              content = (
+                <ResultsTable
+                  response={query.response}
+                  showCode={showCode}
+                  showUAST={showUAST}
+                />
+              );
+            } else {
+              content = (
+                <Row>
+                  <Col xs={12} className="text-center">
+                    SUSPENDED TAB<br />
+                    <Button onClick={() => this.props.handleReload(key)}>
+                      Reload
+                    </Button>
+                  </Col>
+                </Row>
+              );
+            }
           }
 
           return (
@@ -140,6 +153,8 @@ TabbedResults.propTypes = {
   handleRemoveResult: PropTypes.func.isRequired,
   handleEditQuery: PropTypes.func.isRequired,
   handleResetHistory: PropTypes.func.isRequired,
+  handleSetActiveResult: PropTypes.func.isRequired,
+  handleReload: PropTypes.func.isRequired,
   showCode: PropTypes.func.isRequired,
   showUAST: PropTypes.func.isRequired
 };
