@@ -11,6 +11,8 @@ import api from './api';
 import { STATUS_LOADING, STATUS_ERROR, STATUS_SUCCESS } from './state/query';
 import './App.less';
 
+const INACTIVE_TIMEOUT = 3600000;
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -35,6 +37,7 @@ FROM ( SELECT MONTH(committer_when) as month,
       modalTitle: null,
       modalContent: null
     };
+    this.timers = {};
 
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -43,6 +46,8 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.handleExampleClick = this.handleExampleClick.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
     this.handleResetHistory = this.handleResetHistory.bind(this);
+    this.handleSetActiveResult = this.handleSetActiveResult.bind(this);
+    this.handleReload = this.handleReload.bind(this);
 
     this.showCode = this.showCode.bind(this);
     this.showUAST = this.showUAST.bind(this);
@@ -91,18 +96,21 @@ FROM ( SELECT MONTH(committer_when) as month,
     const loadingResults = new Map(this.state.results);
     loadingResults.set(key, { sql, loading: true });
 
-    this.setState({
-      results: loadingResults,
-      history: [
-        {
-          key,
-          sql,
-          datetime: new Date(),
-          status: STATUS_LOADING
-        },
-        ...history
-      ]
-    });
+    this.setState(
+      {
+        results: loadingResults,
+        history: [
+          {
+            key,
+            sql,
+            datetime: new Date(),
+            status: STATUS_LOADING
+          },
+          ...history
+        ]
+      },
+      () => this.handleSetActiveResult(key)
+    );
 
     api
       .query(sql)
@@ -180,10 +188,77 @@ FROM ( SELECT MONTH(committer_when) as month,
     newResults.delete(key);
 
     this.setState({ results: newResults });
+
+    this.stopInactiveTimer(key);
   }
 
   handleResetHistory() {
     this.setState({ history: [] });
+  }
+
+  handleSetActiveResult(key) {
+    const { results } = this.state;
+    // just ignore any unknown key
+    if (!results.has(key)) {
+      return;
+    }
+
+    this.stopInactiveTimer(key);
+
+    const hiddenKeys = Array.from(results.keys()).filter(k => k !== key);
+    hiddenKeys.filter(k => !this.timers[k]).forEach(k => {
+      this.timers[k] = window.setTimeout(
+        () => this.removeResultContent(k),
+        INACTIVE_TIMEOUT
+      );
+    });
+  }
+
+  stopInactiveTimer(key) {
+    const timer = this.timers[key];
+    if (timer) {
+      window.clearTimeout(timer);
+      delete this.timers[key];
+    }
+  }
+
+  removeResultContent(key) {
+    const { results } = this.state;
+
+    const result = results.get(key);
+    result.response = null;
+
+    const newResults = new Map(results);
+    newResults.set(key, result);
+
+    this.setState({ results: newResults });
+  }
+
+  handleReload(key) {
+    const { results } = this.state;
+
+    const result = results.get(key);
+    result.loading = true;
+
+    const newResults = new Map(results);
+    newResults.set(key, result);
+
+    this.setState({ results: newResults });
+
+    api
+      .query(result.sql)
+      .then(response => {
+        result.response = response;
+      })
+      .catch(msgArr => {
+        result.errorMsg = msgArr.join('; ');
+      })
+      .then(() => {
+        const newNewResults = new Map(results);
+        result.loading = false;
+        newResults.set(key, result);
+        this.setState({ results: newNewResults });
+      });
   }
 
   render() {
@@ -225,6 +300,8 @@ FROM ( SELECT MONTH(committer_when) as month,
                         handleRemoveResult={this.handleRemoveResult}
                         handleEditQuery={this.handleTextChange}
                         handleResetHistory={this.handleResetHistory}
+                        handleSetActiveResult={this.handleSetActiveResult}
+                        handleReload={this.handleReload}
                         showCode={this.showCode}
                         showUAST={this.showUAST}
                       />
