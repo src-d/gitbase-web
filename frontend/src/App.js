@@ -195,15 +195,13 @@ FROM ( SELECT MONTH(committer_when) as month,
           <title>Gitbase Playground</title>
         </Helmet>
         <Grid className="full-height" fluid={true}>
-          <Row className="full-height">
-            <Col xs={3} className="full-height">
-              <Sidebar
-                schema={this.state.schema}
-                onTableClick={this.handleTableClick}
-                onExampleClick={this.handleExampleClick}
-              />
-            </Col>
-            <Col xs={9} className="full-height">
+          <Row className="main-row full-height">
+            <Sidebar
+              schema={this.state.schema}
+              onTableClick={this.handleTableClick}
+              onExampleClick={this.handleExampleClick}
+            />
+            <div className="full-height full-width">
               <SplitPane split="horizontal" defaultSize={250} minSize={100}>
                 <Grid className="full-height full-width">
                   <Row className="query-box-row">
@@ -234,7 +232,7 @@ FROM ( SELECT MONTH(committer_when) as month,
                   </Row>
                 </Grid>
               </SplitPane>
-            </Col>
+            </div>
           </Row>
         </Grid>
         <Modal

@@ -5,15 +5,27 @@
     min-height: 100%;
 
     .header {
-        flex: 0 0;
+        display: flex;
+        flex: 0 0 24px;
 
         margin: 0 0 10px 0;
         padding: 0 0 10px 0;
 
-        font-size: 16px;
-        font-weight: normal;
-
         border-bottom: 1px solid #000;
+
+        h3 {
+            width: 100%;
+
+            margin: 0;
+            padding: 0;
+
+            font-size: 16px;
+            font-weight: normal;
+        }
+
+        .glyphicon {
+            cursor: pointer;
+        }
     }
 
     .main {
@@ -30,5 +42,17 @@
 
     .SplitPane .Resizer {
         margin: 0;
+    }
+
+    &.collapsed {
+        .header > h3,
+        .main,
+        .footer {
+            display: none;
+        }
+
+        .header {
+            border-bottom: 0;
+        }
     }
 }
