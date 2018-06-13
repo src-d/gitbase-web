@@ -31,7 +31,7 @@ helm_deploy: &helm_deploy
   skip_tls_verify: true
   helm_repos: srcd-charts=https://src-d.github.io/charts/
   chart: srcd-charts/gitbase-playground
-  release: gitbase-playground
+  release: gp
   tiller_ns: kube-system
   wait: true
 
