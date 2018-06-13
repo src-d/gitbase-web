@@ -20,7 +20,7 @@ type QuerySuite struct {
 // -----------------------------------------------------------------------------
 
 func TestQuerySuite(t *testing.T) {
-	s := new(HandlerUnitSuite)
+	s := new(QuerySuite)
 	s.requestProcessFunc = Query
 
 	suite.Run(t, s)
@@ -42,6 +42,9 @@ func (suite *QuerySuite) TestAddLimit() {
 		{`/* comment
 			multiline */ SELECT * FROM repositories; /* comment
 			multiline */`, "SELECT * FROM repositories LIMIT 100"},
+		{"select * from repositories limit 1", "select * from repositories limit 1"},
+		{"select * from repositories limit 900", "select * from repositories LIMIT 100"},
+		{"select * from repositories limit qwe", "select * from repositories limit qwe LIMIT 100"},
 	}
 
 	for _, tc := range testCases {
