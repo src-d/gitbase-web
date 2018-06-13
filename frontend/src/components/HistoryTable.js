@@ -16,7 +16,7 @@ class HistoryTable extends Component {
         accessor: row => {
           switch (row.status) {
             case STATUS_SUCCESS:
-              return 'Query ran in Nsec';
+              return `Query ran in ${row.elapsedTime / 1000}sec`;
             case STATUS_ERROR:
               return `Query failed - ${row.errorMsg}`;
             case STATUS_LOADING:
@@ -61,7 +61,8 @@ HistoryTable.propTypes = {
     PropTypes.shape({
       sql: PropTypes.string,
       status: PropTypes.string,
-      datetime: PropTypes.object
+      datetime: PropTypes.object,
+      elapsedTime: PropTypes.number
     })
   ),
   onOpenQuery: PropTypes.func.isRequired,

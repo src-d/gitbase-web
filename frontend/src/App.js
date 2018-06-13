@@ -31,6 +31,7 @@ FROM ( SELECT MONTH(committer_when) as month,
       results: new Map(),
       schema: undefined,
       history: [],
+      lastResultMeta: null,
 
       // modal
       showModal: false,
@@ -62,15 +63,18 @@ FROM ( SELECT MONTH(committer_when) as month,
   setResult(key, result) {
     const { results, history } = this.state;
     const historyIdx = history.findIndex(i => i.key === key);
+    const { response } = result;
 
     if (historyIdx >= 0) {
       const status =
-        typeof result.response !== 'undefined' ? STATUS_SUCCESS : STATUS_ERROR;
+        typeof response !== 'undefined' ? STATUS_SUCCESS : STATUS_ERROR;
       const newHistory = [
         ...history.slice(0, historyIdx),
         {
           ...history[historyIdx],
           status,
+          elapsedTime:
+            response && response.meta ? response.meta.elapsedTime : null,
           errorMsg: result.errorMsg
         },
         ...history.slice(historyIdx + 1)
@@ -86,7 +90,10 @@ FROM ( SELECT MONTH(committer_when) as month,
     const newResults = new Map(this.state.results);
     newResults.set(key, result);
 
-    this.setState({ results: newResults });
+    this.setState({
+      results: newResults,
+      lastResultMeta: response ? response.meta : null
+    });
   }
 
   handleSubmit() {
@@ -284,6 +291,7 @@ FROM ( SELECT MONTH(committer_when) as month,
                       <QueryBox
                         sql={this.state.sql}
                         schema={this.state.schema}
+                        resultMeta={this.state.lastResultMeta}
                         handleTextChange={this.handleTextChange}
                         handleSubmit={this.handleSubmit}
                         exportUrl={api.queryExport(this.state.sql)}
