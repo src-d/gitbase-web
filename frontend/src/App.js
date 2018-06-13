@@ -11,7 +11,7 @@ import api from './api';
 import { STATUS_LOADING, STATUS_ERROR, STATUS_SUCCESS } from './state/query';
 import './App.less';
 
-const INACTIVE_TIMEOUT = 60000;
+const INACTIVE_TIMEOUT = 3600000;
 
 class App extends Component {
   constructor(props) {
