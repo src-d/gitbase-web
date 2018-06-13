@@ -73,6 +73,8 @@ func (s *Static) ServeIndexHTML(initialState interface{}) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		w.Header().Add("Cache-Control", "no-cache, no-store, must-revalidate")
 		b = bytes.Replace(b, []byte(serverValuesPlaceholder), bData, 1)
 		s.serveAsset(w, r, filepath, b)
 	}
