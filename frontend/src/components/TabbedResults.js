@@ -1,10 +1,86 @@
 import React, { Component } from 'react';
-import { Row, Col, Alert, Tabs, Tab, Button } from 'react-bootstrap';
+import { Row, Col, Alert, Tabs, Tab, Button, Glyphicon } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ResultsTable from './ResultsTable';
 import HistoryTable from './HistoryTable';
 import Loader from './Loader';
 import './TabbedResults.less';
+
+class TabTitle extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      inEdit: false,
+      title: props.title
+    };
+    this.ref = React.createRef();
+
+    this.handleStartEdit = this.handleStartEdit.bind(this);
+    this.handleEndEdit = this.handleEndEdit.bind(this);
+  }
+
+  handleStartEdit() {
+    this.setState({ inEdit: true });
+  }
+
+  handleEndEdit() {
+    this.setState({ inEdit: false });
+  }
+
+  render() {
+    const { tabKey } = this.props;
+    const { title, inEdit } = this.state;
+
+    if (inEdit) {
+      return (
+        <div ref={this.ref}>
+          <input
+            type="text"
+            value={title}
+            onChange={e => {
+              this.setState({ title: e.target.value });
+            }}
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                this.handleEndEdit();
+              }
+            }}
+            onBlur={this.handleEndEdit}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <span className="tab-title">{title}</span>
+        <Button
+          className="close"
+          onClick={() => {
+            this.props.handleRemoveResult(tabKey);
+          }}
+        >
+          <span aria-hidden="true">&times;</span>
+        </Button>
+        <Button
+          className="close edit"
+          onClick={() => {
+            this.handleStartEdit(tabKey);
+          }}
+        >
+          <Glyphicon glyph="pencil" />
+        </Button>
+      </div>
+    );
+  }
+}
+
+TabTitle.propTypes = {
+  tabKey: PropTypes.any.isRequired,
+  title: PropTypes.string.isRequired,
+  handleRemoveResult: PropTypes.func.isRequired
+};
 
 class TabbedResults extends Component {
   constructor(props) {
@@ -54,21 +130,6 @@ class TabbedResults extends Component {
         onSelect={this.handleSelect}
       >
         {Array.from(this.props.results.entries()).map(([key, query]) => {
-          const title = (
-            <div>
-              <span className="tab-title">{query.sql}</span>
-              <Button
-                className="close"
-                onClick={e => {
-                  e.stopPropagation();
-                  this.props.handleRemoveResult(key);
-                }}
-              >
-                <span aria-hidden="true">&times;</span>
-              </Button>
-            </div>
-          );
-
           let content = '';
 
           if (query.loading) {
@@ -98,7 +159,17 @@ class TabbedResults extends Component {
           }
 
           return (
-            <Tab key={key} eventKey={key} title={title}>
+            <Tab
+              key={key}
+              eventKey={key}
+              title={
+                <TabTitle
+                  title={query.title || query.sql}
+                  tabKey={key}
+                  handleRemoveResult={this.props.handleRemoveResult}
+                />
+              }
+            >
               <Row className="query-row">
                 <Col xs={12}>
                   <div className="query-text">
