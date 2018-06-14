@@ -284,29 +284,27 @@ FROM ( SELECT MONTH(committer_when) as month,
               onTableClick={this.handleTableClick}
               onExampleClick={this.handleExampleClick}
             />
-            <div className="full-height full-width">
-              <SplitPane split="horizontal" defaultSize={250} minSize={100}>
-                <QueryBox
-                  sql={this.state.sql}
-                  schema={this.state.schema}
-                  resultMeta={this.state.lastResultMeta}
-                  handleTextChange={this.handleTextChange}
-                  handleSubmit={this.handleSubmit}
-                  exportUrl={api.queryExport(this.state.sql)}
-                />
-                <TabbedResults
-                  results={results}
-                  history={history}
-                  handleRemoveResult={this.handleRemoveResult}
-                  handleEditQuery={this.handleTextChange}
-                  handleResetHistory={this.handleResetHistory}
-                  handleSetActiveResult={this.handleSetActiveResult}
-                  handleReload={this.handleReload}
-                  showCode={this.showCode}
-                  showUAST={this.showUAST}
-                />
-              </SplitPane>
-            </div>
+            <SplitPane split="horizontal" defaultSize={250} minSize={100}>
+              <QueryBox
+                sql={this.state.sql}
+                schema={this.state.schema}
+                resultMeta={this.state.lastResultMeta}
+                handleTextChange={this.handleTextChange}
+                handleSubmit={this.handleSubmit}
+                exportUrl={api.queryExport(this.state.sql)}
+              />
+              <TabbedResults
+                results={results}
+                history={history}
+                handleRemoveResult={this.handleRemoveResult}
+                handleEditQuery={this.handleTextChange}
+                handleResetHistory={this.handleResetHistory}
+                handleSetActiveResult={this.handleSetActiveResult}
+                handleReload={this.handleReload}
+                showCode={this.showCode}
+                showUAST={this.showUAST}
+              />
+            </SplitPane>
           </Row>
         </Grid>
         <Modal
