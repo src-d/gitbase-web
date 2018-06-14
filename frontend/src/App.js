@@ -284,7 +284,12 @@ FROM ( SELECT MONTH(committer_when) as month,
               onTableClick={this.handleTableClick}
               onExampleClick={this.handleExampleClick}
             />
-            <SplitPane split="horizontal" defaultSize={250} minSize={100}>
+            <SplitPane
+              className="main-split"
+              split="horizontal"
+              defaultSize={250}
+              minSize={175}
+            >
               <QueryBox
                 sql={this.state.sql}
                 schema={this.state.schema}
