@@ -1,9 +1,64 @@
-.results-table {
+@import '../variables.less';
+
+.ReactTable.results-table {
     flex-grow: 1;
     flex-basis: 150px;
     min-height: 150px;
 
-    .rt-tr-group {
-        flex: 0 0 auto !important;
+    border: unset;
+
+    .rt-thead {
+        font-family: @monospace-font;
+        font-size: 13px;
+        font-weight: @bold-font-weight;
+        color: @dark-text;
+
+        .rt-tr {
+            background: @primary-tint-4;
+            text-align: unset;
+        }
+    }
+
+    .rt-tbody{
+        .rt-tr-group {
+            flex: 0 0 auto !important;
+        }
+
+        .rt-tr.-even {
+            background: @primary-tint-4;
+        }
+
+        .rt-td {
+            font-size: 14px;
+
+            button {
+                width: 80px;
+            }
+        }
+    }
+
+    .pagination-bottom {
+        font-size: 14px;
+
+        .-pagination{
+            box-shadow: unset;
+            border: unset;
+
+            .-btn {
+                color: @tertiary-tint-2;
+                text-transform: uppercase;
+                font-weight: @bold-font-weight;
+                background: unset;
+
+                &:hover {
+                    background: unset;
+                    color: darken(@tertiary-tint-2, 10%);
+                }
+            }
+
+            .-pageInfo {
+                text-transform: lowercase;
+            }
+        }
     }
 }
