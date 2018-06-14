@@ -213,15 +213,10 @@ class TabbedResults extends Component {
             key="history"
             eventKey="history"
             title={
-              <div>
-                <Button
-                  className="btn-title btn-history"
-                  bsStyle="gbpl-primary-tint-2"
-                  bsSize="xsmall"
-                  disabled
-                >
+              <div className="history-tab">
+                <span className="icon-bg">
                   <Glyphicon glyph="time" className="history-icon" />
-                </Button>
+                </span>
                 <span className="tab-title">history</span>
               </div>
             }

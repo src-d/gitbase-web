@@ -14,10 +14,7 @@ body {
     background-color: @primary-tint-4;
     font-family: @regular-font;
     font-size: 13px;
-    font-style: normal;
-    font-stretch: normal;
     line-height: normal;
-    letter-spacing: normal;
     color: @primary;
 }
 
@@ -88,6 +85,10 @@ body {
 .modal-body {
     height: ~'calc(100vh - 80px)';
     overflow-y: auto;
+
+    .CodeMirror {
+        height: 100%;
+    }
 }
 
 @media (min-width: @screen-sm-min) {
