@@ -1,4 +1,4 @@
-@import '../node_modules/bootstrap/less/variables.less';
+@import './variables.less';
 
 html,
 body,
@@ -11,12 +11,22 @@ body,
 body {
     max-height: 100%;
     overflow: hidden;
+    background-color: @primary-tint-4;
+    font-family: @regular-font;
+    font-size: 13px;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: @primary;
 }
 
 .app {
     height: 100%;
-    padding-top: 1em;
-    padding-bottom: 1em;
+
+    .app-grid {
+        padding-left: 0;
+    }
 }
 
 .full-height {
@@ -29,11 +39,11 @@ body {
 
 .main-row {
     display: flex;
+}
 
-    & > div {
-        margin-left: @grid-gutter-width / 2;
-        margin-right: @grid-gutter-width / 2;
-    }
+.no-spacing {
+    padding: 0;
+    margin: 0;
 }
 
 .query-box-row {
@@ -57,12 +67,9 @@ body {
     }
 
     .Resizer {
-        margin-top: 1em;
-        margin-bottom: 1em;
-        padding: 2px 0;
-
-        color: @gray;
-        background: @gray-lighter;
+        border-top: solid 1px @primary-tint-2;
+        border-bottom: solid 1px @primary-tint-2;
+        background-color: @query-results-block;
 
         cursor: row-resize;
 
@@ -70,7 +77,8 @@ body {
             display: block;
             content: '● ● ●';
             text-align: center;
-            line-height: 11px;
+            line-height: 13px;
+            font-size: 8px;
         }
     }
 }

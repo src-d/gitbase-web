@@ -1,0 +1,159 @@
+@import '../node_modules/bootstrap/less/bootstrap.less';
+
+//=== Colors
+@primary:           #1b78b7;
+@primary-tint-2:    #76aed3;
+@primary-tint-3:    #e8f1f7;
+@primary-tint-4:    #f5f9fb;
+
+@secondary:         #4ecc7b;
+@secondary-tint-2:  #368e56;
+
+@tertiary:          #ffba34;
+@tertiary-tint-2:   #e59200;
+
+@dark-text:         #112a3c;
+@white-text:        #fff;
+
+@query-results-block: #ffffff;
+@query-examples-bock: rgba(118, 174, 211, 0.2);
+
+//=== Spacing
+@big-spacing: 26px;
+@small-spacing: 10px;
+@tabs-spacing: 8px;
+
+//=== Fonts
+@bold-font-weight: 600;
+@monospace-font: Hack, monospace;
+@regular-font: 'Source Sans Pro', sans-serif;
+
+//=== Buttons
+@btn-font-weight: @bold-font-weight;
+
+.button-link-variant(@color) {
+    &:hover {
+        color: darken(@color, 10%);
+    }
+}
+
+// bsStyle gbpl-secondary: green background
+@btn-gbpl-secondary-color:  @white-text;
+@btn-gbpl-secondary-bg:     @secondary;
+@btn-gbpl-secondary-border: @btn-gbpl-secondary-bg;
+
+.btn-gbpl-secondary {
+    .button-variant(@btn-gbpl-secondary-color; @btn-gbpl-secondary-bg; @btn-gbpl-secondary-border);
+}
+
+// bsStyle gbpl-secondary-tint-2-link: green text, no background
+@btn-gbpl-secondary-tint-2-link-color:  @secondary-tint-2;
+@btn-gbpl-secondary-tint-2-link-bg:     transparent;
+@btn-gbpl-secondary-tint-2-link-border: @btn-gbpl-secondary-tint-2-link-bg;
+
+.btn-gbpl-secondary-tint-2-link {
+    .button-variant(@btn-gbpl-secondary-tint-2-link-color; @btn-gbpl-secondary-tint-2-link-bg; @btn-gbpl-secondary-tint-2-link-border);
+    .button-link-variant(@btn-gbpl-secondary-tint-2-link-color);
+}
+
+// bsStyle gbpl-tertiary: orange background
+@btn-gbpl-tertiary-color:     @white-text;
+@btn-gbpl-tertiary-bg:        @tertiary;
+@btn-gbpl-tertiary-border:    @btn-gbpl-tertiary-bg;
+
+.btn-gbpl-tertiary {
+    .button-variant(@btn-gbpl-tertiary-color; @btn-gbpl-tertiary-bg; @btn-gbpl-tertiary-border);
+}
+
+// bsStyle gbpl-tertiary-tint-2: orange text, no background
+@btn-gbpl-tertiary-tint-2-link-color:     @tertiary-tint-2;
+@btn-gbpl-tertiary-tint-2-link-bg:        transparent;
+@btn-gbpl-tertiary-tint-2-link-border:    @btn-gbpl-tertiary-tint-2-link-bg;
+
+.btn-gbpl-tertiary-tint-2-link {
+    .button-variant(@btn-gbpl-tertiary-tint-2-link-color; @btn-gbpl-tertiary-tint-2-link-bg; @btn-gbpl-tertiary-tint-2-link-border);
+    .button-link-variant(@btn-gbpl-tertiary-tint-2-link-color);
+}
+
+// bsStyle gbpl-primary-tint-2: blue background
+@btn-gbpl-primary-tint-2-color:     @white-text;
+@btn-gbpl-primary-tint-2-bg:        @primary-tint-2;
+@btn-gbpl-primary-tint-2-border:    @btn-gbpl-primary-tint-2-bg;
+
+.btn-gbpl-primary-tint-2 {
+    .button-variant(@btn-gbpl-primary-tint-2-color; @btn-gbpl-primary-tint-2-bg; @btn-gbpl-primary-tint-2-border);
+}
+
+// Allows for customizing button radius independently from global border radius
+@btn-border-radius-base:  100px;
+@btn-border-radius-large: 100px;
+@btn-border-radius-small: 100px;
+
+.btn {
+    letter-spacing: 0.6px;
+}
+
+// Less height, to be used inside the tables
+.btn-compact {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+//=== Tabs
+@nav-link-padding: @tabs-spacing 15px;
+@nav-tabs-border-color: @primary;
+@nav-tabs-link-hover-border-color: @primary;
+@nav-tabs-active-link-hover-border-color: @primary;
+
+@border-radius-base: @tabs-spacing;
+@border-radius-large: @tabs-spacing;
+@border-radius-small: @tabs-spacing;
+
+.nav-tabs {
+    > li {
+        margin-top: @tabs-spacing;
+
+        // Actual tabs (as links)
+        > a {
+            color: @dark-text;
+            margin-right: @tabs-spacing;
+            border: 1px solid @primary;
+            background-color: @primary-tint-3;
+            &:hover {
+                background-color: darken(@primary-tint-3, 10%);
+            }
+        }
+
+        // Active state, and its :hover to override normal :hover
+        &.active {
+            margin-top: 0px;
+
+            > a {
+                &,
+                &:hover,
+                &:focus {
+                    padding-top: 8px + @tabs-spacing;
+
+                    color: @dark-text;
+                    background-color: @nav-tabs-active-link-hover-bg;
+                    border: 1px solid @nav-tabs-active-link-hover-border-color;
+                    border-bottom-color: transparent;
+                    cursor: default;
+                }
+            }
+        }
+    }
+    // pulling this in mainly for less shorthand
+    &.nav-justified {
+        .nav-justified();
+        .nav-tabs-justified();
+    }
+}
+
+@btn-title-size: 22px;
+
+.btn-title {
+    margin-left: 1ex;
+    height: @btn-title-size;
+    width: @btn-title-size;
+}

@@ -1,6 +1,7 @@
-.close {
-    width: auto;
-    margin-left: 1ex;
+@import '../variables.less';
+
+.results-padding {
+    padding: @small-spacing;
 }
 
 .edit {
@@ -19,9 +20,13 @@
     display: flex;
     flex-direction: column;
 
+    background-color: @query-results-block;
+    border: solid 1px @primary;
+    border-top: 0px;
+
     > .tab-pane {
         flex: 1 1 auto;
-        padding-top: 2em;
+        padding: @big-spacing;
 
         &[aria-hidden='false'] {
             display: flex;
@@ -35,7 +40,8 @@
 
     .query-text {
         white-space: pre;
-        font-family: monospace;
+        font-family: @monospace-font;
+        color: @secondary-tint-2;
         float: left;
         max-width: 85%;
         overflow: auto;
@@ -47,12 +53,30 @@ button.edit-query {
     float: left;
     padding-top: 0px;
     margin-left: 1ex;
+    border-top: 0px;
 }
 
 .tab-title {
     width: 150px;
+    height: @btn-title-size;
+    vertical-align: middle;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
+    font-family: @monospace-font;
+    font-weight: @bold-font-weight;
+}
+
+.nav-tabs {
+    > li:last-child {
+        float: right;
+    }
+}
+
+.btn-history {
+    margin-left: 0 !important;
+    margin-right: 1ex !important;
+    cursor: default !important;
+    opacity: unset !important;
 }

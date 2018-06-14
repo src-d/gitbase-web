@@ -1,47 +1,69 @@
+@import '../variables.less';
+
 .sidebar {
     display: flex;
     flex-direction: column;
+    max-width: 290px;
 
+    padding-top: 10px;
+    padding-bottom: @big-spacing;
+    margin-bottom: 0px;
     min-height: 100%;
+    background-color: @primary-tint-3;
+    border-right: solid 1px @primary-tint-2;
 
     .header {
         display: flex;
-        flex: 0 0 24px;
+        flex: 0 0 auto;
 
-        margin: 0 0 10px 0;
-        padding: 0 0 10px 0;
+        margin: 0;
+        padding: @big-spacing 0 @big-spacing @big-spacing;
 
-        border-bottom: 1px solid #000;
+        color: @primary-tint-2;
 
         h3 {
+            font-size: 16px;
+            font-weight: @bold-font-weight;
+
             width: 100%;
 
             margin: 0;
-            padding: 0;
-
-            font-size: 16px;
-            font-weight: normal;
+            // padding: 0;
         }
 
         .glyphicon {
             cursor: pointer;
+            padding-right: @big-spacing;
+        }
+
+    }
+
+    .list {
+        line-height: 1.5;
+
+        .glyphicon {
+            margin-right: @small-spacing;
         }
     }
 
     .main {
         flex: 1 1;
-        margin-bottom: 10px;
+        margin-bottom: @small-spacing;
     }
 
     .footer {
-        flex: 0 0;
-
-        display: flex;
-        justify-content: space-between;
+        font-weight: @bold-font-weight;
+        padding-left: @big-spacing;
     }
 
-    .SplitPane .Resizer {
-        margin: 0;
+    .SplitPane {
+        .Resizer {
+            background-color: @primary-tint-3;
+        }
+
+        .Pane1 {
+            padding-left: @big-spacing;
+        }
     }
 
     &.collapsed {
@@ -49,10 +71,6 @@
         .main,
         .footer {
             display: none;
-        }
-
-        .header {
-            border-bottom: 0;
         }
     }
 }

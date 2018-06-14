@@ -117,7 +117,7 @@ exports[`ResultsTable text with new lines should be shown as code 1`] = `
             }
           >
             <button
-              className="btn btn-default"
+              className="btn-compact btn btn-gbpl-tertiary"
               disabled={false}
               onClick={[Function]}
               type="button"

@@ -43,7 +43,7 @@ class HistoryTable extends Component {
     return (
       <div className="history">
         <div className="toolbar">
-          <a onClick={handleReset}>Reset history</a>
+          <a onClick={handleReset}>reset history</a>
         </div>
         <ReactTable
           className="results-table"

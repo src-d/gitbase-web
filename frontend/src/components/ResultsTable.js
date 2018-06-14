@@ -19,12 +19,28 @@ class ResultsTable extends Component {
           case 'string':
             // assume any multiline string is code
             if (v.indexOf('\n') > -1) {
-              return <Button onClick={() => showCode(v)}>Code</Button>;
+              return (
+                <Button
+                  bsStyle="gbpl-tertiary"
+                  className="btn-compact"
+                  onClick={() => showCode(v)}
+                >
+                  Code
+                </Button>
+              );
             }
             return v;
           case 'object':
             // UAST column
-            return <Button onClick={() => showUAST(v)}>UAST</Button>;
+            return (
+              <Button
+                bsStyle="gbpl-tertiary"
+                className="btn-compact"
+                onClick={() => showUAST(v)}
+              >
+                UAST
+              </Button>
+            );
           default:
             return v;
         }

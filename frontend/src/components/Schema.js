@@ -21,7 +21,7 @@ class SchemaTable extends Component {
     const glyph = this.state.expanded ? 'minus' : 'plus';
 
     return (
-      <div className="schema-table">
+      <div className="schema-table list">
         <div className="name">
           <Glyphicon glyph={glyph} onClick={this.toggle} />
           <span onClick={() => onTableClick && onTableClick(table)}>
@@ -32,6 +32,7 @@ class SchemaTable extends Component {
           <div className="columns">
             {columns.map((c, i) => (
               <div key={i} className="column">
+                <Glyphicon glyph="align-justify" />
                 {c.name}
               </div>
             ))}

@@ -27,7 +27,7 @@ class Sidebar extends Component {
     return (
       <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
         <div className="header">
-          <h3>{'{d}'} Gitbase Playground </h3>
+          <h3>gitbase playgroun{'{d}'}</h3>
           <Glyphicon onClick={this.handleToggle} glyph={togglerIcon} />
         </div>
         <div className="main">
@@ -36,35 +36,37 @@ class Sidebar extends Component {
             <SampleQueries onExampleClick={onExampleClick} />
           </SplitPane>
         </div>
-        <div className="footer">
-          <a
-            href="https://sourced.tech"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            source{'{d}'}
-          </a>
-          <a
-            href="https://github.com/src-d/gitbase"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            gitbase
-          </a>
-          <a
-            href="https://github.com/src-d/go-git"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            go-git
-          </a>
-          <a
-            href="https://doc.bblf.sh"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            babelfish
-          </a>
+        <div className="footer list">
+          <div>
+            <Glyphicon glyph="list" />
+            <a
+              href="https://github.com/src-d/go-git"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              go-git
+            </a>
+          </div>
+          <div>
+            <Glyphicon glyph="list" />
+            <a
+              href="https://doc.bblf.sh"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              babelfish
+            </a>
+          </div>
+          <div>
+            <Glyphicon glyph="list" />
+            <a
+              href="https://sourced.tech"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              source{'{d}'} © 2018
+            </a>
+          </div>
         </div>
       </div>
     );
