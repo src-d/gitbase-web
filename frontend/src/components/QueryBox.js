@@ -75,40 +75,46 @@ class QueryBox extends Component {
     }
 
     return (
-      <div className="query-box">
-        <Row className="codemirror-row">
-          <Col xs={12} className="codemirror-col">
-            <CodeMirror
-              value={this.props.sql}
-              options={options}
-              onBeforeChange={(editor, data, value) => {
-                this.props.handleTextChange(value);
-              }}
-            />
-          </Col>
-        </Row>
-        <Row className="button-row">
-          <Col xs={6}>{meta}</Col>
-          <Col xs={3}>
-            <Button
-              className="pull-right"
-              disabled={!this.props.exportUrl}
-              href={this.props.exportUrl}
-              target="_blank"
-            >
-              EXPORT
-            </Button>
-          </Col>
-          <Col xs={3}>
-            <Button
-              className="pull-right"
-              disabled={this.props.enabled === false}
-              onClick={this.props.handleSubmit}
-            >
-              RUN
-            </Button>
-          </Col>
-        </Row>
+      <div className="query-box-padding full-height full-width">
+        <div className="query-box full-height full-width">
+          <Row className="codemirror-row no-spacing">
+            <Col xs={12} className="codemirror-col no-spacing">
+              <CodeMirror
+                value={this.props.sql}
+                options={options}
+                onBeforeChange={(editor, data, value) => {
+                  this.props.handleTextChange(value);
+                }}
+              />
+            </Col>
+          </Row>
+          <Row className="button-row">
+            <Col xs={6} className="meta-wrapper">
+              <span className="meta">{meta}</span>
+            </Col>
+            <Col xs={3}>
+              <Button
+                className="pull-right"
+                bsStyle="gbpl-secondary-tint-2-link"
+                disabled={!this.props.exportUrl}
+                href={this.props.exportUrl}
+                target="_blank"
+              >
+                EXPORT
+              </Button>
+            </Col>
+            <Col xs={3}>
+              <Button
+                className="pull-right"
+                bsStyle="gbpl-secondary"
+                disabled={this.props.enabled === false}
+                onClick={this.props.handleSubmit}
+              >
+                RUN QUERY
+              </Button>
+            </Col>
+          </Row>
+        </div>
       </div>
     );
   }

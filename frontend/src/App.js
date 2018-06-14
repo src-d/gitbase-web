@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import { Grid, Row, Col, Modal } from 'react-bootstrap';
+import { Grid, Row, Modal, Button } from 'react-bootstrap';
+import { bootstrapUtils } from 'react-bootstrap/lib/utils';
 import SplitPane from 'react-split-pane';
 import UASTViewer, { Editor, transformer } from 'uast-viewer';
 import 'uast-viewer/dist/default-theme.css';
@@ -276,48 +277,34 @@ FROM ( SELECT MONTH(committer_when) as month,
         <Helmet>
           <title>Gitbase Playground</title>
         </Helmet>
-        <Grid className="full-height" fluid={true}>
+        <Grid className="full-height app-grid" fluid={true}>
           <Row className="main-row full-height">
             <Sidebar
               schema={this.state.schema}
               onTableClick={this.handleTableClick}
               onExampleClick={this.handleExampleClick}
             />
-            <div className="full-height full-width">
-              <SplitPane split="horizontal" defaultSize={250} minSize={100}>
-                <Grid className="full-height full-width">
-                  <Row className="query-box-row">
-                    <Col xs={12} className="full-height">
-                      <QueryBox
-                        sql={this.state.sql}
-                        schema={this.state.schema}
-                        resultMeta={this.state.lastResultMeta}
-                        handleTextChange={this.handleTextChange}
-                        handleSubmit={this.handleSubmit}
-                        exportUrl={api.queryExport(this.state.sql)}
-                      />
-                    </Col>
-                  </Row>
-                </Grid>
-                <Grid className="full-height full-width">
-                  <Row className="results-row">
-                    <Col xs={12} className="full-height">
-                      <TabbedResults
-                        results={results}
-                        history={history}
-                        handleRemoveResult={this.handleRemoveResult}
-                        handleEditQuery={this.handleTextChange}
-                        handleResetHistory={this.handleResetHistory}
-                        handleSetActiveResult={this.handleSetActiveResult}
-                        handleReload={this.handleReload}
-                        showCode={this.showCode}
-                        showUAST={this.showUAST}
-                      />
-                    </Col>
-                  </Row>
-                </Grid>
-              </SplitPane>
-            </div>
+            <SplitPane split="horizontal" defaultSize={250} minSize={100}>
+              <QueryBox
+                sql={this.state.sql}
+                schema={this.state.schema}
+                resultMeta={this.state.lastResultMeta}
+                handleTextChange={this.handleTextChange}
+                handleSubmit={this.handleSubmit}
+                exportUrl={api.queryExport(this.state.sql)}
+              />
+              <TabbedResults
+                results={results}
+                history={history}
+                handleRemoveResult={this.handleRemoveResult}
+                handleEditQuery={this.handleTextChange}
+                handleResetHistory={this.handleResetHistory}
+                handleSetActiveResult={this.handleSetActiveResult}
+                handleReload={this.handleReload}
+                showCode={this.showCode}
+                showUAST={this.showUAST}
+              />
+            </SplitPane>
           </Row>
         </Grid>
         <Modal
@@ -334,5 +321,11 @@ FROM ( SELECT MONTH(committer_when) as month,
     );
   }
 }
+
+bootstrapUtils.addStyle(Button, 'gbpl-secondary');
+bootstrapUtils.addStyle(Button, 'gbpl-secondary-tint-2-link');
+bootstrapUtils.addStyle(Button, 'gbpl-tertiary');
+bootstrapUtils.addStyle(Button, 'gbpl-tertiary-tint-2-link');
+bootstrapUtils.addStyle(Button, 'gbpl-primary-tint-2');
 
 export default App;

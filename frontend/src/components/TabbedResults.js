@@ -29,7 +29,7 @@ class TabTitle extends Component {
   }
 
   render() {
-    const { tabKey } = this.props;
+    const { tabKey, active } = this.props;
     const { title, inEdit } = this.state;
 
     if (inEdit) {
@@ -37,6 +37,7 @@ class TabTitle extends Component {
         <div ref={this.ref}>
           <input
             type="text"
+            className="tab-title"
             value={title}
             onChange={e => {
               this.setState({ title: e.target.value });
@@ -56,20 +57,24 @@ class TabTitle extends Component {
       <div>
         <span className="tab-title">{title}</span>
         <Button
-          className="close"
-          onClick={() => {
-            this.props.handleRemoveResult(tabKey);
-          }}
-        >
-          <span aria-hidden="true">&times;</span>
-        </Button>
-        <Button
-          className="close edit"
+          className="btn-title"
+          bsStyle={active ? 'gbpl-tertiary' : 'gbpl-primary-tint-2'}
+          bsSize="xsmall"
           onClick={() => {
             this.handleStartEdit(tabKey);
           }}
         >
           <Glyphicon glyph="pencil" />
+        </Button>
+        <Button
+          className="btn-title"
+          bsStyle={active ? 'gbpl-tertiary' : 'gbpl-primary-tint-2'}
+          bsSize="xsmall"
+          onClick={() => {
+            this.props.handleRemoveResult(tabKey);
+          }}
+        >
+          <span aria-hidden="true">&times;</span>
         </Button>
       </div>
     );
@@ -78,6 +83,7 @@ class TabTitle extends Component {
 
 TabTitle.propTypes = {
   tabKey: PropTypes.any.isRequired,
+  active: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   handleRemoveResult: PropTypes.func.isRequired
 };
@@ -124,91 +130,105 @@ class TabbedResults extends Component {
     const { showCode, showUAST, history } = this.props;
 
     return (
-      <Tabs
-        id="tabbed-results"
-        className="full-height"
-        activeKey={this.state.activeKey}
-        onSelect={this.handleSelect}
-      >
-        {Array.from(this.props.results.entries()).map(([key, query]) => {
-          let content = '';
-          if (key === this.state.activeKey) {
-            if (query.loading) {
-              content = (
-                <Row>
-                  <Col className="text-center loader-col" xs={12}>
-                    <Loader />
-                  </Col>
-                </Row>
-              );
-            } else if (query.errorMsg) {
-              content = (
-                <Row className="errors-row">
+      <div className="results-padding full-height full-width">
+        <Tabs
+          id="tabbed-results"
+          className="full-height"
+          activeKey={this.state.activeKey}
+          onSelect={this.handleSelect}
+        >
+          {Array.from(this.props.results.entries()).map(([key, query]) => {
+            let content = '';
+            if (key === this.state.activeKey) {
+              if (query.loading) {
+                content = (
+                  <Row>
+                    <Col className="text-center loader-col" xs={12}>
+                      <Loader />
+                    </Col>
+                  </Row>
+                );
+              } else if (query.errorMsg) {
+                content = (
+                  <Row className="errors-row">
+                    <Col xs={12}>
+                      <Alert bsStyle="danger">{query.errorMsg}</Alert>
+                    </Col>
+                  </Row>
+                );
+              } else if (query.response) {
+                content = (
+                  <ResultsTable
+                    response={query.response}
+                    showCode={showCode}
+                    showUAST={showUAST}
+                  />
+                );
+              } else {
+                content = (
+                  <Row>
+                    <Col xs={12} className="text-center">
+                      SUSPENDED TAB<br />
+                      <Button onClick={() => this.props.handleReload(key)}>
+                        Reload
+                      </Button>
+                    </Col>
+                  </Row>
+                );
+              }
+            }
+
+            return (
+              <Tab
+                key={key}
+                eventKey={key}
+                title={
+                  <TabTitle
+                    title={query.title || query.sql}
+                    tabKey={key}
+                    active={key === this.state.activeKey}
+                    handleRemoveResult={this.props.handleRemoveResult}
+                  />
+                }
+              >
+                <Row className="query-row">
                   <Col xs={12}>
-                    <Alert bsStyle="danger">{query.errorMsg}</Alert>
-                  </Col>
-                </Row>
-              );
-            } else if (query.response) {
-              content = (
-                <ResultsTable
-                  response={query.response}
-                  showCode={showCode}
-                  showUAST={showUAST}
-                />
-              );
-            } else {
-              content = (
-                <Row>
-                  <Col xs={12} className="text-center">
-                    SUSPENDED TAB<br />
-                    <Button onClick={() => this.props.handleReload(key)}>
-                      Reload
+                    <div className="query-text">
+                      <p>{query.sql}</p>
+                    </div>
+                    <Button
+                      className="edit-query"
+                      bsStyle="gbpl-tertiary-tint-2-link"
+                      onClick={() => this.props.handleEditQuery(query.sql)}
+                    >
+                      EDIT
                     </Button>
                   </Col>
                 </Row>
-              );
+                {content}
+              </Tab>
+            );
+          })}
+          <Tab
+            key="history"
+            eventKey="history"
+            title={
+              <div className="history-tab">
+                <span className="icon-bg">
+                  <Glyphicon glyph="time" className="history-icon" />
+                </span>
+                <span className="tab-title">history</span>
+              </div>
             }
-          }
-
-          return (
-            <Tab
-              key={key}
-              eventKey={key}
-              title={
-                <TabTitle
-                  title={query.title || query.sql}
-                  tabKey={key}
-                  handleRemoveResult={this.props.handleRemoveResult}
-                />
-              }
-            >
-              <Row className="query-row">
-                <Col xs={12}>
-                  <div className="query-text">
-                    <p>{query.sql}</p>
-                  </div>
-                  <Button
-                    className="edit-query"
-                    bsStyle="link"
-                    onClick={() => this.props.handleEditQuery(query.sql)}
-                  >
-                    edit query
-                  </Button>
-                </Col>
-              </Row>
-              {content}
-            </Tab>
-          );
-        })}
-        <Tab key="history" eventKey="history" title="History">
-          <HistoryTable
-            items={history}
-            onOpenQuery={this.props.handleEditQuery}
-            handleReset={this.props.handleResetHistory}
-          />
-        </Tab>
-      </Tabs>
+          >
+            <HistoryTable
+              items={history}
+              onOpenQuery={this.props.handleEditQuery}
+              handleReset={this.props.handleResetHistory}
+            />
+          </Tab>
+        </Tabs>
+      </div>
     );
   }
 }

@@ -1,21 +1,26 @@
+@import '../variables.less';
+
 .sample-queries {
     .title {
-        padding: 3px 0;
-        margin-bottom: 10px;
-        background: #ccc;
-
+        letter-spacing: 0.5px;
+        color: @primary;
         text-align: center;
         text-transform: uppercase;
+
+        font-size: 14px;
+
+        padding: 12px 0;
+        margin-bottom: 19px;
+
+        background-color: @query-examples-bock;
     }
 
     .query {
+        padding-left: @big-spacing;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         cursor: pointer;
-
-        .glyphicon {
-            margin-right: 5px;
-        }
+        padding-right: 40px;
     }
 }

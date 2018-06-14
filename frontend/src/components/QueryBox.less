@@ -1,18 +1,41 @@
-@import '../../node_modules/bootstrap/less/variables.less';
+@import '../variables.less';
+
+.query-box-padding {
+    padding: @small-spacing;
+}
 
 .query-box {
     height: 100%;
     display: flex;
     flex-direction: column;
 
+    border: solid 1px @primary;
+    background-color: @query-results-block;
+
+    .meta-wrapper {
+        display: table;
+        height: 100%;
+
+        .meta {
+            display: table-cell;
+            vertical-align: middle;
+
+            font-size: 14px;
+        }
+    }
+
     .codemirror-row {
         flex-grow: 1;
         display: flex;
         overflow: hidden;
+        padding-top: 26px;
     }
 
     .button-row {
         flex: 0 0;
+        border-top: solid 1px @primary-tint-3;
+        padding: @big-spacing;
+        margin: 0;
     }
 
     .codemirror-col {
@@ -26,12 +49,12 @@
     button {
         width: 100%;
     }
-}
 
-.CodeMirror {
-    height: 100%;
-}
+    .CodeMirror {
+        height: 100%;
+    }
 
-.CodeMirror-empty {
-    color: @gray-light;
+    .CodeMirror-empty {
+        color: @gray-light;
+    }
 }
