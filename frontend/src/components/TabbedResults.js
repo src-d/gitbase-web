@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Row, Col, Alert, Tabs, Tab, Button, Glyphicon } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ResultsTable from './ResultsTable';
@@ -166,14 +166,24 @@ class TabbedResults extends Component {
                 );
               } else {
                 content = (
-                  <Row>
-                    <Col xs={12} className="text-center">
-                      SUSPENDED TAB<br />
-                      <Button onClick={() => this.props.handleReload(key)}>
-                        Reload
-                      </Button>
-                    </Col>
-                  </Row>
+                  <Fragment>
+                    <Row>
+                      <Col xs={12} className="text-center">
+                        SUSPENDED TAB
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs={12} className="text-center">
+                        <Button
+                          className="reload"
+                          bsStyle="gbpl-tertiary"
+                          onClick={() => this.props.handleReload(key)}
+                        >
+                          Reload
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Fragment>
                 );
               }
             }
