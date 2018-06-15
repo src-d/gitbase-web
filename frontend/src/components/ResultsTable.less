@@ -7,21 +7,37 @@
 
     border: unset;
 
-    .rt-thead {
+    .rt-thead.-header {
         font-family: @monospace-font;
         font-size: 13px;
         font-weight: @bold-font-weight;
         color: @dark-text;
 
+        box-shadow: unset;
+
         .rt-tr {
             background: @primary-tint-4;
             text-align: unset;
+            border-bottom: 1px solid @primary-tint-3;
+
+            .rt-th {
+                border-right: 2px solid @primary-tint-3;
+
+                &:last-child {
+                    border-right: 0;
+                }
+            }
         }
     }
 
     .rt-tbody{
         .rt-tr-group {
             flex: 0 0 auto !important;
+            border-bottom: 1px solid @primary-tint-3;
+
+            &:last-child {
+                border-bottom: 0;
+            }
         }
 
         .rt-tr.-even {
@@ -30,6 +46,11 @@
 
         .rt-td {
             font-size: 14px;
+            border-right: 2px solid @primary-tint-3;
+
+            &:last-child {
+                border-right: 0;
+            }
 
             button {
                 width: 80px;
@@ -43,6 +64,21 @@
         .-pagination{
             box-shadow: unset;
             border: unset;
+
+            .-previous, .-next, .-center {
+                flex: 0 0  auto;
+            }
+
+            .-previous {
+                margin-left: auto;
+                margin-right: 45px;
+            }
+
+            .-next {
+                margin-left: 45px;
+                margin-right: auto;
+            }
+
 
             .-btn {
                 color: @tertiary-tint-2;
@@ -58,6 +94,14 @@
 
             .-pageInfo {
                 text-transform: lowercase;
+                border-right: 2px solid @primary-tint-3;
+                padding-right: 18px;
+                margin-right: 0px;
+            }
+
+            .-pageSizeOptions {
+                padding-left: 18px;
+                margin-left: 0px;
             }
         }
     }
