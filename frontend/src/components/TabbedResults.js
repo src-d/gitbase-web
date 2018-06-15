@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Row, Col, Alert, Tabs, Tab, Button, Glyphicon } from 'react-bootstrap';
+import { Row, Col, Alert, Tab, Button, Glyphicon } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import DivTabs from './DivTabs';
 import ResultsTable from './ResultsTable';
 import HistoryTable from './HistoryTable';
 import Loader from './Loader';
@@ -18,6 +19,9 @@ class TabTitle extends Component {
 
     this.handleStartEdit = this.handleStartEdit.bind(this);
     this.handleEndEdit = this.handleEndEdit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   handleStartEdit() {
@@ -28,6 +32,20 @@ class TabTitle extends Component {
     this.setState({ inEdit: false });
   }
 
+  handleChange(e) {
+    this.setState({ title: e.target.value });
+  }
+
+  handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      this.handleEndEdit();
+    }
+  }
+
+  handleBlur() {
+    this.handleEndEdit();
+  }
+
   render() {
     const { tabKey, active } = this.props;
     const { title, inEdit } = this.state;
@@ -36,18 +54,15 @@ class TabTitle extends Component {
       return (
         <div ref={this.ref}>
           <input
+            autoFocus
             type="text"
             className="tab-title"
             value={title}
-            onChange={e => {
-              this.setState({ title: e.target.value });
-            }}
-            onKeyPress={e => {
-              if (e.key === 'Enter') {
-                this.handleEndEdit();
-              }
-            }}
-            onBlur={this.handleEndEdit}
+            onChange={this.handleChange}
+            onKeyPress={this.handleKeyPress}
+            /* disable handlers of tab components */
+            onKeyDown={e => e.stopPropagation()}
+            onBlur={this.handleBlur}
           />
         </div>
       );
@@ -131,7 +146,7 @@ class TabbedResults extends Component {
 
     return (
       <div className="results-padding full-height full-width">
-        <Tabs
+        <DivTabs
           id="tabbed-results"
           className="full-height"
           activeKey={this.state.activeKey}
@@ -240,7 +255,7 @@ class TabbedResults extends Component {
               />
             </Tab>
           )}
-        </Tabs>
+        </DivTabs>
       </div>
     );
   }
