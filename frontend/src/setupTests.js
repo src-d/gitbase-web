@@ -1,5 +1,7 @@
 import path from 'path';
 import os from 'os';
+import { Button } from 'react-bootstrap';
+import { bootstrapUtils } from 'react-bootstrap/lib/utils';
 
 const { LocalStorage } = require('node-localstorage');
 // URL API for node
@@ -14,6 +16,12 @@ global.localStorage = new LocalStorage(
 
 global.window = document.defaultView;
 global.window.localStorage = global.localStorage;
+
+bootstrapUtils.addStyle(Button, 'gbpl-secondary');
+bootstrapUtils.addStyle(Button, 'gbpl-secondary-tint-2-link');
+bootstrapUtils.addStyle(Button, 'gbpl-tertiary');
+bootstrapUtils.addStyle(Button, 'gbpl-tertiary-tint-2-link');
+bootstrapUtils.addStyle(Button, 'gbpl-primary-tint-2');
 
 // CodeMirror needs all of this in order to work.
 // see: https://discuss.codemirror.net/t/working-in-jsdom-or-node-js-natively/138/5
