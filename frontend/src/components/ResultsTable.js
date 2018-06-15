@@ -12,7 +12,13 @@ class ResultsTable extends Component {
       Header: col,
       id: col,
       accessor: row => {
-        const v = row[col];
+        let v = row[col];
+
+        // Array of hashes to string
+        if (Array.isArray(v) && v.every(e => typeof e === 'string')) {
+          v = v.join('\n');
+        }
+
         switch (typeof v) {
           case 'boolean':
             return v.toString();
