@@ -122,7 +122,7 @@ exports[`ResultsTable text with new lines should be shown as code 1`] = `
               onClick={[Function]}
               type="button"
             >
-              Code
+              CODE
             </button>
           </div>
         </div>

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import { Grid, Row, Modal, Button } from 'react-bootstrap';
-import { bootstrapUtils } from 'react-bootstrap/lib/utils';
+import { Grid, Row, Modal } from 'react-bootstrap';
 import SplitPane from 'react-split-pane';
 import UASTViewer, { Editor, transformer } from 'uast-viewer';
 import 'uast-viewer/dist/default-theme.css';
+import initButtonStyles from './utils/bootstrap';
 import Sidebar from './components/Sidebar';
 import QueryBox from './components/QueryBox';
 import TabbedResults from './components/TabbedResults';
@@ -327,10 +327,6 @@ FROM ( SELECT MONTH(committer_when) as month,
   }
 }
 
-bootstrapUtils.addStyle(Button, 'gbpl-secondary');
-bootstrapUtils.addStyle(Button, 'gbpl-secondary-tint-2-link');
-bootstrapUtils.addStyle(Button, 'gbpl-tertiary');
-bootstrapUtils.addStyle(Button, 'gbpl-tertiary-tint-2-link');
-bootstrapUtils.addStyle(Button, 'gbpl-primary-tint-2');
+initButtonStyles();
 
 export default App;

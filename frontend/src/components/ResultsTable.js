@@ -25,7 +25,7 @@ class ResultsTable extends Component {
                   className="btn-compact"
                   onClick={() => showCode(v)}
                 >
-                  Code
+                  CODE
                 </Button>
               );
             }
