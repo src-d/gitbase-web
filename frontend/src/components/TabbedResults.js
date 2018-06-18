@@ -219,24 +219,27 @@ class TabbedResults extends Component {
               </Tab>
             );
           })}
-          <Tab
-            key="history"
-            eventKey="history"
-            title={
-              <div className="history-tab">
-                <span className="icon-bg">
-                  <Glyphicon glyph="time" className="history-icon" />
-                </span>
-                <span className="tab-title">history</span>
-              </div>
-            }
-          >
-            <HistoryTable
-              items={history}
-              onOpenQuery={this.props.handleEditQuery}
-              handleReset={this.props.handleResetHistory}
-            />
-          </Tab>
+          {history.length > 0 && (
+            <Tab
+              key="history"
+              eventKey="history"
+              tabClassName="history"
+              title={
+                <div className="history-tab">
+                  <span className="icon-bg">
+                    <Glyphicon glyph="time" className="history-icon" />
+                  </span>
+                  <span className="tab-title">history</span>
+                </div>
+              }
+            >
+              <HistoryTable
+                items={history}
+                onOpenQuery={this.props.handleEditQuery}
+                handleReset={this.props.handleResetHistory}
+              />
+            </Tab>
+          )}
         </Tabs>
       </div>
     );
