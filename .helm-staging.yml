@@ -45,5 +45,5 @@ gitbaseServer:
       url: https://github.com/bblfsh/bblfshd.git
   image:
     repository: srcd/gitbase
-    tag: v0.12.1-rc1
+    tag: v0.13.0
     pullPolicy: IfNotPresent
