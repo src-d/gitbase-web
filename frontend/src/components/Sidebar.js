@@ -20,7 +20,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { schema, onTableClick, onExampleClick } = this.props;
+    const { schema, onTableClick, onExampleClick, exampleQueries } = this.props;
     const { collapsed } = this.state;
     const togglerIcon = collapsed ? 'chevron-right' : 'chevron-left';
 
@@ -33,7 +33,10 @@ class Sidebar extends Component {
         <div className="main">
           <SplitPane split="horizontal" defaultSize={200} minSize={100}>
             <Schema schema={schema} onTableClick={onTableClick} />
-            <SampleQueries onExampleClick={onExampleClick} />
+            <SampleQueries
+              onExampleClick={onExampleClick}
+              exampleQueries={exampleQueries}
+            />
           </SplitPane>
         </div>
         <div className="footer list">
@@ -76,7 +79,8 @@ class Sidebar extends Component {
 Sidebar.propTypes = {
   schema: Schema.propTypes.schema,
   onTableClick: PropTypes.func,
-  onExampleClick: PropTypes.func
+  onExampleClick: PropTypes.func,
+  exampleQueries: SampleQueries.propTypes.exampleQueries
 };
 
 export default Sidebar;

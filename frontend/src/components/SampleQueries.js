@@ -3,27 +3,12 @@ import PropTypes from 'prop-types';
 import { Glyphicon } from 'react-bootstrap';
 import './SampleQueries.less';
 
-const queries = [
-  {
-    name: 'load all java files',
-    sql: '/* To be done */'
-  },
-  {
-    name: 'get uast from code',
-    sql: '/* To be done */'
-  },
-  {
-    name: 'top 50 repositories by something very long string',
-    sql: '/* To be done */'
-  }
-];
-
-function SampleQueries({ onExampleClick }) {
+function SampleQueries({ onExampleClick, exampleQueries }) {
   return (
     <div className="sample-queries">
       <div className="title">Sample Queries</div>
       <div className="list">
-        {queries.map((q, i) => (
+        {exampleQueries.map((q, i) => (
           <div
             key={i}
             className="query"
@@ -40,7 +25,13 @@ function SampleQueries({ onExampleClick }) {
 }
 
 SampleQueries.propTypes = {
-  onExampleClick: PropTypes.func
+  onExampleClick: PropTypes.func,
+  exampleQueries: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      sql: PropTypes.string.isRequired
+    }).isRequired
+  )
 };
 
 export default SampleQueries;
