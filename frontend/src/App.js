@@ -147,6 +147,18 @@ FROM ( SELECT MONTH(committer_when) as month,
   loadSchema() {
     api
       .schema()
+      .then(schema =>
+        schema.sort((a, b) => {
+          if (a.table < b.table) {
+            return -1;
+          }
+          if (a.table > b.table) {
+            return 1;
+          }
+
+          return 0;
+        })
+      )
       .then(schema => {
         if (JSON.stringify(schema) !== JSON.stringify(this.state.schema)) {
           this.setState({ schema });
