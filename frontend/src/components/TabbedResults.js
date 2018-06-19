@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import DivTabs from './DivTabs';
 import ResultsTable from './ResultsTable';
 import HistoryTable from './HistoryTable';
-import Loader from './Loader';
 import './TabbedResults.less';
 import PencilIcon from '../icons/edit-query-tab-name.svg';
 import CloseIcon from '../icons/close-query-tab.svg';
 import TimerIcon from '../icons/history-tab.svg';
+import LoadingImg from '../icons/alex-loading-results.gif';
+import SuspendedImg from '../icons/alex-suspended-tab.gif';
 
 class TabTitle extends Component {
   constructor(props) {
@@ -152,11 +153,21 @@ class TabbedResults extends Component {
             if (key === this.state.activeKey) {
               if (query.loading) {
                 content = (
-                  <Row>
-                    <Col className="text-center loader-col" xs={12}>
-                      <Loader />
-                    </Col>
-                  </Row>
+                  <Fragment>
+                    <Row>
+                      <Col className="text-center animation-col" xs={12}>
+                        <img src={LoadingImg} alt="loading animation" />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col
+                        className="text-center message-col last-message-col"
+                        xs={12}
+                      >
+                        RUNNING QUERY
+                      </Col>
+                    </Row>
+                  </Fragment>
                 );
               } else if (query.errorMsg) {
                 content = (
@@ -178,18 +189,26 @@ class TabbedResults extends Component {
                 content = (
                   <Fragment>
                     <Row>
-                      <Col xs={12} className="text-center">
+                      <Col className="text-center animation-col" xs={12}>
+                        <img src={SuspendedImg} alt="suspended animation" />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="text-center message-col" xs={12}>
                         SUSPENDED TAB
                       </Col>
                     </Row>
                     <Row>
-                      <Col xs={12} className="text-center">
+                      <Col
+                        className="text-center message-col last-message-col"
+                        xs={12}
+                      >
                         <Button
                           className="reload"
                           bsStyle="gbpl-tertiary"
                           onClick={() => this.props.handleReload(key)}
                         >
-                          Reload
+                          RELOAD
                         </Button>
                       </Col>
                     </Row>
