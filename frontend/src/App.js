@@ -18,17 +18,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sql: `/* Contributor's number of commits, each month of 2018, for each repository */
-
-SELECT COUNT(*) as num_commits, month, repo_id, committer_name
-FROM ( SELECT MONTH(committer_when) as month,
-              r.repository_id as repo_id,
-              committer_name
-    FROM ref_commits r
-    INNER JOIN commits c
-        ON YEAR(c.committer_when) = 2018 AND r.commit_hash = c.commit_hash
-    WHERE r.ref_name = 'HEAD'
-) as t GROUP BY committer_name, month, repo_id`,
+      sql: '',
       results: new Map(),
       schema: undefined,
       history: [],
@@ -55,6 +45,35 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.showUAST = this.showUAST.bind(this);
 
     this.uniqueKey = 0;
+
+    this.exampleQueries = [
+      {
+        name: 'Number of commits per month',
+        sql: `/* Contributor's number of commits, each month of 2018, for each repository */
+
+SELECT COUNT(*) as num_commits, month, repo_id, committer_name
+FROM ( SELECT MONTH(committer_when) as month,
+              r.repository_id as repo_id,
+              committer_name
+    FROM ref_commits r
+    INNER JOIN commits c
+        ON YEAR(c.committer_when) = 2018 AND r.commit_hash = c.commit_hash
+    WHERE r.ref_name = 'HEAD'
+) as t GROUP BY committer_name, month, repo_id`
+      },
+      {
+        name: 'load all java files',
+        sql: '/* To be done */'
+      },
+      {
+        name: 'get uast from code',
+        sql: '/* To be done */'
+      },
+      {
+        name: 'top 50 repositories by something very long string',
+        sql: '/* To be done */'
+      }
+    ];
   }
 
   handleTextChange(text) {
@@ -201,6 +220,7 @@ FROM ( SELECT MONTH(committer_when) as month,
 
   componentDidMount() {
     this.loadSchema();
+    this.handleExampleClick(this.exampleQueries[0].sql);
   }
 
   handleRemoveResult(key) {
@@ -295,6 +315,7 @@ FROM ( SELECT MONTH(committer_when) as month,
               schema={this.state.schema}
               onTableClick={this.handleTableClick}
               onExampleClick={this.handleExampleClick}
+              exampleQueries={this.exampleQueries}
             />
             <SplitPane
               className="main-split"
