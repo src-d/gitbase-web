@@ -16,13 +16,29 @@ class HistoryTable extends Component {
         accessor: row => {
           switch (row.status) {
             case STATUS_SUCCESS:
-              return `Query ran in ${row.elapsedTime / 1000}sec`;
+              return (
+                <span className="history-log history-stat-success">
+                  Query ran in {row.elapsedTime / 1000}s
+                </span>
+              );
             case STATUS_ERROR:
-              return `Query failed - ${row.errorMsg}`;
+              return (
+                <span className="history-log history-stat-error">
+                  Query failed - {row.errorMsg}
+                </span>
+              );
             case STATUS_LOADING:
-              return 'Query is running';
+              return (
+                <span className="history-log history-stat-loading">
+                  Query is running
+                </span>
+              );
             default:
-              return 'unknown status';
+              return (
+                <span className="history-log history-stat-unknown">
+                  Unknown status
+                </span>
+              );
           }
         }
       },
