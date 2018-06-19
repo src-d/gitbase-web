@@ -89,12 +89,11 @@ class QueryBox extends Component {
             </Col>
           </Row>
           <Row className="button-row">
-            <Col xs={6} className="meta-wrapper">
+            <Col xs={7} className="meta-wrapper no-spacing">
               <span className="meta">{meta}</span>
             </Col>
-            <Col xs={3}>
+            <Col xs={5} className="buttons-wrapper no-spacing">
               <Button
-                className="pull-right"
                 bsStyle="gbpl-secondary-tint-2-link"
                 disabled={!this.props.exportUrl}
                 href={this.props.exportUrl}
@@ -102,10 +101,8 @@ class QueryBox extends Component {
               >
                 EXPORT
               </Button>
-            </Col>
-            <Col xs={3}>
               <Button
-                className="pull-right"
+                className="run-query"
                 bsStyle="gbpl-secondary"
                 disabled={this.props.enabled === false}
                 onClick={this.props.handleSubmit}
