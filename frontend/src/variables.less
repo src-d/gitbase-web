@@ -48,6 +48,19 @@
     vertical-align: middle;
 }
 
+// Use this for elements with svg children. Sets the fill color for child
+// svg elements, and darker on parent hover
+.icon-container-variant(@color) {
+    svg path {
+        fill: @color;
+    }
+
+    &:hover svg path {
+        fill: darken(@color, 10%);
+    }
+}
+
+// Use this for svg elements. Sets the fill color, and darker on svg hover
 .icon-btn-variant(@color) {
     cursor: pointer;
 
