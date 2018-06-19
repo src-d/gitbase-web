@@ -47,3 +47,4 @@ gitbaseServer:
     repository: srcd/gitbase
     tag: v0.12.1-rc1
     pullPolicy: IfNotPresent
+  squashEnable: "true"
