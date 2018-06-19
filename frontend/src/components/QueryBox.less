@@ -12,18 +12,6 @@
     border: solid 1px @primary;
     background-color: @query-results-block;
 
-    .meta-wrapper {
-        display: table;
-        height: 100%;
-
-        .meta {
-            display: table-cell;
-            vertical-align: middle;
-
-            font-size: 14px;
-        }
-    }
-
     .codemirror-row {
         flex-grow: 1;
         display: flex;
@@ -36,6 +24,28 @@
         border-top: solid 1px @primary-tint-3;
         padding: @big-spacing;
         margin: 0;
+
+        .meta-wrapper {
+            display: table;
+            height: 100%;
+
+            .meta {
+                display: table-cell;
+                vertical-align: middle;
+
+                font-size: 14px;
+            }
+        }
+
+        .buttons-wrapper {
+            text-align: right;
+        }
+
+        button.run-query {
+            padding-left: 35px;
+            padding-right: 35px;
+            margin-left: @big-spacing;
+        }
     }
 
     .codemirror-col {
@@ -44,10 +54,6 @@
 
     .react-codemirror2 {
         height: 100%;
-    }
-
-    button {
-        width: 100%;
     }
 
     .CodeMirror {
