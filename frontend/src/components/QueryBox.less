@@ -16,7 +16,8 @@
         flex-grow: 1;
         display: flex;
         overflow: hidden;
-        padding-top: 26px;
+        padding-top: 22px;
+        padding-left: @big-spacing;
     }
 
     .button-row {
@@ -58,6 +59,14 @@
 
     .CodeMirror {
         height: 100%;
+        font-family: @monospace-font;
+        font-size: 16px;
+        font-weight: bold;
+
+        .CodeMirror-gutters {
+            border-right: 0;
+            background-color: unset;
+        }
     }
 
     .CodeMirror-empty {

@@ -55,7 +55,7 @@ class QueryBox extends Component {
     const options = {
       mode: 'text/x-mariadb',
       smartIndent: true,
-      lineNumbers: true,
+      lineNumbers: false,
       matchBrackets: true,
       autofocus: true,
       placeholder: 'Enter an SQL query',
