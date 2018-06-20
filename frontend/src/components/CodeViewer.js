@@ -5,7 +5,16 @@ import UASTViewer, { Editor, withUASTEditor } from 'uast-viewer';
 import api from '../api';
 import './CodeViewer.less';
 
-const avaliableLangs = ['JavaScript', 'Go'];
+const avaliableLangs = [
+  'Java',
+  'Go',
+  'Python',
+  'JavaScript',
+  'Php',
+  'Ruby',
+  'Typescript',
+  'Bash'
+];
 
 function EditorPane({
   language,
