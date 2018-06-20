@@ -152,7 +152,7 @@ body {
     }
 
     .uast-title-collapsible.collapsed {
-        background-color: rgba(27, 120, 183, 0.04); // @primary, 0.04 opacity
+        background-color: fade(@primary, 4%);
     }
 
     .uast-value.string {
@@ -161,10 +161,10 @@ body {
     }
 
     .uast-content {
-        border-left: 1px solid rgba(118, 174, 211, 0.5); // @primary-tint-2, 0.5 opacity
+        border-left: 1px solid fade(@primary-tint-2, 50%);
     }
 
     .uast-item.hovered {
-        background-color: rgba(78, 204, 123, 0.07); // @secondary, 0.07 opacity
+        background-color: fade(@secondary, 7%)
     }
 }
