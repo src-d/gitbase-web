@@ -116,13 +116,18 @@
         margin-top: @tabs-spacing;
 
         // Actual tabs (as links)
-        > a {
+        > a, > div {
             color: @dark-text;
+            padding: @nav-link-padding;
             margin-right: @tabs-spacing;
+            line-height: @line-height-base;
             border: 1px solid @primary;
+            border-radius: @border-radius-base @border-radius-base 0 0;
             background-color: @primary-tint-3;
+            cursor: pointer;
             &:hover {
                 background-color: darken(@primary-tint-3, 10%);
+                outline: none;
             }
         }
 
@@ -130,7 +135,7 @@
         &.active {
             margin-top: 0px;
 
-            > a {
+            > a, > div {
                 &,
                 &:hover,
                 &:focus {
@@ -141,6 +146,7 @@
                     border: 1px solid @nav-tabs-active-link-hover-border-color;
                     border-bottom-color: transparent;
                     cursor: default;
+                    outline: none;
                 }
             }
         }
