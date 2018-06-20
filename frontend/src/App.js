@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Grid, Row, Modal } from 'react-bootstrap';
+import nanoid from 'nanoid';
 import SplitPane from 'react-split-pane';
 import UASTViewer, { Editor, transformer } from 'uast-viewer';
 import 'uast-viewer/dist/default-theme.css';
@@ -148,7 +149,7 @@ FROM ( SELECT MONTH(committer_when) as month,
 
   handleSubmit() {
     const { sql, history } = this.state;
-    const key = ++this.uniqueKey;
+    const key = nanoid();
 
     const loadingResults = new Map(this.state.results);
     loadingResults.set(key, { sql, loading: true });
