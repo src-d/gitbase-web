@@ -14,6 +14,28 @@ import './App.less';
 
 const INACTIVE_TIMEOUT = 3600000;
 
+function persist(key, value) {
+  window.localStorage.setItem(key, JSON.stringify(value));
+}
+
+const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+
+function jsonReviver(key, value) {
+  if (typeof value === 'string' && dateFormat.test(value)) {
+    return new Date(value);
+  }
+
+  return value;
+}
+
+function loadStateFromStorage() {
+  const historyJSON = window.localStorage.getItem('history');
+
+  return {
+    history: historyJSON ? JSON.parse(historyJSON, jsonReviver) : []
+  };
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -74,6 +96,14 @@ FROM ( SELECT MONTH(committer_when) as month,
         sql: '/* To be done */'
       }
     ];
+  }
+
+  setState(partialState, callback) {
+    super.setState(partialState, callback);
+
+    if (typeof partialState.history !== 'undefined') {
+      persist('history', partialState.history);
+    }
   }
 
   handleTextChange(text) {
@@ -219,6 +249,7 @@ FROM ( SELECT MONTH(committer_when) as month,
   }
 
   componentDidMount() {
+    this.setState(loadStateFromStorage());
     this.loadSchema();
     this.handleExampleClick(this.exampleQueries[0].sql);
   }
