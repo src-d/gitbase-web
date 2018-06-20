@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"gopkg.in/bblfsh/sdk.v1/protocol"
+	"github.com/src-d/gitbase-playground/server/service"
 	enry "gopkg.in/src-d/enry.v1"
 )
 
@@ -120,8 +120,8 @@ func NewSchemaResponse(tables map[string][]Column) *Response {
 }
 
 // NewParseResponse returns a Response with UAST
-func NewParseResponse(resp *protocol.ParseResponse) *Response {
-	return newResponse(resp.UAST, nil)
+func NewParseResponse(resp *service.ParseResponse) *Response {
+	return newResponse(resp, nil)
 }
 
 // NewDetectLangResponse returns a Response with detected language

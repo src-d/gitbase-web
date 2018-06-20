@@ -12,6 +12,7 @@ import (
 	"gopkg.in/bblfsh/sdk.v1/uast"
 
 	"github.com/src-d/gitbase-playground/server/serializer"
+	"github.com/src-d/gitbase-playground/server/service"
 )
 
 type parseRequest struct {
@@ -74,7 +75,7 @@ func Parse(bbblfshServerURL string) RequestProcessFunc {
 			}
 		}
 
-		return serializer.NewParseResponse(resp), nil
+		return serializer.NewParseResponse((*service.ParseResponse)(resp)), nil
 	}
 }
 
@@ -83,51 +84,4 @@ func Filter() RequestProcessFunc {
 	return func(r *http.Request) (*serializer.Response, error) {
 		return nil, serializer.NewHTTPError(http.StatusNotImplemented, http.StatusText(http.StatusNotImplemented))
 	}
-}
-
-// unmarshallUAST tries to cast data as [][]byte and unmarshall uast nodes
-func unmarshallUAST(data interface{}) ([]*node, error) {
-	var protobufs [][]byte
-	if err := json.Unmarshal(*data.(*[]byte), &protobufs); err != nil {
-		return nil, err
-	}
-
-	nodes := make([]*node, len(protobufs))
-
-	for i, v := range protobufs {
-		n := uast.NewNode()
-		if err := n.Unmarshal(v); err != nil {
-			return nil, err
-		}
-		nodes[i] = (*node)(n)
-	}
-
-	return nodes, nil
-}
-
-type node uast.Node
-
-// MarshalJSON returns the JSON representation of the Node
-func (n *node) MarshalJSON() ([]byte, error) {
-	var nodes = make([]*node, len(n.Children))
-	for i, n := range n.Children {
-		nodes[i] = (*node)(n)
-	}
-
-	var roles = make([]string, len(n.Roles))
-	for i, r := range n.Roles {
-		roles[i] = r.String()
-	}
-
-	node := struct {
-		*uast.Node
-		Roles    []string
-		Children []*node
-	}{
-		(*uast.Node)(n),
-		roles,
-		nodes,
-	}
-
-	return json.Marshal(node)
 }
