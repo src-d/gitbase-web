@@ -199,7 +199,7 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.setState({
       showModal: true,
       modalTitle: 'Source code',
-      modalContent: <Editor code={code} />
+      modalContent: <Editor code={code} theme="default" />
     });
   }
 

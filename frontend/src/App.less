@@ -86,11 +86,17 @@ body {
 // make modal window "fullscreen"
 // margins are hard-coded in bootstrap, so it's hard-coded here too
 .modal-body {
-    height: ~'calc(100vh - 80px)';
-    overflow-y: auto;
+    height: ~'calc(100vh - 150px)';
 
+    .uast-editor,
+    .react-codemirror2,
     .CodeMirror {
         height: 100%;
+    }
+
+    .uast-viewer {
+        height: 100%;
+        overflow-y: auto;
     }
 }
 
@@ -100,7 +106,65 @@ body {
     }
 }
 
-.uast-editor,
-.react-codemirror2 {
+.uast-editor .CodeMirror {
+    font-family: @monospace-font;
+    font-size: 16px;
+    line-height: 1.38;
+
+    .CodeMirror-gutters {
+        background-color: @primary-tint-4;
+        border-right: 0;
+    }
+
+    .CodeMirror-linenumber {
+        opacity: 0.6;
+        color: @primary-tint-2;
+    }
+}
+
+@uast-black: #0f2434;
+
+.uast-viewer {
     height: 100%;
+    overflow-y: auto;
+
+    font-family: @regular-font;
+    font-size: 16px;
+    line-height: 22px;
+
+    .uast-title-collapsible::before,
+    .uast-title-collapsible.collapsed::before {
+        color: @secondary-tint-2;
+    }
+
+    .uast-label,
+    .uast-property-name::after {
+        color: @primary;
+        font-family: @regular-font;
+    }
+
+    .uast-property-name {
+        color: @uast-black;
+    }
+
+    .uast-title-collapsible:hover > span {
+        border-bottom: 1px dashed @uast-black;
+    }
+
+    .uast-title-collapsible.collapsed {
+        background-color: rgba(27, 120, 183, 0.04); // @primary, 0.04 opacity
+    }
+
+    .uast-value.string {
+        color: @secondary-tint-2;
+        font-weight: bold;
+    }
+
+    .uast-content {
+        border-left: 1px solid rgba(118, 174, 211, 0.5); // @primary-tint-2, 0.5 opacity
+    }
+
+    .uast-item.hovered {
+        background-color: rgba(78, 204, 123, 0.07); // @secondary, 0.07 opacity
+    }
 }

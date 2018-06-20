@@ -159,3 +159,37 @@
     height: @btn-title-size;
     width: @btn-title-size;
 }
+
+//== Modals
+
+//** Padding applied to the modal body
+@modal-inner-padding: 15px 0px 30px 0px;
+
+//** Padding applied to the modal title
+@modal-title-padding: 0px 0px 15px 0px;
+//** Modal title line-height
+@modal-title-line-height: normal;
+
+//** Modal backdrop background color
+@modal-backdrop-bg:           @primary;
+//** Modal backdrop opacity
+@modal-backdrop-opacity:      0.7;
+
+.modal-content {
+    box-shadow: unset;
+    border-radius: unset;
+    border: solid 1px @primary;
+
+    padding: 30px 30px 15px 30px;
+
+    .modal-header {
+        border-bottom: solid 1px @primary-tint-3;
+
+        .modal-title {
+            color: @dark-text;
+            font-size: 20px;
+            font-weight: normal;
+            letter-spacing: 0.8px;
+        }
+    }
+}
