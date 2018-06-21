@@ -216,11 +216,9 @@ class TabbedResults extends Component {
                   />
                 }
               >
-                <Row className="query-row">
-                  <Col xs={12}>
-                    <div className="query-text">
-                      <p>{query.sql}</p>
-                    </div>
+                <div className="query-row">
+                  <div className="query-text">{query.sql}</div>
+                  <div className="query-button">
                     <Button
                       className="edit-query"
                       bsStyle="gbpl-tertiary-tint-2-link"
@@ -228,8 +226,8 @@ class TabbedResults extends Component {
                     >
                       EDIT
                     </Button>
-                  </Col>
-                </Row>
+                  </div>
+                </div>
                 {content}
               </Tab>
             );

@@ -32,27 +32,34 @@
     }
 
     .query-row {
+        display: flex;
         margin-bottom: 2em;
 
-        .query-text, .edit-query {
+        .query-text,
+        .edit-query {
             line-height: 16px;
         }
 
         .query-text {
+            flex: 0 1 auto;
             white-space: pre;
             font-family: @monospace-font;
             color: @secondary-tint-2;
-            float: left;
-            max-width: 85%;
-            overflow: auto;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
-        .edit-query {
-            width: auto;
-            float: left;
-            padding-top: 0px;
-            margin-left: 1ex;
-            border-top: 0px;
+        .query-button {
+            flex: 0 0 auto;
+
+            .edit-query {
+                width: auto;
+                float: left;
+                padding-top: 0px;
+                margin-left: 1ex;
+                border-top: 0px;
+            }
         }
     }
 
