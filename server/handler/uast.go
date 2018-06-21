@@ -85,3 +85,20 @@ func Filter() RequestProcessFunc {
 		return nil, serializer.NewHTTPError(http.StatusNotImplemented, http.StatusText(http.StatusNotImplemented))
 	}
 }
+
+// GetLanguages returns a list of supported languages by bblfsh
+func GetLanguages(bbblfshServerURL string) RequestProcessFunc {
+	return func(r *http.Request) (*serializer.Response, error) {
+		cli, err := bblfsh.NewClient(bbblfshServerURL)
+		if err != nil {
+			return nil, err
+		}
+
+		resp, err := cli.NewSupportedLanguagesRequest().Do()
+		if err != nil {
+			return nil, err
+		}
+
+		return serializer.NewLanguagesResponse(service.DriverManifestsToLangs(resp.Languages)), nil
+	}
+}

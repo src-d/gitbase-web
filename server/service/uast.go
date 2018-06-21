@@ -73,3 +73,21 @@ func (n *Node) MarshalJSON() ([]byte, error) {
 
 	return json.Marshal(node)
 }
+
+type Language struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+func DriverManifestsToLangs(drivers []protocol.DriverManifest) []Language {
+	result := make([]Language, len(drivers))
+
+	for i, driver := range drivers {
+		result[i] = Language{
+			ID:   driver.Language,
+			Name: driver.Name,
+		}
+	}
+
+	return result
+}
