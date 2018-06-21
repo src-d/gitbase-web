@@ -47,6 +47,12 @@
     },
     "/schema": {
       "target": "http://localhost:8080"
+    },
+    "/detect-lang": {
+      "target": "http://localhost:8080"
+    },
+    "/parse": {
+      "target": "http://localhost:8080"
     }
   }
 }

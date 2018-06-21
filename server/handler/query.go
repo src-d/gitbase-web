@@ -113,7 +113,7 @@ func Query(db service.SQLDB) RequestProcessFunc {
 					// DatabaseTypeName JSON is used for arrays of uast nodes and
 					// arrays of strings, but we don't know the exact type.
 					// We try with arry of uast nodes first and any JSON later
-					nodes, err := unmarshallUAST(val)
+					nodes, err := service.UnmarshallUAST(val)
 					if err == nil {
 						colData[columnNames[i]] = nodes
 					} else {

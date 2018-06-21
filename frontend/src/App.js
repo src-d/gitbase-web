@@ -3,12 +3,13 @@ import { Helmet } from 'react-helmet';
 import { Grid, Row, Modal } from 'react-bootstrap';
 import nanoid from 'nanoid';
 import SplitPane from 'react-split-pane';
-import UASTViewer, { Editor, transformer } from 'uast-viewer';
+import UASTViewer, { transformer } from 'uast-viewer';
 import 'uast-viewer/dist/default-theme.css';
 import initButtonStyles from './utils/bootstrap';
 import Sidebar from './components/Sidebar';
 import QueryBox from './components/QueryBox';
 import TabbedResults from './components/TabbedResults';
+import CodeViewer from './components/CodeViewer';
 import api from './api';
 import { STATUS_LOADING, STATUS_ERROR, STATUS_SUCCESS } from './state/query';
 import './App.less';
@@ -230,7 +231,7 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.setState({
       showModal: true,
       modalTitle: 'Source code',
-      modalContent: <Editor code={code} theme="default" />
+      modalContent: <CodeViewer code={code} />
     });
   }
 
