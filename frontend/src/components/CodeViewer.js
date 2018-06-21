@@ -27,7 +27,7 @@ function EditorPane({
     <div className="editor-pane">
       Language:{' '}
       <select value={language} onChange={handleLangChange}>
-        <option>Select language</option>
+        <option value="">Select language</option>
         {avaliableLangs.map(lang => (
           <option key={lang} value={lang.toLowerCase()}>
             {lang}
@@ -104,14 +104,27 @@ class CodeViewer extends Component {
   }
 
   componentDidMount() {
-    api.detectLang(this.props.code).then(res => {
-      this.setState({ loading: false, language: res.language });
-    });
+    api
+      .detectLang(this.props.code)
+      .then(res => {
+        this.setState({ language: res.language });
+      })
+      .catch(err => {
+        // we don't have UI for this error and actually it's not very important
+        // user can select language manualy
+        console.error(`can't detect language: ${err}`);
+      })
+      .then(() => this.setState({ loading: false }));
   }
 
   handleLangChange(e) {
     this.setState({ language: e.target.value }, () => {
-      if (this.state.language && this.state.showUast) {
+      if (!this.state.language) {
+        this.setState({ showUast: false });
+        return;
+      }
+
+      if (this.state.showUast) {
         this.parseCode();
       }
     });
@@ -126,7 +139,7 @@ class CodeViewer extends Component {
   }
 
   parseCode() {
-    this.setState({ error: null });
+    this.setState({ error: null, uast: null });
 
     api
       .parseCode(this.state.language, this.props.code)
