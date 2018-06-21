@@ -24,8 +24,7 @@ function EditorPane({
   editorProps
 }) {
   return (
-    <div>
-      {' '}
+    <div className="editor-pane">
       Language:{' '}
       <select value={language} onChange={handleLangChange}>
         <option>Select language</option>
