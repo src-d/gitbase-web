@@ -31,7 +31,12 @@ class Sidebar extends Component {
           <Glyphicon onClick={this.handleToggle} glyph={togglerIcon} />
         </div>
         <div className="main">
-          <SplitPane split="horizontal" defaultSize={200} minSize={100}>
+          <SplitPane
+            split="horizontal"
+            defaultSize={300}
+            minSize={0}
+            maxSize={-15}
+          >
             <Schema schema={schema} onTableClick={onTableClick} />
             <SampleQueries
               onExampleClick={onExampleClick}

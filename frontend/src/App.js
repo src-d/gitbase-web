@@ -354,7 +354,8 @@ FROM ( SELECT MONTH(committer_when) as month,
               className="main-split"
               split="horizontal"
               defaultSize={250}
-              minSize={175}
+              minSize={1}
+              maxSize={-15}
             >
               <QueryBox
                 sql={this.state.sql}
