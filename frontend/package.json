@@ -53,6 +53,9 @@
     },
     "/parse": {
       "target": "http://localhost:8080"
+    },
+    "/get-languages": {
+      "target": "http://localhost:8080"
     }
   }
 }

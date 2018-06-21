@@ -45,6 +45,7 @@ class App extends Component {
       sql: '',
       results: new Map(),
       schema: undefined,
+      languages: [],
       history: [],
       lastResultMeta: null,
 
@@ -231,7 +232,7 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.setState({
       showModal: true,
       modalTitle: 'Source code',
-      modalContent: <CodeViewer code={code} />
+      modalContent: <CodeViewer code={code} languages={this.state.languages} />
     });
   }
 
@@ -250,9 +251,20 @@ FROM ( SELECT MONTH(committer_when) as month,
     });
   }
 
+  loadLanguages() {
+    api
+      .getLanguages()
+      .then(languages => this.setState({ languages }))
+      .catch(err =>
+        // we don't have UI for this error
+        console.error(`Can't get list of languages from bblfsh: ${err}`)
+      );
+  }
+
   componentDidMount() {
     this.setState(loadStateFromStorage());
     this.loadSchema();
+    this.loadLanguages();
     this.handleExampleClick(this.exampleQueries[0].sql);
   }
 
