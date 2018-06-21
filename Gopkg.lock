@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/BurntSushi/toml"
+  packages = ["."]
+  revision = "b26d9c308763d68093482582cea63d69be07a0f0"
+  version = "v0.3.0"
+
+[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
@@ -214,11 +220,12 @@
 [[projects]]
   name = "gopkg.in/bblfsh/sdk.v1"
   packages = [
+    "manifest",
     "protocol",
     "uast"
   ]
-  revision = "19e77f414dbb893a34f67fc435e5011b99ba6a1f"
-  version = "v1.15.2"
+  revision = "96e92bdde3785e655b8095a576addd52b96c6c61"
+  version = "v1.16.0"
 
 [[projects]]
   name = "gopkg.in/src-d/enry.v1"
@@ -245,6 +252,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "21c9ff0efdc451b0b893f6e047648b43853ef9835e97e6c08aa65ccbe80c615f"
+  inputs-digest = "e79231faea767c5475b139705f4a3db95d1eaccb2efe8c2fbc9650054ec963fe"
   solver-name = "gps-cdcl"
   solver-version = 1
