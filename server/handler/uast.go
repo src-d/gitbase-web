@@ -2,9 +2,9 @@ package handler
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	bblfsh "gopkg.in/bblfsh/client-go.v2"
 	"gopkg.in/bblfsh/client-go.v2/tools"
@@ -60,7 +60,7 @@ func Parse(bbblfshServerURL string) RequestProcessFunc {
 		}
 
 		if resp.Status != protocol.Ok {
-			return nil, errors.New("bblfsh returend not OK response")
+			return nil, serializer.NewHTTPError(http.StatusBadRequest, strings.Join(resp.Errors, "\n"))
 		}
 
 		if resp.UAST != nil && req.Filter != "" {
