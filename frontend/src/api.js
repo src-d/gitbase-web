@@ -116,8 +116,35 @@ function schema() {
   return apiCall(`/schema`).then(res => res.data);
 }
 
+function detectLang(content, filename) {
+  return apiCall('/detect-lang', {
+    method: 'POST',
+    body: {
+      content,
+      filename
+    }
+  }).then(res => res.data);
+}
+
+function parseCode(language, content) {
+  return apiCall('/parse', {
+    method: 'POST',
+    body: {
+      language,
+      content
+    }
+  }).then(res => {
+    if (res.data.status !== 0) {
+      throw normalizeErrors(res.data.errors);
+    }
+    return res.data.uast;
+  });
+}
+
 export default {
   query,
   schema,
-  queryExport
+  queryExport,
+  detectLang,
+  parseCode
 };
