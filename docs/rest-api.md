@@ -286,3 +286,27 @@ curl -X POST \
     }
 }
 ```
+
+## GET /get-languages
+
+Returns programming language supported by bblfsh server.
+
+```bash
+curl -X GET http://localhost:8080/get-languages
+```
+
+```json
+{
+    "status": 200,
+    "data": [
+        { "id": "python", "name": "Python" },
+        { "id": "java", "name": "Java" },
+        { "id": "javascript", "name": "JavaScript" },
+        { "id": "bash", "name": "Bash" },
+        { "id": "ruby", "name": "Ruby" },
+        { "id": "go", "name": "Go" },
+        { "id": "php", "name": "PHP" }
+    ]
+}
+
+```
