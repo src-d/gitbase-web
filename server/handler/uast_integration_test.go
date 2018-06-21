@@ -55,5 +55,5 @@ func (suite *UASTSuite) TestError() {
 	res := httptest.NewRecorder()
 	suite.handler.ServeHTTP(res, req)
 
-	suite.Equal(http.StatusInternalServerError, res.Code)
+	suite.Equal(http.StatusBadRequest, res.Code)
 }
