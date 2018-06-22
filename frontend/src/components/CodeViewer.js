@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import UASTViewer, { Editor, withUASTEditor } from 'uast-viewer';
+import Switch from 'react-switch';
 import api from '../api';
 import './CodeViewer.less';
 
@@ -145,14 +146,21 @@ class CodeViewer extends Component {
         <Modal.Header closeButton>
           <Modal.Title>
             CODE
-            <label>
-              <input
-                type="checkbox"
-                checked={showUast}
-                onChange={this.handleShowUastChange}
-                disabled={!language}
-              />UAST
-            </label>
+            <Switch
+              checked={showUast}
+              onChange={this.handleShowUastChange}
+              disabled={!language}
+              checkedIcon={<span className="switch-text checked">UAST</span>}
+              uncheckedIcon={
+                <span className="switch-text unchecked">UAST</span>
+              }
+              onColor="#ffba34"
+              offColor="#e1e1e1"
+              width={100}
+              handleDiameter={20}
+              className="code-toggler"
+              aria-label="Toggle UAST view"
+            />
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
