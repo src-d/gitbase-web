@@ -179,7 +179,7 @@ function EditorUASTSpitPane({
   handleSearch
 }) {
   return (
-    <SplitPane split="vertical" defaultSize={250} minSize={175}>
+    <SplitPane split="vertical" defaultSize={500} minSize={1} maxSize={-15}>
       <EditorPane
         languages={languages}
         language={editorProps.languageMode}

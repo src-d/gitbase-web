@@ -59,7 +59,7 @@ body {
         overflow: auto;
     }
 
-    .Resizer {
+    .Resizer.horizontal {
         border-top: solid 1px @primary-tint-2;
         border-bottom: solid 1px @primary-tint-2;
         background-color: @query-results-block;
@@ -71,6 +71,28 @@ body {
             content: '● ● ●';
             text-align: center;
             line-height: 13px;
+            font-size: 8px;
+        }
+    }
+
+    .Resizer.vertical {
+        border-left: solid 1px @primary-tint-2;
+        border-right: solid 1px @primary-tint-2;
+        background-color: @primary-tint-3;
+
+        cursor: col-resize;
+
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 13px;
+
+        &:before {
+            display: block;
+            content: "●\A●\A●";
+            white-space: pre;
+            text-align: center;
+            line-height: 1em;
             font-size: 8px;
         }
     }
