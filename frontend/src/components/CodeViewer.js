@@ -10,6 +10,7 @@ import UASTViewer, {
 import Switch from 'react-switch';
 import api from '../api';
 import './CodeViewer.less';
+import CloseIcon from '../icons/close-query-tab.svg';
 
 function EditorPane({ languages, language, handleLangChange, editorProps }) {
   return (
@@ -341,7 +342,7 @@ class CodeViewer extends Component {
 
     return (
       <Modal show={showModal} onHide={onHide} bsSize="large">
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>
             CODE
             <Switch
@@ -357,6 +358,7 @@ class CodeViewer extends Component {
               className={`code-toggler ${showUast ? 'checked' : 'unchecked'}`}
               aria-label="Toggle UAST view"
             />
+            <CloseIcon className="btn-modal-close" onClick={onHide} />
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

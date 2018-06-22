@@ -73,6 +73,21 @@
     }
 }
 
+@btn-title-size: 22px;
+
+.btn-title-common {
+    height: @btn-title-size;
+    width: @btn-title-size;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.btn-title {
+    .btn-title-common;
+    margin-left: 1ex;
+    .icon-btn-variant(@primary-tint-2);
+}
+
 //=== Buttons
 @btn-font-weight: @bold-font-weight;
 
@@ -237,4 +252,11 @@
             letter-spacing: 0.8px;
         }
     }
+}
+
+.btn-modal-close {
+    .btn-title-common;
+    .icon-btn-variant(@primary);
+
+    float: right;
 }
