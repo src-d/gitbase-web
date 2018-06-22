@@ -13,6 +13,36 @@ import 'codemirror/addon/hint/sql-hint';
 
 import './QueryBox.less';
 import SuccessIcon from '../icons/success-query.svg';
+import ErrorIcon from '../icons/error-query.svg';
+
+function ResultInfo({ result }) {
+  if (!result) {
+    return null;
+  }
+
+  if (result.response && result.response.meta) {
+    return (
+      <span className="meta meta-success">
+        <SuccessIcon className="big-icon" />Showing rows (query took{' '}
+        {result.response.meta.elapsedTime / 1000} seconds)
+      </span>
+    );
+  }
+
+  if (result.errorMsg) {
+    return (
+      <span className="meta meta-error">
+        <ErrorIcon className="big-icon" />Query Failed - {result.errorMsg}
+      </span>
+    );
+  }
+
+  return null;
+}
+
+ResultInfo.propTypes = {
+  result: PropTypes.object
+};
 
 class QueryBox extends Component {
   constructor(props) {
@@ -50,7 +80,7 @@ class QueryBox extends Component {
   }
 
   render() {
-    const { resultMeta } = this.props;
+    const { result } = this.props;
     const { codeMirrorTables } = this.state;
 
     const options = {
@@ -69,16 +99,6 @@ class QueryBox extends Component {
       }
     };
 
-    let meta = '';
-    if (resultMeta) {
-      meta = (
-        <span className="meta">
-          <SuccessIcon className="big-icon" />Showing rows (query took{' '}
-          {resultMeta.elapsedTime / 1000} seconds)
-        </span>
-      );
-    }
-
     return (
       <div className="query-box-padding full-height full-width">
         <div className="query-box full-height full-width">
@@ -95,7 +115,7 @@ class QueryBox extends Component {
           </Row>
           <Row className="button-row">
             <Col xs={7} className="meta-wrapper no-spacing">
-              {meta}
+              <ResultInfo result={result} />
             </Col>
             <Col xs={5} className="buttons-wrapper no-spacing">
               <Button
@@ -135,7 +155,7 @@ QueryBox.propTypes = {
       ).isRequired
     })
   ),
-  resultMeta: PropTypes.object,
+  result: PropTypes.object,
   enabled: PropTypes.bool,
   handleTextChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
