@@ -46,7 +46,7 @@ class App extends Component {
       results: new Map(),
       schema: undefined,
       history: [],
-      lastResultMeta: null,
+      lastResult: null,
 
       // modal
       showModal: false,
@@ -117,9 +117,10 @@ FROM ( SELECT MONTH(committer_when) as month,
     const historyIdx = history.findIndex(i => i.key === key);
     const { response } = result;
 
+    const status =
+      typeof response !== 'undefined' ? STATUS_SUCCESS : STATUS_ERROR;
+
     if (historyIdx >= 0) {
-      const status =
-        typeof response !== 'undefined' ? STATUS_SUCCESS : STATUS_ERROR;
       const newHistory = [
         ...history.slice(0, historyIdx),
         {
@@ -140,11 +141,16 @@ FROM ( SELECT MONTH(committer_when) as month,
     }
 
     const newResults = new Map(this.state.results);
-    newResults.set(key, result);
+
+    if (status === STATUS_SUCCESS) {
+      newResults.set(key, result);
+    } else {
+      newResults.delete(key);
+    }
 
     this.setState({
       results: newResults,
-      lastResultMeta: response ? response.meta : null
+      lastResult: result
     });
   }
 
@@ -166,7 +172,8 @@ FROM ( SELECT MONTH(committer_when) as month,
             status: STATUS_LOADING
           },
           ...history
-        ]
+        ],
+        lastResult: null
       },
       () => this.handleSetActiveResult(key)
     );
@@ -360,7 +367,7 @@ FROM ( SELECT MONTH(committer_when) as month,
               <QueryBox
                 sql={this.state.sql}
                 schema={this.state.schema}
-                resultMeta={this.state.lastResultMeta}
+                result={this.state.lastResult}
                 handleTextChange={this.handleTextChange}
                 handleSubmit={this.handleSubmit}
                 exportUrl={api.queryExport(this.state.sql)}
