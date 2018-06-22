@@ -29,17 +29,18 @@
             margin: 0;
         }
 
-        .glyphicon {
+        .big-icon {
             cursor: pointer;
-            padding-right: @big-spacing;
-        }
+            margin-right: @big-spacing;
 
+            .icon-btn-variant(@primary-tint-2);
+        }
     }
 
     .list {
         line-height: 1.75;
 
-        .glyphicon {
+        .small-icon {
             margin-right: @small-spacing;
         }
     }
@@ -53,6 +54,10 @@
     .footer {
         font-weight: @bold-font-weight;
         padding-left: @big-spacing;
+
+        a {
+            .icon-container-variant(@primary-tint-2);
+        }
     }
 
     .SplitPane {
@@ -70,6 +75,10 @@
         .main,
         .footer {
             display: none;
+        }
+
+        .header .big-icon {
+            transform: scaleX(-1);
         }
     }
 }

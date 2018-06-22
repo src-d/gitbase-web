@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Glyphicon } from 'react-bootstrap';
 import './SampleQueries.less';
+import ExampleIcon from '../icons/example-query.svg';
 
 function SampleQueries({ onExampleClick, exampleQueries }) {
   return (
@@ -15,7 +15,7 @@ function SampleQueries({ onExampleClick, exampleQueries }) {
             title={q.name}
             onClick={() => onExampleClick(q.sql)}
           >
-            <Glyphicon glyph="list" />
+            <ExampleIcon className="small-icon" />
             {q.name}
           </div>
         ))}

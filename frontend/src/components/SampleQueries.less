@@ -22,5 +22,11 @@
         text-overflow: ellipsis;
         cursor: pointer;
         padding-right: 40px;
+
+        .icon-container-variant(@primary-tint-2);
+
+        &:hover {
+            color: darken(@primary, 10%);
+        }
     }
 }

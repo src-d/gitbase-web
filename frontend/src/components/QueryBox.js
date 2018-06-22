@@ -12,6 +12,7 @@ import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/sql-hint';
 
 import './QueryBox.less';
+import SuccessIcon from '../icons/success-query.svg';
 
 class QueryBox extends Component {
   constructor(props) {
@@ -70,8 +71,12 @@ class QueryBox extends Component {
 
     let meta = '';
     if (resultMeta) {
-      meta = `Showing rows (query took ${resultMeta.elapsedTime /
-        1000} seconds)`;
+      meta = (
+        <span className="meta">
+          <SuccessIcon className="big-icon" />Showing rows (query took{' '}
+          {resultMeta.elapsedTime / 1000} seconds)
+        </span>
+      );
     }
 
     return (
@@ -90,7 +95,7 @@ class QueryBox extends Component {
           </Row>
           <Row className="button-row">
             <Col xs={7} className="meta-wrapper no-spacing">
-              <span className="meta">{meta}</span>
+              {meta}
             </Col>
             <Col xs={5} className="buttons-wrapper no-spacing">
               <Button
