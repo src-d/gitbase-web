@@ -71,7 +71,7 @@ function EditorUASTSpitPane({
         handleShowUastChange={handleShowUastChange}
         editorProps={editorProps}
       />
-      <UASTViewer {...uastViewerProps} />
+      {uastViewerProps.uast ? <UASTViewer {...uastViewerProps} /> : <div />}
     </SplitPane>
   );
 }
