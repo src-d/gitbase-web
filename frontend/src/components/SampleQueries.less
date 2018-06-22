@@ -22,5 +22,17 @@
         text-overflow: ellipsis;
         cursor: pointer;
         padding-right: 40px;
+
+        svg path {
+            fill: @primary-tint-2;
+        }
+
+        &:hover {
+            color: darken(@primary, 10%);
+
+            svg path {
+                fill: darken(@primary-tint-2, 10%);
+            }
+        }
     }
 }

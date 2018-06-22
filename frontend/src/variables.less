@@ -18,6 +18,7 @@
 @query-results-block: #ffffff;
 @query-examples-bock: rgba(118, 174, 211, 0.2);
 
+@success: #46b26a;
 @error-text: #e4415a;
 
 //=== Spacing
@@ -29,6 +30,35 @@
 @bold-font-weight: 600;
 @monospace-font: Hack, monospace;
 @regular-font: 'Source Sans Pro', sans-serif;
+
+//=== SVG Icons
+.big-icon {
+    height: 22px;
+    width: 22px;
+
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.small-icon {
+    height: 16px;
+    width: 16px;
+
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.icon-btn-variant(@color) {
+    cursor: pointer;
+
+    path {
+        fill: @color;
+    }
+
+    &:hover path {
+        fill: darken(@color, 10%);
+    }
+}
 
 //=== Buttons
 @btn-font-weight: @bold-font-weight;
@@ -156,14 +186,6 @@
         .nav-justified();
         .nav-tabs-justified();
     }
-}
-
-@btn-title-size: 22px;
-
-.btn-title {
-    margin-left: 1ex;
-    height: @btn-title-size;
-    width: @btn-title-size;
 }
 
 //== Modals

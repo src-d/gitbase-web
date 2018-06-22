@@ -69,33 +69,51 @@
         margin-top: 15px;
     }
 
-    .tab-title {
-        width: 150px;
-        height: @btn-title-size;
-        vertical-align: middle;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-        font-family: @monospace-font;
-        font-weight: @bold-font-weight;
-    }
+    @btn-title-size: 22px;
 
-    li.history-tab-title {
-        float: right;
+    .nav-tabs {
+        li.history-tab-title {
+            float: right;
+
+            .tab-title {
+                width: auto;
+            }
+        }
 
         .tab-title {
-            width: auto;
+            width: 150px;
+            height: @btn-title-size;
+            vertical-align: middle;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            font-family: @monospace-font;
+            font-weight: @bold-font-weight;
         }
-    }
 
-    .history-tab .icon-bg {
-        .btn-title;
-        .btn;
-        .btn-xs;
-        .btn-gbpl-primary-tint-2;
+        .btn-title-common {
+            height: @btn-title-size;
+            width: @btn-title-size;
+            display: inline-block;
+            vertical-align: middle;
+        }
 
-        margin-left: 0;
-        margin-right: 1ex;
+        .btn-title {
+            .btn-title-common;
+            margin-left: 1ex;
+            .icon-btn-variant(@primary-tint-2);
+        }
+
+        > li.active {
+            .btn-title {
+                .icon-btn-variant(@tertiary);
+            }
+        }
+
+        .icon-title {
+            .btn-title-common;
+            margin-right: 1ex;
+        }
     }
 }

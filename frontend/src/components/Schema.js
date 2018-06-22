@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Glyphicon } from 'react-bootstrap';
 import './Schema.less';
+import OpenIcon from '../icons/open-tree.svg';
+import CloseIcon from '../icons/close-tree.svg';
+import ColumnIcon from '../icons/tree-column.svg';
 
 class SchemaTable extends Component {
   constructor(props) {
@@ -18,12 +20,16 @@ class SchemaTable extends Component {
 
   render() {
     const { table, columns, onTableClick } = this.props;
-    const glyph = this.state.expanded ? 'minus' : 'plus';
+    const icon = this.state.expanded ? (
+      <CloseIcon className="small-icon" onClick={this.toggle} />
+    ) : (
+      <OpenIcon className="small-icon" onClick={this.toggle} />
+    );
 
     return (
       <div className="schema-table list">
         <div className="name">
-          <Glyphicon glyph={glyph} onClick={this.toggle} />
+          {icon}
           <span onClick={() => onTableClick && onTableClick(table)}>
             {table}
           </span>
@@ -32,7 +38,7 @@ class SchemaTable extends Component {
           <div className="columns">
             {columns.map((c, i) => (
               <div key={i} className="column">
-                <Glyphicon glyph="align-justify" />
+                <ColumnIcon className="small-icon" />
                 {c.name}
               </div>
             ))}

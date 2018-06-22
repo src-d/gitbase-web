@@ -1,11 +1,14 @@
 import React, { Component, Fragment } from 'react';
-import { Row, Col, Alert, Tab, Button, Glyphicon } from 'react-bootstrap';
+import { Row, Col, Alert, Tab, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import DivTabs from './DivTabs';
 import ResultsTable from './ResultsTable';
 import HistoryTable from './HistoryTable';
 import Loader from './Loader';
 import './TabbedResults.less';
+import PencilIcon from '../icons/edit-query-tab-name.svg';
+import CloseIcon from '../icons/close-query-tab.svg';
+import TimerIcon from '../icons/history-tab.svg';
 
 class TabTitle extends Component {
   constructor(props) {
@@ -47,7 +50,7 @@ class TabTitle extends Component {
   }
 
   render() {
-    const { tabKey, active } = this.props;
+    const { tabKey } = this.props;
     const { title, inEdit } = this.state;
 
     if (inEdit) {
@@ -71,26 +74,18 @@ class TabTitle extends Component {
     return (
       <div>
         <span className="tab-title">{title}</span>
-        <Button
+        <PencilIcon
           className="btn-title"
-          bsStyle={active ? 'gbpl-tertiary' : 'gbpl-primary-tint-2'}
-          bsSize="xsmall"
           onClick={() => {
             this.handleStartEdit(tabKey);
           }}
-        >
-          <Glyphicon glyph="pencil" />
-        </Button>
-        <Button
+        />
+        <CloseIcon
           className="btn-title"
-          bsStyle={active ? 'gbpl-tertiary' : 'gbpl-primary-tint-2'}
-          bsSize="xsmall"
           onClick={() => {
             this.props.handleRemoveResult(tabKey);
           }}
-        >
-          <span aria-hidden="true">&times;</span>
-        </Button>
+        />
       </div>
     );
   }
@@ -239,9 +234,7 @@ class TabbedResults extends Component {
               tabClassName="history-tab-title"
               title={
                 <div className="history-tab">
-                  <span className="icon-bg">
-                    <Glyphicon glyph="time" className="history-icon" />
-                  </span>
+                  <TimerIcon className="icon-title" />
                   <span className="tab-title">history</span>
                 </div>
               }
