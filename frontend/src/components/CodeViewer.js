@@ -383,10 +383,14 @@ class CodeViewer extends Component {
               />
               {error ? (
                 <div className="error">
-                  <button onClick={this.removeError} className="close">
-                    close
-                  </button>
-                  {error}
+                  <div className="error-header">
+                    <span>ERROR</span>
+                    <CloseIcon
+                      className="btn-error-close"
+                      onClick={this.removeError}
+                    />
+                  </div>
+                  <div className="error-msg">{error}</div>
                 </div>
               ) : null}
             </div>
