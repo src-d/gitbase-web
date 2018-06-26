@@ -52,6 +52,8 @@ class QueryBox extends Component {
       schema: undefined,
       codeMirrorTables: {}
     };
+
+    this.codemirror = React.createRef();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -63,6 +65,18 @@ class QueryBox extends Component {
       schema: nextProps.schema,
       codeMirrorTables: QueryBox.schemaToCodeMirror(nextProps.schema)
     };
+  }
+
+  componentDidMount() {
+    // IE or old browsers
+    if (!document.fonts || !document.fonts.ready) {
+      return;
+    }
+
+    // we use custom font, codemirror needs refresh when the font is loaded
+    document.fonts.ready.then(() => {
+      this.codemirror.current.editor.refresh();
+    });
   }
 
   static schemaToCodeMirror(schema) {
@@ -105,6 +119,7 @@ class QueryBox extends Component {
           <Row className="codemirror-row no-spacing">
             <Col xs={12} className="codemirror-col no-spacing">
               <CodeMirror
+                ref={this.codemirror}
                 value={this.props.sql}
                 options={options}
                 onBeforeChange={(editor, data, value) => {
