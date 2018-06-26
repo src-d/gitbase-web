@@ -38,7 +38,7 @@ class ResultsTable extends Component {
             return v;
           case 'object':
             // UAST column
-            const protobufs = row['__uast-protobufs'];
+            const protobufs = row[`__${col}-protobufs`];
             return (
               <Button
                 bsStyle="gbpl-tertiary"
