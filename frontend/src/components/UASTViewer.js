@@ -37,7 +37,7 @@ class UASTViewer extends Component {
       .then(uast => {
         this.setState({ uast: transformer(uast) });
       })
-      .catch(err => this.state({ uast: null, error: err }));
+      .catch(err => this.setState({ uast: null, error: err }));
   }
 
   render() {
