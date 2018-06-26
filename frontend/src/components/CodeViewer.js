@@ -154,11 +154,9 @@ class CodeViewer extends Component {
               uncheckedIcon={
                 <span className="switch-text unchecked">UAST</span>
               }
-              onColor="#ffba34"
-              offColor="#e1e1e1"
               width={100}
               handleDiameter={20}
-              className="code-toggler"
+              className={`code-toggler ${showUast ? 'checked' : 'unchecked'}`}
               aria-label="Toggle UAST view"
             />
           </Modal.Title>
