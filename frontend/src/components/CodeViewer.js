@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
+import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import UASTViewer, { Editor, withUASTEditor } from 'uast-viewer';
+import Switch from 'react-switch';
 import api from '../api';
 import './CodeViewer.less';
 
-function EditorPane({
-  languages,
-  language,
-  showUast,
-  handleLangChange,
-  handleShowUastChange,
-  editorProps
-}) {
+function EditorPane({ languages, language, handleLangChange, editorProps }) {
   return (
     <div className="editor-pane">
       Language:{' '}
@@ -24,14 +19,6 @@ function EditorPane({
           </option>
         ))}
       </select>
-      <label>
-        <input
-          type="checkbox"
-          checked={showUast}
-          onChange={handleShowUastChange}
-          disabled={!language}
-        />UAST
-      </label>
       <Editor {...editorProps} theme="default" />
     </div>
   );
@@ -43,11 +30,9 @@ EditorPane.propTypes = {
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired
     })
-  ),
+  ).isRequired,
   language: PropTypes.string,
-  showUast: PropTypes.bool,
   handleLangChange: PropTypes.func.isRequired,
-  handleShowUastChange: PropTypes.func.isRequired,
   editorProps: PropTypes.object
 };
 
@@ -55,18 +40,14 @@ function EditorUASTSpitPane({
   languages,
   editorProps,
   uastViewerProps,
-  showUast,
-  handleLangChange,
-  handleShowUastChange
+  handleLangChange
 }) {
   return (
     <SplitPane split="vertical" defaultSize={250} minSize={175}>
       <EditorPane
         languages={languages}
         language={editorProps.languageMode}
-        showUast={showUast}
         handleLangChange={handleLangChange}
-        handleShowUastChange={handleShowUastChange}
         editorProps={editorProps}
       />
       {uastViewerProps.uast ? <UASTViewer {...uastViewerProps} /> : <div />}
@@ -78,9 +59,7 @@ EditorUASTSpitPane.propTypes = {
   languages: EditorPane.propTypes.languages,
   editorProps: PropTypes.object,
   uastViewerProps: PropTypes.object,
-  showUast: PropTypes.bool,
-  handleLangChange: PropTypes.func.isRequired,
-  handleShowUastChange: PropTypes.func.isRequired
+  handleLangChange: PropTypes.func.isRequired
 };
 
 const EditorWithUAST = withUASTEditor(EditorUASTSpitPane);
@@ -156,51 +135,74 @@ class CodeViewer extends Component {
 
   render() {
     const { loading, language, showUast, uast, error } = this.state;
+    const { showModal, onHide, code, languages } = this.props;
 
     if (loading) {
       return 'loading';
     }
 
-    if (showUast) {
-      return (
-        <div className="code-viewer">
-          <EditorWithUAST
-            languages={this.props.languages}
-            code={this.props.code}
-            languageMode={language}
-            showUast={showUast}
-            handleLangChange={this.handleLangChange}
-            handleShowUastChange={this.handleShowUastChange}
-            uast={uast}
-          />
-          {error ? (
-            <div className="error">
-              <button onClick={this.removeError} className="close">
-                close
-              </button>
-              {error}
-            </div>
-          ) : null}
-        </div>
-      );
-    }
-
     return (
-      <EditorPane
-        languages={this.props.languages}
-        language={language}
-        showUast={showUast}
-        handleLangChange={this.handleLangChange}
-        handleShowUastChange={this.handleShowUastChange}
-        editorProps={{ code: this.props.code, languageMode: language }}
-      />
+      <Modal show={showModal} onHide={onHide} bsSize="large">
+        <Modal.Header closeButton>
+          <Modal.Title>
+            CODE
+            <Switch
+              checked={showUast}
+              onChange={this.handleShowUastChange}
+              disabled={!language}
+              checkedIcon={<span className="switch-text checked">UAST</span>}
+              uncheckedIcon={
+                <span className="switch-text unchecked">UAST</span>
+              }
+              width={100}
+              handleDiameter={20}
+              className={`code-toggler ${showUast ? 'checked' : 'unchecked'}`}
+              aria-label="Toggle UAST view"
+            />
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {showUast ? (
+            <div className="code-viewer">
+              <EditorWithUAST
+                languages={languages}
+                code={code}
+                languageMode={language}
+                showUast={showUast}
+                handleLangChange={this.handleLangChange}
+                handleShowUastChange={this.handleShowUastChange}
+                uast={uast}
+              />
+              {error ? (
+                <div className="error">
+                  <button onClick={this.removeError} className="close">
+                    close
+                  </button>
+                  {error}
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <EditorPane
+              languages={languages}
+              language={language}
+              showUast={showUast}
+              handleLangChange={this.handleLangChange}
+              handleShowUastChange={this.handleShowUastChange}
+              editorProps={{ code, languageMode: language }}
+            />
+          )}
+        </Modal.Body>
+      </Modal>
     );
   }
 }
 
 CodeViewer.propTypes = {
-  code: PropTypes.string.isRequired,
-  languages: EditorPane.propTypes.languages
+  code: PropTypes.string,
+  languages: EditorPane.propTypes.languages,
+  showModal: PropTypes.bool.isRequired,
+  onHide: PropTypes.func.isRequired
 };
 
 export default CodeViewer;

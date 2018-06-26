@@ -14,6 +14,7 @@
     "react-helmet": "^5.2.0",
     "react-scripts": "1.1.4",
     "react-split-pane": "^0.1.77",
+    "react-switch": "^3.0.4",
     "react-table": "^6.8.2",
     "uast-viewer": "^0.0.4"
   },

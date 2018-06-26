@@ -1,3 +1,5 @@
+@import '../variables.less';
+
 .code-viewer {
     position: relative;
     height: 100%;
@@ -20,4 +22,35 @@
 
 .editor-pane {
     height: 100%;
+}
+
+.code-toggler {
+    margin-left: 40px;
+
+    .switch-text {
+        font-size: 18px;
+        font-weight: @btn-font-weight;
+    }
+
+    .switch-text.checked {
+        color: @btn-gbpl-tertiary-color;
+        padding-left: 28px;
+    }
+
+    .switch-text.unchecked {
+        color: #979797;
+        margin-left: -29px;
+    }
+
+    &.checked {
+        .react-switch-bg {
+            background: @tertiary !important;
+        }
+    }
+
+    &.unchecked {
+        .react-switch-bg {
+            background: #e1e1e1 !important;
+        }
+    }
 }
