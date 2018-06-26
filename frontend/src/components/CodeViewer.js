@@ -6,14 +6,7 @@ import UASTViewer, { Editor, withUASTEditor } from 'uast-viewer';
 import api from '../api';
 import './CodeViewer.less';
 
-function EditorPane({
-  languages,
-  language,
-  showUast,
-  handleLangChange,
-  handleShowUastChange,
-  editorProps
-}) {
+function EditorPane({ languages, language, handleLangChange, editorProps }) {
   return (
     <div className="editor-pane">
       Language:{' '}
@@ -25,14 +18,6 @@ function EditorPane({
           </option>
         ))}
       </select>
-      <label>
-        <input
-          type="checkbox"
-          checked={showUast}
-          onChange={handleShowUastChange}
-          disabled={!language}
-        />UAST
-      </label>
       <Editor {...editorProps} theme="default" />
     </div>
   );
@@ -46,9 +31,7 @@ EditorPane.propTypes = {
     })
   ).isRequired,
   language: PropTypes.string,
-  showUast: PropTypes.bool,
   handleLangChange: PropTypes.func.isRequired,
-  handleShowUastChange: PropTypes.func.isRequired,
   editorProps: PropTypes.object
 };
 
@@ -56,18 +39,14 @@ function EditorUASTSpitPane({
   languages,
   editorProps,
   uastViewerProps,
-  showUast,
-  handleLangChange,
-  handleShowUastChange
+  handleLangChange
 }) {
   return (
     <SplitPane split="vertical" defaultSize={250} minSize={175}>
       <EditorPane
         languages={languages}
         language={editorProps.languageMode}
-        showUast={showUast}
         handleLangChange={handleLangChange}
-        handleShowUastChange={handleShowUastChange}
         editorProps={editorProps}
       />
       {uastViewerProps.uast ? <UASTViewer {...uastViewerProps} /> : <div />}
@@ -79,9 +58,7 @@ EditorUASTSpitPane.propTypes = {
   languages: EditorPane.propTypes.languages,
   editorProps: PropTypes.object,
   uastViewerProps: PropTypes.object,
-  showUast: PropTypes.bool,
-  handleLangChange: PropTypes.func.isRequired,
-  handleShowUastChange: PropTypes.func.isRequired
+  handleLangChange: PropTypes.func.isRequired
 };
 
 const EditorWithUAST = withUASTEditor(EditorUASTSpitPane);
@@ -166,7 +143,17 @@ class CodeViewer extends Component {
     return (
       <Modal show={showModal} onHide={onHide} bsSize="large">
         <Modal.Header closeButton>
-          <Modal.Title>CODE</Modal.Title>
+          <Modal.Title>
+            CODE
+            <label>
+              <input
+                type="checkbox"
+                checked={showUast}
+                onChange={this.handleShowUastChange}
+                disabled={!language}
+              />UAST
+            </label>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {showUast ? (
