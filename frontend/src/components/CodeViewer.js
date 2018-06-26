@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import UASTViewer, { Editor, withUASTEditor } from 'uast-viewer';
@@ -43,7 +44,7 @@ EditorPane.propTypes = {
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired
     })
-  ),
+  ).isRequired,
   language: PropTypes.string,
   showUast: PropTypes.bool,
   handleLangChange: PropTypes.func.isRequired,
@@ -156,51 +157,59 @@ class CodeViewer extends Component {
 
   render() {
     const { loading, language, showUast, uast, error } = this.state;
+    const { showModal, onHide, code, languages } = this.props;
 
     if (loading) {
       return 'loading';
     }
 
-    if (showUast) {
-      return (
-        <div className="code-viewer">
-          <EditorWithUAST
-            languages={this.props.languages}
-            code={this.props.code}
-            languageMode={language}
-            showUast={showUast}
-            handleLangChange={this.handleLangChange}
-            handleShowUastChange={this.handleShowUastChange}
-            uast={uast}
-          />
-          {error ? (
-            <div className="error">
-              <button onClick={this.removeError} className="close">
-                close
-              </button>
-              {error}
-            </div>
-          ) : null}
-        </div>
-      );
-    }
-
     return (
-      <EditorPane
-        languages={this.props.languages}
-        language={language}
-        showUast={showUast}
-        handleLangChange={this.handleLangChange}
-        handleShowUastChange={this.handleShowUastChange}
-        editorProps={{ code: this.props.code, languageMode: language }}
-      />
+      <Modal show={showModal} onHide={onHide} bsSize="large">
+        <Modal.Header closeButton>
+          <Modal.Title>CODE</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {showUast ? (
+            <div className="code-viewer">
+              <EditorWithUAST
+                languages={languages}
+                code={code}
+                languageMode={language}
+                showUast={showUast}
+                handleLangChange={this.handleLangChange}
+                handleShowUastChange={this.handleShowUastChange}
+                uast={uast}
+              />
+              {error ? (
+                <div className="error">
+                  <button onClick={this.removeError} className="close">
+                    close
+                  </button>
+                  {error}
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <EditorPane
+              languages={languages}
+              language={language}
+              showUast={showUast}
+              handleLangChange={this.handleLangChange}
+              handleShowUastChange={this.handleShowUastChange}
+              editorProps={{ code, languageMode: language }}
+            />
+          )}
+        </Modal.Body>
+      </Modal>
     );
   }
 }
 
 CodeViewer.propTypes = {
-  code: PropTypes.string.isRequired,
-  languages: EditorPane.propTypes.languages
+  code: PropTypes.string,
+  languages: EditorPane.propTypes.languages,
+  showModal: PropTypes.bool.isRequired,
+  onHide: PropTypes.func.isRequired
 };
 
 export default CodeViewer;

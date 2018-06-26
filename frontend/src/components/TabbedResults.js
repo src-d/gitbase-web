@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import DivTabs from './DivTabs';
 import ResultsTable from './ResultsTable';
 import HistoryTable from './HistoryTable';
+import CodeViewer from './CodeViewer';
 import './TabbedResults.less';
 import PencilIcon from '../icons/edit-query-tab-name.svg';
 import CloseIcon from '../icons/close-query-tab.svg';
@@ -104,10 +105,14 @@ class TabbedResults extends Component {
     super(props);
     this.state = {
       activeKey: 0,
-      nTabs: 0
+      nTabs: 0,
+      codeModalShow: false,
+      codeModalContent: null
     };
 
     this.handleSelect = this.handleSelect.bind(this);
+    this.showCode = this.showCode.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -137,8 +142,23 @@ class TabbedResults extends Component {
     this.props.handleSetActiveResult(activeKey);
   }
 
+  showCode(code) {
+    this.setState({
+      codeModalShow: true,
+      codeModalContent: code
+    });
+  }
+
+  handleModalClose() {
+    this.setState({
+      codeModalShow: false,
+      codeModalContent: null
+    });
+  }
+
   render() {
-    const { showCode, showUAST, history } = this.props;
+    const { codeModalShow, codeModalContent } = this.state;
+    const { showUAST, history, languages } = this.props;
 
     return (
       <div className="results-padding full-height full-width">
@@ -181,7 +201,7 @@ class TabbedResults extends Component {
                 content = (
                   <ResultsTable
                     response={query.response}
-                    showCode={showCode}
+                    showCode={this.showCode}
                     showUAST={showUAST}
                   />
                 );
@@ -266,6 +286,12 @@ class TabbedResults extends Component {
             </Tab>
           )}
         </DivTabs>
+        <CodeViewer
+          showModal={codeModalShow}
+          code={codeModalContent}
+          onHide={this.handleModalClose}
+          languages={languages}
+        />
       </div>
     );
   }
@@ -284,8 +310,8 @@ TabbedResults.propTypes = {
   handleResetHistory: PropTypes.func.isRequired,
   handleSetActiveResult: PropTypes.func.isRequired,
   handleReload: PropTypes.func.isRequired,
-  showCode: PropTypes.func.isRequired,
-  showUAST: PropTypes.func.isRequired
+  showUAST: PropTypes.func.isRequired,
+  languages: CodeViewer.propTypes.languages
 };
 
 export default TabbedResults;

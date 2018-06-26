@@ -9,7 +9,6 @@ import initButtonStyles from './utils/bootstrap';
 import Sidebar from './components/Sidebar';
 import QueryBox from './components/QueryBox';
 import TabbedResults from './components/TabbedResults';
-import CodeViewer from './components/CodeViewer';
 import api from './api';
 import { STATUS_LOADING, STATUS_ERROR, STATUS_SUCCESS } from './state/query';
 import './App.less';
@@ -66,7 +65,6 @@ class App extends Component {
     this.handleSetActiveResult = this.handleSetActiveResult.bind(this);
     this.handleReload = this.handleReload.bind(this);
 
-    this.showCode = this.showCode.bind(this);
     this.showUAST = this.showUAST.bind(this);
 
     this.uniqueKey = 0;
@@ -235,14 +233,6 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.setState({ showModal: false, modalTitle: null, modalContent: null });
   }
 
-  showCode(code) {
-    this.setState({
-      showModal: true,
-      modalTitle: 'Source code',
-      modalContent: <CodeViewer code={code} languages={this.state.languages} />
-    });
-  }
-
   showUAST(uast) {
     this.setState({
       showModal: true,
@@ -392,8 +382,8 @@ FROM ( SELECT MONTH(committer_when) as month,
                 handleResetHistory={this.handleResetHistory}
                 handleSetActiveResult={this.handleSetActiveResult}
                 handleReload={this.handleReload}
-                showCode={this.showCode}
                 showUAST={this.showUAST}
+                languages={this.state.languages}
               />
             </SplitPane>
           </Row>
