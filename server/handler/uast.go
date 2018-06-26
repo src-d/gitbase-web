@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -79,10 +80,53 @@ func Parse(bbblfshServerURL string) RequestProcessFunc {
 	}
 }
 
-// Filter : placeholder method
+type filterRequest struct {
+	Protobufs string `json:"protobufs"`
+	Filter    string `json:"filter"`
+}
+
+// Filter returns a function that filters UAST protobuf and returns UAST JSON
 func Filter() RequestProcessFunc {
 	return func(r *http.Request) (*serializer.Response, error) {
-		return nil, serializer.NewHTTPError(http.StatusNotImplemented, http.StatusText(http.StatusNotImplemented))
+		var req filterRequest
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			return nil, err
+		}
+
+		err = json.Unmarshal(body, &req)
+		if err != nil {
+			return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		data, err := base64.StdEncoding.DecodeString(req.Protobufs)
+		if err != nil {
+			return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		nodes, err := service.UnmarshallUAST(&data)
+		if err != nil {
+			return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		resp := &uast.Node{InternalType: "Search results"}
+
+		if req.Filter != "" {
+			for _, n := range nodes {
+				filtered, err := tools.Filter((*uast.Node)(n), req.Filter)
+				if err != nil {
+					return nil, err
+				}
+
+				resp.Children = append(resp.Children, filtered...)
+			}
+		} else {
+			for _, n := range nodes {
+				resp.Children = append(resp.Children, (*uast.Node)(n))
+			}
+		}
+
+		return serializer.UASTFilterResponse((*service.Node)(resp)), nil
 	}
 }
 
