@@ -9,6 +9,7 @@ class UASTViewer extends Component {
     super(props);
 
     this.state = {
+      loading: false,
       uast: transformer({
         InternalType: 'Search results',
         Children: props.uast
@@ -32,16 +33,19 @@ class UASTViewer extends Component {
   }
 
   handleSearch() {
+    this.setState({ uast: null, error: null, loading: true });
+
     api
       .filterUAST(this.props.protobufs, this.state.filter)
       .then(uast => {
         this.setState({ uast: transformer(uast) });
       })
-      .catch(err => this.setState({ uast: null, error: err }));
+      .catch(err => this.setState({ uast: null, error: err }))
+      .then(() => this.setState({ loading: false }));
   }
 
   render() {
-    const { uast, error } = this.state;
+    const { uast, error, loading } = this.state;
     const { showLocations, filter } = this.state;
     const uastViewerProps = { uast };
 
@@ -51,6 +55,7 @@ class UASTViewer extends Component {
 
     return (
       <UASTViewerPane
+        loading={loading}
         uastViewerProps={uastViewerProps}
         showLocations={showLocations}
         filter={filter}

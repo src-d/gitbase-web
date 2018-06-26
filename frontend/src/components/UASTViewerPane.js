@@ -29,6 +29,7 @@ function NotFound() {
 }
 
 function UASTViewerPane({
+  loading,
   uastViewerProps,
   showLocations,
   useCustomServer,
@@ -40,11 +41,14 @@ function UASTViewerPane({
   handleFilterChange,
   handleSearch
 }) {
-  const searchResults = getSearchResults(uastViewerProps.uast);
-  const rootIds = searchResults || [ROOT_ID];
-
   let content = null;
-  if (uastViewerProps.uast) {
+
+  if (loading) {
+    content = <div>loading...</div>;
+  } else if (uastViewerProps.uast) {
+    const searchResults = getSearchResults(uastViewerProps.uast);
+    const rootIds = searchResults || [ROOT_ID];
+
     if (searchResults && !searchResults.length) {
       content = <NotFound />;
     } else {
@@ -119,6 +123,7 @@ function UASTViewerPane({
 }
 
 UASTViewerPane.propTypes = {
+  loading: PropTypes.bool,
   uastViewerProps: PropTypes.object,
   showLocations: PropTypes.bool,
   useCustomServer: PropTypes.bool,
