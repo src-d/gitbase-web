@@ -308,5 +308,31 @@ curl -X GET http://localhost:8080/get-languages
         { "id": "php", "name": "PHP" }
     ]
 }
+```
 
+## POST /filter
+
+Accepts array of UAST protobufs encoded using base64 and filter query.
+Returns filtered UAST JSON as result.
+
+```bash
+curl -X POST \
+  http://localhost:8080/filter \
+  -H 'content-type: application/json' \
+  -d '{
+  "filter": "//*[@roleString and @roleLiteral]",
+  "protobufs": "<array of uast-protobuf encoded in base64>"
+}'
+```
+
+```json
+    "data": {
+        "InternalType": "Search results",
+        "Roles": [],
+        "Children": [
+            ...
+        ],
+        ...
+    }
+}
 ```
