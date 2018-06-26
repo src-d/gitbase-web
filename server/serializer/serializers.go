@@ -131,3 +131,8 @@ func NewDetectLangResponse(lang string, langType enry.Type) *Response {
 		Type     int    `json:"type"`
 	}{lang, int(langType)}, nil)
 }
+
+// NewLanguagesResponse returns Response with a list of languages
+func NewLanguagesResponse(langs []service.Language) *Response {
+	return newResponse(langs, nil)
+}

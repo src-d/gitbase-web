@@ -2,9 +2,9 @@ package handler
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	bblfsh "gopkg.in/bblfsh/client-go.v2"
 	"gopkg.in/bblfsh/client-go.v2/tools"
@@ -60,7 +60,7 @@ func Parse(bbblfshServerURL string) RequestProcessFunc {
 		}
 
 		if resp.Status != protocol.Ok {
-			return nil, errors.New("bblfsh returend not OK response")
+			return nil, serializer.NewHTTPError(http.StatusBadRequest, strings.Join(resp.Errors, "\n"))
 		}
 
 		if resp.UAST != nil && req.Filter != "" {
@@ -83,5 +83,22 @@ func Parse(bbblfshServerURL string) RequestProcessFunc {
 func Filter() RequestProcessFunc {
 	return func(r *http.Request) (*serializer.Response, error) {
 		return nil, serializer.NewHTTPError(http.StatusNotImplemented, http.StatusText(http.StatusNotImplemented))
+	}
+}
+
+// GetLanguages returns a list of supported languages by bblfsh
+func GetLanguages(bbblfshServerURL string) RequestProcessFunc {
+	return func(r *http.Request) (*serializer.Response, error) {
+		cli, err := bblfsh.NewClient(bbblfshServerURL)
+		if err != nil {
+			return nil, err
+		}
+
+		resp, err := cli.NewSupportedLanguagesRequest().Do()
+		if err != nil {
+			return nil, err
+		}
+
+		return serializer.NewLanguagesResponse(service.DriverManifestsToLangs(resp.Languages)), nil
 	}
 }

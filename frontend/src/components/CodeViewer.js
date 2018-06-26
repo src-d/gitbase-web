@@ -5,18 +5,8 @@ import UASTViewer, { Editor, withUASTEditor } from 'uast-viewer';
 import api from '../api';
 import './CodeViewer.less';
 
-const avaliableLangs = [
-  'Java',
-  'Go',
-  'Python',
-  'JavaScript',
-  'Php',
-  'Ruby',
-  'Typescript',
-  'Bash'
-];
-
 function EditorPane({
+  languages,
   language,
   showUast,
   handleLangChange,
@@ -28,9 +18,9 @@ function EditorPane({
       Language:{' '}
       <select value={language} onChange={handleLangChange}>
         <option value="">Select language</option>
-        {avaliableLangs.map(lang => (
-          <option key={lang} value={lang.toLowerCase()}>
-            {lang}
+        {languages.map(lang => (
+          <option key={lang.id} value={lang.id}>
+            {lang.name}
           </option>
         ))}
       </select>
@@ -48,6 +38,12 @@ function EditorPane({
 }
 
 EditorPane.propTypes = {
+  languages: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired
+    })
+  ),
   language: PropTypes.string,
   showUast: PropTypes.bool,
   handleLangChange: PropTypes.func.isRequired,
@@ -56,6 +52,7 @@ EditorPane.propTypes = {
 };
 
 function EditorUASTSpitPane({
+  languages,
   editorProps,
   uastViewerProps,
   showUast,
@@ -65,6 +62,7 @@ function EditorUASTSpitPane({
   return (
     <SplitPane split="vertical" defaultSize={250} minSize={175}>
       <EditorPane
+        languages={languages}
         language={editorProps.languageMode}
         showUast={showUast}
         handleLangChange={handleLangChange}
@@ -77,6 +75,7 @@ function EditorUASTSpitPane({
 }
 
 EditorUASTSpitPane.propTypes = {
+  languages: EditorPane.propTypes.languages,
   editorProps: PropTypes.object,
   uastViewerProps: PropTypes.object,
   showUast: PropTypes.bool,
@@ -166,6 +165,7 @@ class CodeViewer extends Component {
       return (
         <div className="code-viewer">
           <EditorWithUAST
+            languages={this.props.languages}
             code={this.props.code}
             languageMode={language}
             showUast={showUast}
@@ -187,6 +187,7 @@ class CodeViewer extends Component {
 
     return (
       <EditorPane
+        languages={this.props.languages}
         language={language}
         showUast={showUast}
         handleLangChange={this.handleLangChange}
@@ -198,7 +199,8 @@ class CodeViewer extends Component {
 }
 
 CodeViewer.propTypes = {
-  code: PropTypes.string.isRequired
+  code: PropTypes.string.isRequired,
+  languages: EditorPane.propTypes.languages
 };
 
 export default CodeViewer;

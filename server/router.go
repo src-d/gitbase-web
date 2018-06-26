@@ -43,6 +43,7 @@ func Router(
 	r.Post("/parse", handler.APIHandlerFunc(handler.Parse(bbblfshServerURL)))
 	r.Post("/filter", handler.APIHandlerFunc(handler.Filter()))
 	r.Post("/detect-lang", handler.APIHandlerFunc(handler.DetectLanguage()))
+	r.Get("/get-languages", handler.APIHandlerFunc(handler.GetLanguages(bbblfshServerURL)))
 
 	r.Get("/version", handler.APIHandlerFunc(handler.Version(version)))
 
