@@ -102,21 +102,23 @@ function UASTViewerPane({
   }
 
   return (
-    <div>
-      <div>
+    <div className="uast-viewer-pane">
+      <div className="show-locations-wrapper">
         <label>
           <input
             type="checkbox"
             checked={showLocations}
             onChange={handleShowLocationsChange}
-          />Show locations
+          />
+          <span>Show locations</span>
         </label>
         <label>
           <input
             type="checkbox"
             value={useCustomServer}
             onChange={handleUseCustomServerChange}
-          />Custom bblfsh server
+          />
+          <span>Custom bblfsh server</span>
         </label>
         {useCustomServer ? (
           <input
@@ -126,7 +128,7 @@ function UASTViewerPane({
           />
         ) : null}
       </div>
-      <div>
+      <div className="uast-query-wrapper">
         <form
           onSubmit={e => {
             e.preventDefault();
@@ -138,13 +140,17 @@ function UASTViewerPane({
             placeholder="UAST Query"
             value={filter}
             onChange={handleFilterChange}
-          />{' '}
-          <Button type="submit">Search</Button>{' '}
+          />
+          <Button bsStyle="gbpl-secondary" type="submit">
+            SEARCH
+          </Button>
           <Button
+            className="edit-query"
+            bsStyle="gbpl-primary-tint-2-link"
             href="https://doc.bblf.sh/using-babelfish/uast-querying.html"
             target="_blank"
           >
-            Help
+            HELP
           </Button>
         </form>
       </div>

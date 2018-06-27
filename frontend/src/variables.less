@@ -145,6 +145,16 @@
     .button-variant(@btn-gbpl-primary-tint-2-color; @btn-gbpl-primary-tint-2-bg; @btn-gbpl-primary-tint-2-border);
 }
 
+// bsStyle gbpl-primary-tint-2-link: blue text, no background
+@btn-gbpl-primary-tint-2-link-color:  @primary-tint-2;
+@btn-gbpl-primary-tint-2-link-bg:     transparent;
+@btn-gbpl-primary-tint-2-link-border: @btn-gbpl-primary-tint-2-link-bg;
+
+.btn-gbpl-primary-tint-2-link {
+    .button-variant(@btn-gbpl-primary-tint-2-link-color; @btn-gbpl-primary-tint-2-link-bg; @btn-gbpl-primary-tint-2-link-border);
+    .button-link-variant(@btn-gbpl-primary-tint-2-link-color);
+}
+
 // Allows for customizing button radius independently from global border radius
 @btn-border-radius-base:  100px;
 @btn-border-radius-large: 100px;

@@ -48,6 +48,13 @@
     }
 }
 
+// For the select and input elements in the modal header
+.blue-header-element {
+    background-color: fade(@primary-tint-3, 40%);
+    border: solid 1px fade(@primary-tint-2, 40%);
+    border-radius: 2px;
+}
+
 .editor-pane {
     height: 100%;
     display: flex;
@@ -57,7 +64,8 @@
         flex: 0 0 auto;
 
         padding: 5px 0px 5px 60px;
-        border-bottom: solid 1px @primary-tint-3;
+        min-height: 45px;
+        border-bottom: solid 1px fade(@primary-tint-2, 20%);
         margin-bottom: 15px;
 
         overflow-x: hidden;
@@ -70,13 +78,14 @@
         }
 
         select {
+            .blue-header-element;
+
             font-family: @monospace-font;
             font-size: 12px;
             font-weight: bold;
             color: @primary;
 
             width: 256px;
-            min-width: 30px;
             padding: 8px 0px 8px 15px;
         }
     }
@@ -99,6 +108,74 @@
                 flex: 1 1 auto;
             }
         }
+    }
+}
+
+.uast-viewer-pane {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .show-locations-wrapper {
+        flex: 0 0 auto;
+
+        min-height: 45px;
+        padding: 5px 0px 5px 20px;
+        background: @primary-tint-4;
+        border-bottom: solid 1px fade(@primary-tint-2, 50%);
+
+        font-size: 14px;
+
+        label {
+            font-weight: normal;
+            margin-right: 40px;
+
+            span {
+                margin-left: 10px;
+            }
+
+            &:last-of-type {
+                margin-right: 10px;
+            }
+        }
+
+        input {
+            .blue-header-element;
+
+            font-family: @monospace-font;
+        }
+    }
+
+    .uast-query-wrapper {
+        flex: 0 0 auto;
+
+        background: @primary-tint-4;
+        padding: 10px 15px 10px 20px;
+        overflow: hidden;
+
+        form {
+            display: flex;
+
+            input {
+                .blue-header-element;
+
+                flex: 1 1 auto;
+                min-width: 25px;
+
+                color: @primary-tint-1;
+                font-family: @monospace-font;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            button {
+                margin-left: 15px;
+            }
+        }
+    }
+
+    .uast-viewer {
+        flex: 1 1 auto;
     }
 }
 
