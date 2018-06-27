@@ -10,19 +10,22 @@ import UASTViewer, {
 import Switch from 'react-switch';
 import api from '../api';
 import './CodeViewer.less';
+import CloseIcon from '../icons/close-query-tab.svg';
 
 function EditorPane({ languages, language, handleLangChange, editorProps }) {
   return (
     <div className="editor-pane">
-      Language:{' '}
-      <select value={language} onChange={handleLangChange}>
-        <option value="">Select language</option>
-        {languages.map(lang => (
-          <option key={lang.id} value={lang.id}>
-            {lang.name}
-          </option>
-        ))}
-      </select>
+      <div className="language-selection">
+        <span className="lang-label">LANGUAGE</span>
+        <select value={language} onChange={handleLangChange}>
+          <option value="">Select language</option>
+          {languages.map(lang => (
+            <option key={lang.id} value={lang.id}>
+              {lang.name}
+            </option>
+          ))}
+        </select>
+      </div>
       <Editor
         {...editorProps}
         languageMode={languageToMode(language)}
@@ -179,7 +182,7 @@ function EditorUASTSpitPane({
   handleSearch
 }) {
   return (
-    <SplitPane split="vertical" defaultSize={250} minSize={175}>
+    <SplitPane split="vertical" defaultSize={500} minSize={1} maxSize={-15}>
       <EditorPane
         languages={languages}
         language={editorProps.languageMode}
@@ -341,7 +344,7 @@ class CodeViewer extends Component {
 
     return (
       <Modal show={showModal} onHide={onHide} bsSize="large">
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>
             CODE
             <Switch
@@ -357,6 +360,7 @@ class CodeViewer extends Component {
               className={`code-toggler ${showUast ? 'checked' : 'unchecked'}`}
               aria-label="Toggle UAST view"
             />
+            <CloseIcon className="btn-modal-close" onClick={onHide} />
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -381,10 +385,14 @@ class CodeViewer extends Component {
               />
               {error ? (
                 <div className="error">
-                  <button onClick={this.removeError} className="close">
-                    close
-                  </button>
-                  {error}
+                  <div className="error-header">
+                    <span>ERROR</span>
+                    <CloseIcon
+                      className="btn-error-close"
+                      onClick={this.removeError}
+                    />
+                  </div>
+                  <div className="error-msg">{error}</div>
                 </div>
               ) : null}
             </div>

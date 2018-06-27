@@ -59,7 +59,7 @@ body {
         overflow: auto;
     }
 
-    .Resizer {
+    .Resizer.horizontal {
         border-top: solid 1px @primary-tint-2;
         border-bottom: solid 1px @primary-tint-2;
         background-color: @query-results-block;
@@ -75,6 +75,28 @@ body {
         }
     }
 
+    .Resizer.vertical {
+        border-left: solid 1px @primary-tint-2;
+        border-right: solid 1px @primary-tint-2;
+        background-color: @primary-tint-3;
+
+        cursor: col-resize;
+
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 13px;
+
+        &:before {
+            display: block;
+            content: "●\A●\A●";
+            white-space: pre;
+            text-align: center;
+            line-height: 1em;
+            font-size: 8px;
+        }
+    }
+
     &.main-split {
         min-width: 700px;
     }
@@ -84,12 +106,6 @@ body {
 // margins are hard-coded in bootstrap, so it's hard-coded here too
 .modal-body {
     height: ~'calc(100vh - 150px)';
-
-    .uast-editor,
-    .react-codemirror2,
-    .CodeMirror {
-        height: 100%;
-    }
 
     .uast-viewer {
         height: 100%;

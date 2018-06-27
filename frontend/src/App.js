@@ -12,6 +12,7 @@ import TabbedResults from './components/TabbedResults';
 import api from './api';
 import { STATUS_LOADING, STATUS_ERROR, STATUS_SUCCESS } from './state/query';
 import './App.less';
+import CloseIcon from './icons/close-query-tab.svg';
 
 const INACTIVE_TIMEOUT = 3600000;
 
@@ -236,7 +237,15 @@ FROM ( SELECT MONTH(committer_when) as month,
   showUAST(uast) {
     this.setState({
       showModal: true,
-      modalTitle: 'UAST',
+      modalTitle: (
+        <div>
+          UAST
+          <CloseIcon
+            className="btn-modal-close"
+            onClick={this.handleModalClose}
+          />
+        </div>
+      ),
       modalContent:
         // currently gitbase returns only 1 item, UAST of the file
         // but just in case if there is more or less we show it without viewer
@@ -393,7 +402,7 @@ FROM ( SELECT MONTH(committer_when) as month,
           onHide={this.handleModalClose}
           bsSize="large"
         >
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>{this.state.modalTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body>{this.state.modalContent}</Modal.Body>

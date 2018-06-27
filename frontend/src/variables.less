@@ -2,6 +2,7 @@
 
 //=== Colors
 @primary:           #1b78b7;
+@primary-tint-1:    #082436;
 @primary-tint-2:    #76aed3;
 @primary-tint-3:    #e8f1f7;
 @primary-tint-4:    #f5f9fb;
@@ -71,6 +72,21 @@
     &:hover path {
         fill: darken(@color, 10%);
     }
+}
+
+@btn-title-size: 22px;
+
+.btn-title-common {
+    height: @btn-title-size;
+    width: @btn-title-size;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.btn-title {
+    .btn-title-common;
+    margin-left: 1ex;
+    .icon-btn-variant(@primary-tint-2);
 }
 
 //=== Buttons
@@ -216,6 +232,10 @@
 //** Modal backdrop opacity
 @modal-backdrop-opacity:      0.7;
 
+.modal-dialog {
+    width: 90%;
+}
+
 .modal-content {
     box-shadow: unset;
     border-radius: unset;
@@ -233,4 +253,11 @@
             letter-spacing: 0.8px;
         }
     }
+}
+
+.btn-modal-close {
+    .btn-title-common;
+    .icon-btn-variant(@primary);
+
+    float: right;
 }
