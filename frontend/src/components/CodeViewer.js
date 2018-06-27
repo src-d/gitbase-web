@@ -15,15 +15,17 @@ import CloseIcon from '../icons/close-query-tab.svg';
 function EditorPane({ languages, language, handleLangChange, editorProps }) {
   return (
     <div className="editor-pane">
-      Language:{' '}
-      <select value={language} onChange={handleLangChange}>
-        <option value="">Select language</option>
-        {languages.map(lang => (
-          <option key={lang.id} value={lang.id}>
-            {lang.name}
-          </option>
-        ))}
-      </select>
+      <div className="language-selection">
+        <span className="lang-label">LANGUAGE</span>
+        <select value={language} onChange={handleLangChange}>
+          <option value="">Select language</option>
+          {languages.map(lang => (
+            <option key={lang.id} value={lang.id}>
+              {lang.name}
+            </option>
+          ))}
+        </select>
+      </div>
       <Editor
         {...editorProps}
         languageMode={languageToMode(language)}
