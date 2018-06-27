@@ -40,6 +40,8 @@ gitbaseServer:
       url: https://github.com/src-d/gitbase-playground.git
     bblfshd:
       url: https://github.com/bblfsh/bblfshd.git
+    siva-java:
+      url: https://github.com/src-d/siva-java.git
   image:
     repository: srcd/gitbase
     tag: v0.13.0
