@@ -16,7 +16,7 @@
     "react-split-pane": "^0.1.77",
     "react-switch": "^3.0.4",
     "react-table": "^6.8.2",
-    "uast-viewer": "^0.0.4"
+    "uast-viewer": "^0.0.5"
   },
   "scripts": {
     "start": "react-app-rewired start",
