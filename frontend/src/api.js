@@ -126,12 +126,14 @@ function detectLang(content, filename) {
   }).then(res => res.data);
 }
 
-function parseCode(language, content) {
+function parseCode(language, content, filter, customServerUrl) {
   return apiCall('/parse', {
     method: 'POST',
     body: {
       language,
-      content
+      content,
+      filter,
+      serverUrl: customServerUrl
     }
   }).then(res => {
     if (res.data.status !== 0) {

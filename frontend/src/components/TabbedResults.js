@@ -287,6 +287,7 @@ class TabbedResults extends Component {
           )}
         </DivTabs>
         <CodeViewer
+          key={codeModalContent}
           showModal={codeModalShow}
           code={codeModalContent}
           onHide={this.handleModalClose}
