@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
-import UASTViewer, { Editor, withUASTEditor } from 'uast-viewer';
+import UASTViewer, {
+  Editor,
+  withUASTEditor,
+  languageToMode
+} from 'uast-viewer';
 import Switch from 'react-switch';
 import api from '../api';
 import './CodeViewer.less';
@@ -19,7 +23,11 @@ function EditorPane({ languages, language, handleLangChange, editorProps }) {
           </option>
         ))}
       </select>
-      <Editor {...editorProps} theme="default" />
+      <Editor
+        {...editorProps}
+        languageMode={languageToMode(language)}
+        theme="default"
+      />
     </div>
   );
 }
@@ -385,7 +393,7 @@ class CodeViewer extends Component {
               languages={languages}
               language={language}
               handleLangChange={this.handleLangChange}
-              editorProps={{ code, languageMode: language }}
+              editorProps={{ code }}
             />
           )}
         </Modal.Body>
