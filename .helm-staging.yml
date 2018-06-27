@@ -21,9 +21,6 @@ bblfshdServer:
       javascript:
         repository: bblfsh/javascript-driver
         tag: v1.2.0
-      typescript:
-        repository: bblfsh/typescript-driver
-        tag: v0.2.0
       bash:
         repository: bblfsh/bash-driver
         tag: v1.1.1
