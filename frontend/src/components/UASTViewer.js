@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { transformer } from 'uast-viewer';
 import UASTViewerPane from './UASTViewerPane';
 import api from '../api';
+import CloseIcon from '../icons/close-query-tab.svg';
 
 class UASTViewer extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class UASTViewer extends Component {
     this.handleShowLocationsChange = this.handleShowLocationsChange.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.removeError = this.removeError.bind(this);
   }
 
   handleShowLocationsChange() {
@@ -44,25 +46,39 @@ class UASTViewer extends Component {
       .then(() => this.setState({ loading: false }));
   }
 
+  removeError() {
+    this.setState({ error: null });
+  }
+
   render() {
     const { uast, error, loading } = this.state;
     const { showLocations, filter } = this.state;
     const uastViewerProps = { uast };
 
-    if (error) {
-      return <div>{error}</div>;
-    }
-
     return (
-      <UASTViewerPane
-        loading={loading}
-        uastViewerProps={uastViewerProps}
-        showLocations={showLocations}
-        filter={filter}
-        handleShowLocationsChange={this.handleShowLocationsChange}
-        handleFilterChange={this.handleFilterChange}
-        handleSearch={this.handleSearch}
-      />
+      <div className="pg-uast-viewer">
+        <UASTViewerPane
+          loading={loading}
+          uastViewerProps={uastViewerProps}
+          showLocations={showLocations}
+          filter={filter}
+          handleShowLocationsChange={this.handleShowLocationsChange}
+          handleFilterChange={this.handleFilterChange}
+          handleSearch={this.handleSearch}
+        />
+        {error ? (
+          <div className="error">
+            <div className="error-header">
+              <span>ERROR</span>
+              <CloseIcon
+                className="btn-error-close"
+                onClick={this.removeError}
+              />
+            </div>
+            <div className="error-msg">{error}</div>
+          </div>
+        ) : null}
+      </div>
     );
   }
 }
