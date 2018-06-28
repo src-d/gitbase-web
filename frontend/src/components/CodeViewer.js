@@ -45,6 +45,7 @@ EditorPane.propTypes = {
 };
 
 function EditorUASTSpitPane({
+  uastLoading,
   languages,
   editorProps,
   uastViewerProps,
@@ -68,6 +69,7 @@ function EditorUASTSpitPane({
         editorProps={editorProps}
       />
       <UASTViewerPane
+        loading={uastLoading}
         uastViewerProps={uastViewerProps}
         showLocations={showLocations}
         useCustomServer={useCustomServer}
@@ -84,6 +86,7 @@ function EditorUASTSpitPane({
 }
 
 EditorUASTSpitPane.propTypes = {
+  uastLoading: PropTypes.bool,
   languages: EditorPane.propTypes.languages,
   editorProps: PropTypes.object,
   uastViewerProps: PropTypes.object,
@@ -108,6 +111,7 @@ class CodeViewer extends Component {
     this.state = {
       loading: true,
       language: null,
+      uastLoading: false,
       showUast: false,
       uast: null,
       error: null,
@@ -165,7 +169,7 @@ class CodeViewer extends Component {
   }
 
   parseCode() {
-    this.setState({ error: null, uast: null });
+    this.setState({ error: null, uast: null, uastLoading: true });
 
     api
       .parseCode(
@@ -179,7 +183,8 @@ class CodeViewer extends Component {
       })
       .catch(error => {
         this.setState({ error });
-      });
+      })
+      .then(() => this.setState({ uastLoading: false }));
   }
 
   removeError() {
@@ -208,6 +213,7 @@ class CodeViewer extends Component {
       loading,
       language,
       showUast,
+      uastLoading,
       uast,
       error,
       showLocations,
@@ -249,6 +255,7 @@ class CodeViewer extends Component {
                 code={code}
                 languageMode={language}
                 showUast={showUast}
+                uastLoading={uastLoading}
                 uast={uast}
                 showLocations={showLocations}
                 useCustomServer={useCustomServer}
