@@ -14,6 +14,7 @@ import 'codemirror/addon/hint/sql-hint';
 import './QueryBox.less';
 import SuccessIcon from '../icons/success-query.svg';
 import ErrorIcon from '../icons/error-query.svg';
+import HelpIcon from '../icons/help.svg';
 
 function ResultInfo({ result }) {
   if (!result) {
@@ -126,6 +127,14 @@ class QueryBox extends Component {
                   this.props.handleTextChange(value);
                 }}
               />
+              <Button
+                className="help-button"
+                bsStyle="gbpl-primary-tint-2-link"
+                href="https://docs.sourced.tech/gitbase"
+                target="_blank"
+              >
+                <HelpIcon className="big-icon" />HELP
+              </Button>
             </Col>
           </Row>
           <Row className="button-row">
