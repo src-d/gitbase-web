@@ -74,7 +74,7 @@ class TabTitle extends Component {
     }
 
     return (
-      <div>
+      <div className="tab-title-wrapper">
         <span className="tab-title">{title}</span>
         <PencilIcon
           className="btn-title"
