@@ -147,11 +147,22 @@ function getLanguages() {
   return apiCall(`/get-languages`).then(res => res.data);
 }
 
+function filterUAST(protobufs, filter) {
+  return apiCall('/filter', {
+    method: 'POST',
+    body: {
+      protobufs,
+      filter
+    }
+  }).then(res => res.data);
+}
+
 export default {
   query,
   schema,
   queryExport,
   detectLang,
   parseCode,
-  getLanguages
+  getLanguages,
+  filterUAST
 };

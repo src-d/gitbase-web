@@ -3,12 +3,12 @@ import { Helmet } from 'react-helmet';
 import { Grid, Row, Modal } from 'react-bootstrap';
 import nanoid from 'nanoid';
 import SplitPane from 'react-split-pane';
-import UASTViewer, { transformer } from 'uast-viewer';
 import 'uast-viewer/dist/default-theme.css';
 import initButtonStyles from './utils/bootstrap';
 import Sidebar from './components/Sidebar';
 import QueryBox from './components/QueryBox';
 import TabbedResults from './components/TabbedResults';
+import UASTViewer from './components/UASTViewer';
 import api from './api';
 import { STATUS_LOADING, STATUS_ERROR, STATUS_SUCCESS } from './state/query';
 import './App.less';
@@ -234,7 +234,7 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.setState({ showModal: false, modalTitle: null, modalContent: null });
   }
 
-  showUAST(uast) {
+  showUAST(uast, protobufs) {
     this.setState({
       showModal: true,
       modalTitle: (
@@ -246,14 +246,7 @@ FROM ( SELECT MONTH(committer_when) as month,
           />
         </div>
       ),
-      modalContent:
-        // currently gitbase returns only 1 item, UAST of the file
-        // but just in case if there is more or less we show it without viewer
-        uast.length === 1 ? (
-          <UASTViewer uast={transformer(uast[0])} />
-        ) : (
-          <pre>{uast}</pre>
-        )
+      modalContent: <UASTViewer uast={uast} protobufs={protobufs} />
     });
   }
 

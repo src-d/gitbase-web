@@ -58,6 +58,9 @@
     },
     "/get-languages": {
       "target": "http://localhost:8080"
+    },
+    "/filter": {
+      "target": "http://localhost:8080"
     }
   }
 }
