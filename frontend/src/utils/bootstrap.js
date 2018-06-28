@@ -7,6 +7,7 @@ function initButtonStyles() {
   bootstrapUtils.addStyle(Button, 'gbpl-tertiary');
   bootstrapUtils.addStyle(Button, 'gbpl-tertiary-tint-2-link');
   bootstrapUtils.addStyle(Button, 'gbpl-primary-tint-2');
+  bootstrapUtils.addStyle(Button, 'gbpl-primary-tint-2-link');
 }
 
 export default initButtonStyles;
