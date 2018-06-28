@@ -115,7 +115,7 @@ func Filter() RequestProcessFunc {
 			for _, n := range nodes {
 				filtered, err := tools.Filter((*uast.Node)(n), req.Filter)
 				if err != nil {
-					return nil, err
+					return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
 				}
 
 				resp.Children = append(resp.Children, filtered...)
