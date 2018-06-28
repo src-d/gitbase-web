@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"sort"
 	"strings"
 
 	bblfsh "gopkg.in/bblfsh/client-go.v2"
@@ -99,6 +100,12 @@ func GetLanguages(bbblfshServerURL string) RequestProcessFunc {
 			return nil, err
 		}
 
-		return serializer.NewLanguagesResponse(service.DriverManifestsToLangs(resp.Languages)), nil
+		langs := service.DriverManifestsToLangs(resp.Languages)
+
+		sort.Slice(langs, func(i, j int) bool {
+			return langs[i].Name < langs[j].Name
+		})
+
+		return serializer.NewLanguagesResponse(langs), nil
 	}
 }
