@@ -93,7 +93,6 @@ assets_back := $(assets).bak
 
 back-dependencies:
 	$(GODEP) ensure
-	$(MAKE) -C $(DEPENDENCIES_DIRECTORY)/gopkg.in/bblfsh/client-go.v2 dependencies
 
 back-build: back-bindata
 
