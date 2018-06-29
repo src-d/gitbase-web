@@ -38,11 +38,12 @@ class ResultsTable extends Component {
             return v;
           case 'object':
             // UAST column
+            const protobufs = row[`__${col}-protobufs`];
             return (
               <Button
                 bsStyle="gbpl-tertiary"
                 className="btn-compact"
-                onClick={() => showUAST(v)}
+                onClick={() => showUAST(v, protobufs)}
               >
                 UAST
               </Button>

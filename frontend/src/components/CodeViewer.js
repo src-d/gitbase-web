@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
-import UASTViewer, {
-  Editor,
-  withUASTEditor,
-  languageToMode
-} from 'uast-viewer';
+import { Editor, withUASTEditor, languageToMode } from 'uast-viewer';
 import Switch from 'react-switch';
+import UASTViewerPane from './UASTViewerPane';
 import api from '../api';
 import './CodeViewer.less';
 import CloseIcon from '../icons/close-query-tab.svg';
@@ -47,132 +44,8 @@ EditorPane.propTypes = {
   editorProps: PropTypes.object
 };
 
-const ROOT_ID = 1;
-const SEARCH_RESULTS_TYPE = 'Search results';
-
-function getSearchResults(uast) {
-  if (!uast) {
-    return null;
-  }
-
-  const rootNode = uast[ROOT_ID];
-  if (!rootNode) {
-    return null;
-  }
-
-  if (rootNode.InternalType === SEARCH_RESULTS_TYPE) {
-    return rootNode.Children;
-  }
-
-  return null;
-}
-
-function NotFound() {
-  return <div>Nothing found</div>;
-}
-
-function UASTViewerPane({
-  uastViewerProps,
-  showLocations,
-  useCustomServer,
-  customServer,
-  filter,
-  handleShowLocationsChange,
-  handleUseCustomServerChange,
-  handleCustomServerChange,
-  handleFilterChange,
-  handleSearch
-}) {
-  const searchResults = getSearchResults(uastViewerProps.uast);
-  const rootIds = searchResults || [ROOT_ID];
-
-  let content = null;
-  if (uastViewerProps.uast) {
-    if (searchResults && !searchResults.length) {
-      content = <NotFound />;
-    } else {
-      content = (
-        <UASTViewer
-          {...uastViewerProps}
-          rootIds={rootIds}
-          showLocations={showLocations}
-        />
-      );
-    }
-  }
-
-  return (
-    <div className="uast-viewer-pane">
-      <div className="show-locations-wrapper">
-        <label>
-          <input
-            type="checkbox"
-            checked={showLocations}
-            onChange={handleShowLocationsChange}
-          />
-          <span>Show locations</span>
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            value={useCustomServer}
-            onChange={handleUseCustomServerChange}
-          />
-          <span>Custom bblfsh server</span>
-        </label>
-        {useCustomServer ? (
-          <input
-            type="text"
-            value={customServer}
-            onChange={handleCustomServerChange}
-          />
-        ) : null}
-      </div>
-      <div className="uast-query-wrapper">
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-            handleSearch();
-          }}
-        >
-          <input
-            type="text"
-            placeholder="UAST Query"
-            value={filter}
-            onChange={handleFilterChange}
-          />
-          <Button bsStyle="gbpl-secondary" type="submit">
-            SEARCH
-          </Button>
-          <Button
-            className="edit-query"
-            bsStyle="gbpl-primary-tint-2-link"
-            href="https://doc.bblf.sh/using-babelfish/uast-querying.html"
-            target="_blank"
-          >
-            HELP
-          </Button>
-        </form>
-      </div>
-      {content}
-    </div>
-  );
-}
-
-UASTViewerPane.propTypes = {
-  uastViewerProps: PropTypes.object,
-  showLocations: PropTypes.bool,
-  useCustomServer: PropTypes.bool,
-  customServer: PropTypes.string,
-  filter: PropTypes.string,
-  handleShowLocationsChange: PropTypes.func.isRequired,
-  handleUseCustomServerChange: PropTypes.func.isRequired,
-  handleCustomServerChange: PropTypes.func.isRequired,
-  handleFilterChange: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired
-};
-
 function EditorUASTSpitPane({
+  uastLoading,
   languages,
   editorProps,
   uastViewerProps,
@@ -196,6 +69,7 @@ function EditorUASTSpitPane({
         editorProps={editorProps}
       />
       <UASTViewerPane
+        loading={uastLoading}
         uastViewerProps={uastViewerProps}
         showLocations={showLocations}
         useCustomServer={useCustomServer}
@@ -212,6 +86,7 @@ function EditorUASTSpitPane({
 }
 
 EditorUASTSpitPane.propTypes = {
+  uastLoading: PropTypes.bool,
   languages: EditorPane.propTypes.languages,
   editorProps: PropTypes.object,
   uastViewerProps: PropTypes.object,
@@ -236,6 +111,7 @@ class CodeViewer extends Component {
     this.state = {
       loading: true,
       language: null,
+      uastLoading: false,
       showUast: false,
       uast: null,
       error: null,
@@ -293,7 +169,7 @@ class CodeViewer extends Component {
   }
 
   parseCode() {
-    this.setState({ error: null, uast: null });
+    this.setState({ error: null, uast: null, uastLoading: true });
 
     api
       .parseCode(
@@ -307,7 +183,8 @@ class CodeViewer extends Component {
       })
       .catch(error => {
         this.setState({ error });
-      });
+      })
+      .then(() => this.setState({ uastLoading: false }));
   }
 
   removeError() {
@@ -336,6 +213,7 @@ class CodeViewer extends Component {
       loading,
       language,
       showUast,
+      uastLoading,
       uast,
       error,
       showLocations,
@@ -377,6 +255,7 @@ class CodeViewer extends Component {
                 code={code}
                 languageMode={language}
                 showUast={showUast}
+                uastLoading={uastLoading}
                 uast={uast}
                 showLocations={showLocations}
                 useCustomServer={useCustomServer}

@@ -116,6 +116,7 @@ func Query(db service.SQLDB) RequestProcessFunc {
 					nodes, err := service.UnmarshallUAST(val)
 					if err == nil {
 						colData[columnNames[i]] = nodes
+						colData["__"+columnNames[i]+"-protobufs"] = val
 					} else {
 						var data interface{}
 

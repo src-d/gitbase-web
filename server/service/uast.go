@@ -2,7 +2,6 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"gopkg.in/bblfsh/sdk.v1/protocol"
 	"gopkg.in/bblfsh/sdk.v1/uast"
@@ -35,7 +34,6 @@ type ParseResponse protocol.ParseResponse
 
 // MarshalJSON returns the JSON representation of the protocol.ParseResponse
 func (r *ParseResponse) MarshalJSON() ([]byte, error) {
-	fmt.Println("MarshalJSON")
 	resp := struct {
 		*protocol.ParseResponse
 		UAST *Node `json:"uast"`

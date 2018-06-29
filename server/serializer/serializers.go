@@ -136,3 +136,8 @@ func NewDetectLangResponse(lang string, langType enry.Type) *Response {
 func NewLanguagesResponse(langs []service.Language) *Response {
 	return newResponse(langs, nil)
 }
+
+// UASTFilterResponse return a Response with UAST
+func UASTFilterResponse(resp *service.Node) *Response {
+	return newResponse(resp, nil)
+}
