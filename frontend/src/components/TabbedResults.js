@@ -1,5 +1,13 @@
 import React, { Component, Fragment } from 'react';
-import { Row, Col, Alert, Tab, Button } from 'react-bootstrap';
+import {
+  Row,
+  Col,
+  Alert,
+  Tab,
+  Button,
+  OverlayTrigger,
+  Popover
+} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import DivTabs from './DivTabs';
 import ResultsTable from './ResultsTable';
@@ -57,7 +65,7 @@ class TabTitle extends Component {
 
     if (inEdit) {
       return (
-        <div ref={this.ref}>
+        <div ref={this.ref} className="tab-title-wrapper">
           <input
             autoFocus
             type="text"
@@ -74,21 +82,31 @@ class TabTitle extends Component {
     }
 
     return (
-      <div className="tab-title-wrapper">
-        <span className="tab-title">{title}</span>
-        <PencilIcon
-          className="btn-title"
-          onClick={() => {
-            this.handleStartEdit(tabKey);
-          }}
-        />
-        <CloseIcon
-          className="btn-title"
-          onClick={() => {
-            this.props.handleRemoveResult(tabKey);
-          }}
-        />
-      </div>
+      <OverlayTrigger
+        placement="top"
+        delay={1000}
+        overlay={
+          <Popover id={`tooltip-${tabKey}`}>
+            {<span className="tab-tooltip">{title}</span>}
+          </Popover>
+        }
+      >
+        <div className="tab-title-wrapper">
+          <span className="tab-title">{title}</span>
+          <PencilIcon
+            className="btn-title"
+            onClick={() => {
+              this.handleStartEdit(tabKey);
+            }}
+          />
+          <CloseIcon
+            className="btn-title"
+            onClick={() => {
+              this.props.handleRemoveResult(tabKey);
+            }}
+          />
+        </div>
+      </OverlayTrigger>
     );
   }
 }
