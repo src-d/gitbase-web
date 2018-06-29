@@ -32,12 +32,8 @@ function UASTViewerPane({
   loading,
   uastViewerProps,
   showLocations,
-  useCustomServer,
-  customServer,
   filter,
   handleShowLocationsChange,
-  handleUseCustomServerChange,
-  handleCustomServerChange,
   handleFilterChange,
   handleSearch
 }) {
@@ -73,23 +69,6 @@ function UASTViewerPane({
           />
           <span>Show locations</span>
         </label>
-        {typeof useCustomServer !== 'undefined' ? (
-          <label>
-            <input
-              type="checkbox"
-              value={useCustomServer}
-              onChange={handleUseCustomServerChange}
-            />
-            <span>Custom bblfsh server</span>
-          </label>
-        ) : null}
-        {useCustomServer ? (
-          <input
-            type="text"
-            value={customServer}
-            onChange={handleCustomServerChange}
-          />
-        ) : null}
       </div>
       <div className="uast-query-wrapper">
         <form
@@ -126,12 +105,8 @@ UASTViewerPane.propTypes = {
   loading: PropTypes.bool,
   uastViewerProps: PropTypes.object,
   showLocations: PropTypes.bool,
-  useCustomServer: PropTypes.bool,
-  customServer: PropTypes.string,
   filter: PropTypes.string,
   handleShowLocationsChange: PropTypes.func.isRequired,
-  handleUseCustomServerChange: PropTypes.func,
-  handleCustomServerChange: PropTypes.func,
   handleFilterChange: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired
 };

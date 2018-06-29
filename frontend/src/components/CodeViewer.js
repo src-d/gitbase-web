@@ -50,13 +50,9 @@ function EditorUASTSpitPane({
   editorProps,
   uastViewerProps,
   showLocations,
-  useCustomServer,
-  customServer,
   filter,
   handleLangChange,
   handleShowLocationsChange,
-  handleUseCustomServerChange,
-  handleCustomServerChange,
   handleFilterChange,
   handleSearch
 }) {
@@ -72,12 +68,8 @@ function EditorUASTSpitPane({
         loading={uastLoading}
         uastViewerProps={uastViewerProps}
         showLocations={showLocations}
-        useCustomServer={useCustomServer}
-        customServer={customServer}
         filter={filter}
         handleShowLocationsChange={handleShowLocationsChange}
-        handleUseCustomServerChange={handleUseCustomServerChange}
-        handleCustomServerChange={handleCustomServerChange}
         handleFilterChange={handleFilterChange}
         handleSearch={handleSearch}
       />
@@ -91,13 +83,9 @@ EditorUASTSpitPane.propTypes = {
   editorProps: PropTypes.object,
   uastViewerProps: PropTypes.object,
   showLocations: PropTypes.bool,
-  useCustomServer: PropTypes.bool,
-  customServer: PropTypes.string,
   filter: PropTypes.string,
   handleLangChange: PropTypes.func.isRequired,
   handleShowLocationsChange: PropTypes.func.isRequired,
-  handleUseCustomServerChange: PropTypes.func.isRequired,
-  handleCustomServerChange: PropTypes.func.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired
 };
@@ -116,8 +104,6 @@ class CodeViewer extends Component {
       uast: null,
       error: null,
       showLocations: false,
-      useCustomServer: false,
-      customServer: '0.0.0.0:9432',
       filter: ''
     };
 
@@ -126,10 +112,6 @@ class CodeViewer extends Component {
     this.parseCode = this.parseCode.bind(this);
     this.removeError = this.removeError.bind(this);
     this.handleShowLocationsChange = this.handleShowLocationsChange.bind(this);
-    this.handleUseCustomServerChange = this.handleUseCustomServerChange.bind(
-      this
-    );
-    this.handleCustomServerChange = this.handleCustomServerChange.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
   }
 
@@ -172,12 +154,7 @@ class CodeViewer extends Component {
     this.setState({ error: null, uast: null, uastLoading: true });
 
     api
-      .parseCode(
-        this.state.language,
-        this.props.code,
-        this.state.filter,
-        this.state.useCustomServer ? this.state.customServer : undefined
-      )
+      .parseCode(this.state.language, this.props.code, this.state.filter)
       .then(res => {
         this.setState({ uast: res });
       })
@@ -195,14 +172,6 @@ class CodeViewer extends Component {
     this.setState({ showLocations: !this.state.showLocations });
   }
 
-  handleUseCustomServerChange() {
-    this.setState({ useCustomServer: !this.state.useCustomServer });
-  }
-
-  handleCustomServerChange(e) {
-    this.setState({ customServer: e.target.value });
-  }
-
   handleFilterChange(e) {
     this.setState({ filter: e.target.value });
   }
@@ -217,8 +186,6 @@ class CodeViewer extends Component {
       uast,
       error,
       showLocations,
-      useCustomServer,
-      customServer,
       filter
     } = this.state;
 
@@ -258,13 +225,9 @@ class CodeViewer extends Component {
                 uastLoading={uastLoading}
                 uast={uast}
                 showLocations={showLocations}
-                useCustomServer={useCustomServer}
-                customServer={customServer}
                 filter={filter}
                 handleLangChange={this.handleLangChange}
                 handleShowLocationsChange={this.handleShowLocationsChange}
-                handleUseCustomServerChange={this.handleUseCustomServerChange}
-                handleCustomServerChange={this.handleCustomServerChange}
                 handleFilterChange={this.handleFilterChange}
                 handleSearch={this.parseCode}
               />
