@@ -214,8 +214,8 @@
     ".",
     "tools"
   ]
-  revision = "3528037b9c4ec657341135ea9701f160189586f4"
-  version = "v2.5.1"
+  revision = "165632b98e549b441600c3adfb32d666d00d2ed5"
+  version = "v2.6.0"
 
 [[projects]]
   name = "gopkg.in/bblfsh/sdk.v1"
@@ -252,6 +252,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e79231faea767c5475b139705f4a3db95d1eaccb2efe8c2fbc9650054ec963fe"
+  inputs-digest = "de43b60f7f0421a18d17f5f347493b78922fdf829f092a9d7157b7c67b6090ef"
   solver-name = "gps-cdcl"
   solver-version = 1

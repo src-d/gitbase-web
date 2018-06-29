@@ -53,6 +53,10 @@ func Parse(bbblfshServerURL string) RequestProcessFunc {
 			Content(req.Content).
 			Do()
 		if err != nil {
+			if bblfshErr, ok := err.(bblfsh.FatalError); ok {
+				return nil, serializer.NewHTTPError(http.StatusBadRequest, bblfshErr.Error())
+			}
+
 			return nil, err
 		}
 
