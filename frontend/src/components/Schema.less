@@ -2,14 +2,16 @@
 
 .schema-table {
     .name {
-        cursor: pointer;
-
         color: @primary;
-        &:hover {
-            color: darken(@primary, 10%);
+        > span {
+            cursor: pointer;
+            &:hover {
+                color: darken(@primary, 10%);
+            }
         }
 
         .small-icon {
+            cursor: pointer;
             .icon-btn-variant(@primary-tint-2);
         }
     }
