@@ -32,7 +32,7 @@ $ docker run -d \
     --publish 8080:8080 \
     --link gitbase \
     --env GITBASEPG_ENV=dev \
-    --env GITBASEPG_DB_CONNECTION="gitbase@tcp(gitbase:3306)/none?maxAllowedPacket=4194304" \
+    --env GITBASEPG_DB_CONNECTION="root@tcp(gitbase:3306)/none?maxAllowedPacket=4194304" \
     --name gitbasePlayground \
     srcd/gitbase-playground:latest
 ```

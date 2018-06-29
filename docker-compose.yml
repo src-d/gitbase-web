@@ -7,7 +7,7 @@ services:
       - "8080:8080"
     environment:
       GITBASEPG_ENV: ${GITBASEPG_ENV}
-      GITBASEPG_DB_CONNECTION: gitbase@tcp(gitbase:3306)/none?maxAllowedPacket=4194304
+      GITBASEPG_DB_CONNECTION: root@tcp(gitbase:3306)/none?maxAllowedPacket=4194304
     depends_on:
       - gitbase
   gitbase:

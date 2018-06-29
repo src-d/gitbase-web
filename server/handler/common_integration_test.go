@@ -49,7 +49,7 @@ func (suite *HandlerSuite) TearDownSuite() {
 }
 
 type appConfig struct {
-	DBConn          string `envconfig:"DB_CONNECTION" default:"gitbase@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
+	DBConn          string `envconfig:"DB_CONNECTION" default:"root@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
 	BblfshServerURL string `envconfig:"BBLFSH_SERVER_URL" default:"127.0.0.1:9432"`
 	IsIntegration   bool   `envconfig:"INTEGRATION_TESTS" default:"false"`
 }
