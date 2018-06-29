@@ -303,7 +303,12 @@
 //== Popovers
 
 //** Popover border color
-@popover-border-color:                @primary;
+@popover-border-color: @primary;
 
 //** Popover arrow width
-@popover-arrow-width:                 0px;
+@popover-arrow-width: 0px;
+
+.popover {
+    border-radius: 0;
+    .box-shadow(3px 3px 0px #c2daea);
+}

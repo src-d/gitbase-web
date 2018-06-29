@@ -86,8 +86,8 @@ class TabTitle extends Component {
         placement="top"
         delay={1000}
         overlay={
-          <Popover id={`tooltip-${tabKey}`}>
-            {<span className="tab-tooltip">{title}</span>}
+          <Popover className="tab-popover" id={`tooltip-${tabKey}`}>
+            {title}
           </Popover>
         }
       >
