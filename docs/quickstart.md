@@ -39,7 +39,7 @@ $ docker-compose pull --include-deps playground
 $ GITBASEPG_REPOS_FOLDER=./repos docker-compose up --force-recreate
 ```
 
-If you want to build and run the playground from sources instead of using the last released version you can do so:
+If you want to build and run the playground from sources instead of using the last released version, make sure your host system satisfies [requirements](CONTRIBUTING.md#requirements). Then you can run:
 
 <details>
 <pre>
