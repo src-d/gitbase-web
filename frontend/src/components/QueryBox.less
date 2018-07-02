@@ -5,6 +5,7 @@
 }
 
 .query-box {
+    position: relative;
     height: 100%;
     overflow: hidden;
     display: flex;
@@ -90,5 +91,25 @@
 
     .CodeMirror-empty {
         color: @gray-light;
+    }
+
+    .help-button {
+        position: absolute;
+        top: -6px;
+        right: 30px;
+        z-index: 10;
+
+        background: #fff;
+        border: 0;
+        border-radius: 0;
+        box-shadow: 0 0 10px 10px #fff;
+
+        &:hover {
+            background: #fff;
+        }
+
+        > svg {
+            margin-right: 8px;
+        }
     }
 }
