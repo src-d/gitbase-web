@@ -2,6 +2,7 @@ package handler
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"path"
@@ -15,22 +16,30 @@ const (
 	indexFileName = "index.html"
 
 	serverValuesPlaceholder = "window.REPLACE_BY_SERVER"
+	footerPlaceholder       = `<div class="invisible-footer"></div>`
 )
 
 // Static contains handlers to serve static using go-bindata
 type Static struct {
-	dir     string
-	options options
+	dir        string
+	options    options
+	footerHTML []byte
 }
 
 // NewStatic creates new Static
-func NewStatic(dir, serverURL string, selectLimit int) *Static {
+func NewStatic(dir, serverURL string, selectLimit int, footerHTML string) *Static {
+	var footerBytes []byte
+	if footerHTML != "" {
+		// skip incorrect base64
+		footerBytes, _ = base64.StdEncoding.DecodeString(footerHTML)
+	}
 	return &Static{
 		dir: dir,
 		options: options{
 			ServerURL:   serverURL,
 			SelectLimit: selectLimit,
 		},
+		footerHTML: footerBytes,
 	}
 }
 
@@ -76,6 +85,7 @@ func (s *Static) ServeIndexHTML(initialState interface{}) http.HandlerFunc {
 
 		w.Header().Add("Cache-Control", "no-cache, no-store, must-revalidate")
 		b = bytes.Replace(b, []byte(serverValuesPlaceholder), bData, 1)
+		b = bytes.Replace(b, []byte(footerPlaceholder), s.footerHTML, 1)
 		s.serveAsset(w, r, filepath, b)
 	}
 }
