@@ -72,30 +72,68 @@ class App extends Component {
 
     this.exampleQueries = [
       {
+        name: 'Files named main.go',
+        sql: `/* Files named main.go in HEAD */
+SELECT t.repository_id, t.tree_entry_name,
+       language(t.tree_entry_name, b.blob_content) AS lang, b.blob_content,
+       uast(b.blob_content, language(t.tree_entry_name, b.blob_content))
+FROM   tree_entries AS t
+       JOIN blobs b ON tree_entries.blob_hash = blobs.blob_hash
+       JOIN commit_trees ON tree_entries.tree_hash = commit_trees.tree_hash
+       JOIN refs ON commit_trees.commit_hash = refs.commit_hash
+WHERE  ref_name = 'HEAD'
+       AND tree_entries.tree_entry_name = 'main.go'`
+      },
+      {
+        name: 'Last commit for each repository',
+        sql: `/* Last commit for each repository */
+SELECT r.repository_id,commit_author_name,commit_author_when,commit_message
+FROM   refs r
+       natural JOIN commits
+WHERE  r.ref_name = 'HEAD' `
+      },
+      {
+        name: 'Top repositories by commits',
+        sql: `/* Top repositories by number of commits in HEAD */
+SELECT repository_id,commit_count
+FROM   (SELECT r.repository_id,count(*) AS commit_count
+        FROM   refs r
+               JOIN ref_commits AS c ON r.ref_name = c.ref_name
+        WHERE  r.ref_name = 'HEAD'
+        GROUP  BY r.repository_id) AS q
+ORDER  BY commit_count DESC
+LIMIT  10 `
+      },
+      {
+        name: 'Top languages by repository count',
+        sql: `/* Top languages by repository count */
+SELECT *
+FROM (SELECT language,Count(repository_id) AS repository_count
+      FROM   (SELECT DISTINCT
+                r.repository_id,
+                language(t.tree_entry_name, b.blob_content) AS language
+              FROM   refs r
+                      JOIN commits c ON r.commit_hash = c.commit_hash
+                      JOIN commit_trees ct ON c.commit_hash = ct.commit_hash
+                      JOIN tree_entries t ON ct.tree_hash = t.tree_hash
+                      JOIN blobs b ON t.blob_hash = b.blob_hash
+              WHERE  r.ref_name = 'HEAD') AS q1
+      GROUP  BY language) AS q2
+ORDER  BY repository_count DESC `
+      },
+      {
         name: 'Number of commits per month',
         sql: `/* Contributor's number of commits, each month of 2018, for each repository */
-
-SELECT COUNT(*) as num_commits, month, repo_id, committer_name
+SELECT COUNT(*) as num_commits, month, repository_id, committer_name, committer_email
 FROM ( SELECT MONTH(committer_when) as month,
-              r.repository_id as repo_id,
-              committer_name
+              r.repository_id,
+              committer_name,
+              committer_email
     FROM ref_commits r
     INNER JOIN commits c
         ON YEAR(c.committer_when) = 2018 AND r.commit_hash = c.commit_hash
     WHERE r.ref_name = 'HEAD'
-) as t GROUP BY committer_name, month, repo_id`
-      },
-      {
-        name: 'load all java files',
-        sql: '/* To be done */'
-      },
-      {
-        name: 'get uast from code',
-        sql: '/* To be done */'
-      },
-      {
-        name: 'top 50 repositories by something very long string',
-        sql: '/* To be done */'
+) as t GROUP BY committer_email, committer_name, month, repository_id`
       }
     ];
   }
