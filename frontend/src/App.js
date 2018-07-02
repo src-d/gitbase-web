@@ -75,8 +75,8 @@ class App extends Component {
         name: 'Files named main.go',
         sql: `/* Files named main.go in HEAD */
 SELECT t.repository_id, t.tree_entry_name,
-       language(t.tree_entry_name, b.blob_content) AS lang, b.blob_content,
-       uast(b.blob_content, language(t.tree_entry_name, b.blob_content))
+       LANGUAGE(t.tree_entry_name, b.blob_content) AS lang, b.blob_content,
+       UAST(b.blob_content, LANGUAGE(t.tree_entry_name, b.blob_content)) AS uast
 FROM   tree_entries AS t
        JOIN blobs b ON tree_entries.blob_hash = blobs.blob_hash
        JOIN commit_trees ON tree_entries.tree_hash = commit_trees.tree_hash
@@ -87,7 +87,7 @@ WHERE  ref_name = 'HEAD'
       {
         name: 'Last commit for each repository',
         sql: `/* Last commit for each repository */
-SELECT r.repository_id,commit_author_name,commit_author_when,commit_message
+SELECT r.repository_id, commit_author_name, commit_author_when, commit_message
 FROM   refs r
        natural JOIN commits
 WHERE  r.ref_name = 'HEAD' `
@@ -95,8 +95,8 @@ WHERE  r.ref_name = 'HEAD' `
       {
         name: 'Top repositories by commits',
         sql: `/* Top repositories by number of commits in HEAD */
-SELECT repository_id,commit_count
-FROM   (SELECT r.repository_id,count(*) AS commit_count
+SELECT repository_id, commit_count
+FROM   (SELECT r.repository_id, COUNT(*) AS commit_count
         FROM   refs r
                JOIN ref_commits AS c ON r.ref_name = c.ref_name
         WHERE  r.ref_name = 'HEAD'
@@ -108,10 +108,10 @@ LIMIT  10 `
         name: 'Top languages by repository count',
         sql: `/* Top languages by repository count */
 SELECT *
-FROM (SELECT language,Count(repository_id) AS repository_count
+FROM (SELECT language, COUNT(repository_id) AS repository_count
       FROM   (SELECT DISTINCT
                 r.repository_id,
-                language(t.tree_entry_name, b.blob_content) AS language
+                LANGUAGE(t.tree_entry_name, b.blob_content) AS language
               FROM   refs r
                       JOIN commits c ON r.commit_hash = c.commit_hash
                       JOIN commit_trees ct ON c.commit_hash = ct.commit_hash
@@ -123,7 +123,7 @@ ORDER  BY repository_count DESC `
       },
       {
         name: 'Number of commits per month',
-        sql: `/* Contributor's number of commits, each month of 2018, for each repository */
+        sql: `/* Commits per committer, each month of 2018, for each repository */
 SELECT COUNT(*) as num_commits, month, repository_id, committer_name, committer_email
 FROM ( SELECT MONTH(committer_when) as month,
               r.repository_id,
