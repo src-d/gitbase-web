@@ -32,6 +32,7 @@ There are two main different ways to run the app:
 | `GITBASEPG_DB_CONNECTION` | | `root@tcp(localhost:3306)/none?maxAllowedPacket=4194304` | gitbase connection string |
 | `GITBASEPG_BBLFSH_SERVER_URL` | | `127.0.0.1:9432` | Address where bblfsh server is listening |
 | `GITBASEPG_ENV` | | `production` | Sets the log level. Use `dev` to enable debug log messages |
+| `FOOTER_HTML` | | | Allows to add any custom html to the page footer. It must be encoded in base64 |
 
 
 # Development

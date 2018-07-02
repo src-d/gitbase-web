@@ -30,6 +30,7 @@ type appConfig struct {
 	DBConn          string `envconfig:"DB_CONNECTION" default:"root@tcp(localhost:3306)/none?maxAllowedPacket=4194304"`
 	SelectLimit     int    `envconfig:"SELECT_LIMIT" default:"100"`
 	BblfshServerURL string `envconfig:"BBLFSH_SERVER_URL" default:"127.0.0.1:9432"`
+	FooterHTML      string `envconfig:"FOOTER_HTML"`
 }
 
 func main() {
@@ -47,7 +48,7 @@ func main() {
 	}
 	defer db.Close()
 
-	static := handler.NewStatic("build/public", conf.ServerURL, conf.SelectLimit)
+	static := handler.NewStatic("build/public", conf.ServerURL, conf.SelectLimit, conf.FooterHTML)
 
 	// start the router
 	router := server.Router(logger, static, version, db, conf.BblfshServerURL)
