@@ -183,10 +183,15 @@ FROM ( SELECT MONTH(committer_when) as month,
       .then(response => {
         this.setResult(key, { sql, response });
 
+        // If the schema of the list of languages were not loaded for some
+        // reason, we retry now
+
         if (!this.state.schema) {
-          // The schema was not loaded for some reason, and we know we just
-          // did a successful call to the backend. Let's retry.
           this.loadSchema();
+        }
+
+        if (this.state.languages.length === 0) {
+          this.loadLanguages();
         }
       })
       .catch(msgArr =>
