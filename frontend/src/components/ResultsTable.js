@@ -60,6 +60,7 @@ class ResultsTable extends Component {
         data={this.props.response.data}
         columns={columns}
         defaultPageSize={10}
+        minRows={0}
       />
     );
   }
