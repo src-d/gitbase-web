@@ -3,6 +3,7 @@ package tools
 import (
 	"fmt"
 	"sort"
+	"strings"
 	"sync"
 	"unsafe"
 
@@ -50,6 +51,32 @@ var (
 	spool     cstringPool
 	kpool     = make(map[*uast.Node][]string)
 )
+
+type ErrInvalidArgument struct {
+	Message string
+}
+
+func (e *ErrInvalidArgument) Error() string {
+	if e.Message != "" {
+		return e.Message
+	}
+	return "invalid argument"
+}
+
+type errInternal struct {
+	Method  string
+	Message string
+}
+
+func (e *errInternal) Error() string {
+	if e.Method == "" {
+		if e.Message == "" {
+			return "internal error"
+		}
+		return e.Message
+	}
+	return fmt.Sprintf("%s() failed: %s", e.Method, e.Message)
+}
 
 var itMutex sync.Mutex
 
@@ -103,9 +130,13 @@ func initFilter(node *uast.Node, xpath string) (*C.char, C.uintptr_t, func()) {
 
 func cError(name string) error {
 	e := C.Error()
-	err := fmt.Errorf("%s() failed: %s", name, C.GoString(e))
+	msg := strings.TrimSpace(C.GoString(e))
 	C.free(unsafe.Pointer(e))
-	return err
+	// TODO: find a way to access this error code or constant
+	if strings.HasPrefix(msg, "Invalid expression") {
+		return &ErrInvalidArgument{Message: msg}
+	}
+	return &errInternal{Method: name, Message: msg}
 }
 
 // Filter takes a `*uast.Node` and a xpath query and filters the tree,

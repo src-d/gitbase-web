@@ -96,7 +96,7 @@ type HTTPLoggerEntry struct {
 func (l *HTTPLoggerEntry) Write(status, bytes int, elapsed time.Duration) {
 	l.Logger = l.Logger.WithFields(logrus.Fields{
 		"resp_status": status, "resp_bytes_length": bytes,
-		"resp_elasped_ms": float64(elapsed.Nanoseconds()) / 1000000.0,
+		"resp_elapsed_ms": float64(elapsed.Nanoseconds()) / 1000000.0,
 	})
 
 	if l.Level == nil {
