@@ -69,7 +69,7 @@ build-path:
 
 ## Compiles the assets, and serve the tool through its API
 
-serve: | front-build back-start
+serve: | front-dependencies front-build back-start
 
 compose-serve-latest:
 	$(COMPOSE) pull && \
