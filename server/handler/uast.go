@@ -120,7 +120,10 @@ func Filter() RequestProcessFunc {
 			for _, n := range nodes {
 				filtered, err := tools.Filter((*uast.Node)(n), req.Filter)
 				if err != nil {
-					return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
+					if e, ok := err.(*tools.ErrInvalidArgument); ok {
+						return nil, serializer.NewHTTPError(http.StatusBadRequest, e.Error())
+					}
+					return nil, serializer.NewHTTPError(http.StatusInternalServerError, err.Error())
 				}
 
 				resp.Children = append(resp.Children, filtered...)
