@@ -24,7 +24,7 @@ exports[`ResultsTable text with new lines should be shown as code 1`] = `
         style={undefined}
       >
         <div
-          className="rt-th  rt-resizable-header -cursor-pointer"
+          className="rt-th rt-resizable-header -cursor-pointer"
           onClick={[Function]}
           role="columnheader"
           style={
@@ -48,7 +48,7 @@ exports[`ResultsTable text with new lines should be shown as code 1`] = `
           />
         </div>
         <div
-          className="rt-th  rt-resizable-header -cursor-pointer"
+          className="rt-th rt-resizable-header -cursor-pointer"
           onClick={[Function]}
           role="columnheader"
           style={
