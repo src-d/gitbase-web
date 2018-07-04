@@ -52,7 +52,15 @@ jobs:
       - sleep 15
       - GITBASEPG_DB_CONNECTION='root@tcp(localhost:3367)/none' GITBASEPG_INTEGRATION_TESTS=true make test
     - script:
-        - make packages
+      - make packages
+    - script:
+      - PKG_OS=linux make build
+      - make docker-build
+      - export FOOTER_HTML='<div class="custom-base64-html"></div>'
+      - export FOOTER_HTML_BASE64=`echo -n $FOOTER_HTML | base64`
+      - docker run --rm -d --publish 8080:8080 --env GITBASEPG_FOOTER_HTML=$FOOTER_HTML_BASE64 srcd/gitbase-playground:$TRAVIS_BRANCH
+      - sleep 5
+      - curl http://127.0.0.1:8080 | grep "$FOOTER_HTML"
     # release to github
     - stage: release to github
       script:
