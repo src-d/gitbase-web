@@ -47,3 +47,4 @@ gitbaseServer:
     tag: v0.14.0-rc2
     pullPolicy: IfNotPresent
   squashEnable: "true"
+  readonly: "true"
