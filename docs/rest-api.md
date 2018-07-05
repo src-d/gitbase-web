@@ -264,7 +264,7 @@ id
 
 ## POST /detect-lang
 
-Returns programming language and type of the language by filename and content of a file.
+Returns the programming language and language type for the given filename and file contents.
 The type is a enum of [enry](https://godoc.org/gopkg.in/src-d/enry.v1#Type).
 
 ```bash
@@ -289,7 +289,7 @@ curl -X POST \
 
 ## GET /get-languages
 
-Returns programming language supported by bblfsh server.
+Returns the programming language supported by bblfsh server.
 
 ```bash
 curl -X GET http://localhost:8080/get-languages
@@ -312,8 +312,8 @@ curl -X GET http://localhost:8080/get-languages
 
 ## POST /filter
 
-Accepts array of UAST protobufs encoded using base64 and filter query.
-Returns filtered UAST JSON as result.
+Accepts an array of UAST protobufs encoded using base64 and a UAST filter query.
+Returns the filtered UAST JSON as result.
 
 ```bash
 curl -X POST \
