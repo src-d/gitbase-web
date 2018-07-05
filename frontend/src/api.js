@@ -5,18 +5,22 @@ const selectLimit = envVars.SELECT_LIMIT;
 
 const apiUrl = url => `${serverUrl}${url}`;
 
+function statusError(resp) {
+  return new Error(resp.statusText || `${resp.status} Error`);
+}
+
 function checkStatus(resp) {
   if (resp.status < 200 || resp.status >= 300) {
     return resp
       .json()
       .catch(() => {
-        throw new Error(resp.statusText);
+        throw statusError(resp);
       })
       .then(json => {
         if (json.errors) {
           throw json.errors;
         }
-        throw new Error(resp.statusText);
+        throw statusError(resp);
       });
   }
   return resp;
