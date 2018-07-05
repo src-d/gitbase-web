@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/src-d/gitbase-playground.svg)](https://travis-ci.org/src-d/gitbase-playground)
 [![codecov.io](https://codecov.io/github/src-d/gitbase-playground/coverage.svg)](https://codecov.io/github/src-d/gitbase-playground)
-![unstable](https://svg-badge.appspot.com/badge/stability/unstable?a)
 
 # Gitbase Playground
 
