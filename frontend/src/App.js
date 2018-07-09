@@ -74,23 +74,29 @@ class App extends Component {
       {
         name: 'Files named main.go',
         sql: `/* Files named main.go in HEAD */
-SELECT t.repository_id, t.tree_entry_name,
-       LANGUAGE(t.tree_entry_name, b.blob_content) AS lang, b.blob_content,
-       UAST(b.blob_content, LANGUAGE(t.tree_entry_name, b.blob_content)) AS uast
-FROM   tree_entries AS t
-       JOIN blobs b ON tree_entries.blob_hash = blobs.blob_hash
-       JOIN commit_trees ON tree_entries.tree_hash = commit_trees.tree_hash
-       JOIN refs ON commit_trees.commit_hash = refs.commit_hash
+SELECT f.repository_id, f.file_path,
+       LANGUAGE(f.file_path, f.blob_content) AS lang, f.blob_content,
+       UAST(f.blob_content, LANGUAGE(f.file_path, f.blob_content)) AS uast
+FROM   files AS f
+       JOIN commit_files cf ON
+            f.repository_id=cf.repository_id AND
+            f.file_path=cf.file_path AND
+            f.blob_hash=cf.blob_hash AND
+            f.tree_hash=cf.tree_hash
+       JOIN refs ON
+            cf.repository_id = refs.repository_id AND
+            cf.commit_hash = refs.commit_hash
 WHERE  ref_name = 'HEAD'
-       AND tree_entries.tree_entry_name = 'main.go'`
+       AND f.file_path REGEXP('.*main.go')`
       },
+
       {
         name: 'Last commit for each repository',
         sql: `/* Last commit for each repository */
 SELECT r.repository_id, commit_author_name, commit_author_when, commit_message
 FROM   refs r
-       natural JOIN commits
-WHERE  r.ref_name = 'HEAD' `
+       NATURAL JOIN commits
+WHERE  r.ref_name = 'HEAD'`
       },
       {
         name: 'Top repositories by commits',
