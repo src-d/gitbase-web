@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import { Button } from 'react-bootstrap';
@@ -55,13 +55,20 @@ class ResultsTable extends Component {
     }));
 
     return (
-      <ReactTable
-        className="results-table"
-        data={this.props.response.data}
-        columns={columns}
-        defaultPageSize={10}
-        minRows={0}
-      />
+      <Fragment>
+        <ReactTable
+          className="results-table"
+          data={this.props.response.data}
+          columns={columns}
+          defaultPageSize={10}
+          minRows={0}
+        />
+        {this.props.response.meta.limit && (
+          <div className="limit-text">
+            results have a forced LIMIT of {this.props.response.meta.limit}
+          </div>
+        )}
+      </Fragment>
     );
   }
 }
