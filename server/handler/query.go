@@ -62,7 +62,7 @@ func Query(db service.SQLDB) RequestProcessFunc {
 				`Bad Request. Expected body: { "query": "SQL statement", "limit": 1234 }`)
 		}
 
-		query := addLimit(queryRequest.Query, queryRequest.Limit)
+		query, limitSet := addLimit(queryRequest.Query, queryRequest.Limit)
 		rows, err := db.Query(query)
 		if err != nil {
 			return nil, dbError(err)
@@ -135,7 +135,8 @@ func Query(db service.SQLDB) RequestProcessFunc {
 			return nil, err
 		}
 
-		return serializer.NewQueryResponse(tableData, columnNames, columnTypes), nil
+		return serializer.NewQueryResponse(
+			tableData, columnNames, columnTypes, limitSet, queryRequest.Limit), nil
 	}
 }
 
@@ -163,9 +164,10 @@ var noCommentsRegexp = regexp.MustCompile(`\/\*(?s:.)*?\*\/`)
 var limitRegexp = regexp.MustCompile(`\s+LIMIT\s+(\d+)$`)
 
 // addLimit adds LIMIT to the query if it's a SELECT, avoiding '; limit'
-func addLimit(query string, limit int) string {
+// returns true if the limit was applied
+func addLimit(query string, limit int) (string, bool) {
 	if limit <= 0 {
-		return query
+		return query, false
 	}
 
 	noComments := noCommentsRegexp.ReplaceAllLiteralString(query, "")
@@ -177,15 +179,15 @@ func addLimit(query string, limit int) string {
 		matches := limitRegexp.FindStringSubmatch(upperQuery)
 		if len(matches) == 2 {
 			userLimit, _ := strconv.Atoi(matches[1])
-			if userLimit < limit {
-				return query
+			if userLimit <= limit {
+				return query, false
 			}
 			query = query[:len(query)-len(matches[0])]
 		}
-		return fmt.Sprintf("%s LIMIT %d", query, limit)
+		return fmt.Sprintf("%s LIMIT %d", query, limit), true
 	}
 
-	return query
+	return query, false
 }
 
 // dbError transform DB error to HTTP error

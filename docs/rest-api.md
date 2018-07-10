@@ -51,6 +51,7 @@ The success response will contain:
 * `meta`: JSON object, with these fields:
   * `headers`: Array of strings with the names of the requested columns.
   * `types`: Array of strings with the types of each column. Note: these are the types reported by MySQL, so for example a type `BIT` will be a boolean in the `data` JSON.
+  * `limit`: Number. Will be present only if the `limit` from the request was applied.
 
 A failure response will contain:
 

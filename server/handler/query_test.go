@@ -50,7 +50,8 @@ func (suite *QuerySuite) TestAddLimit() {
 	for _, tc := range testCases {
 		suite.T().Run(tc[0], func(t *testing.T) {
 			a := assert.New(t)
-			a.Equal(tc[1], addLimit(tc[0], 100))
+			result, _ := addLimit(tc[0], 100)
+			a.Equal(tc[1], result)
 		})
 	}
 }

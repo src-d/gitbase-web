@@ -88,11 +88,24 @@ func NewVersionResponse(version string) *Response {
 type queryMetaResponse struct {
 	Headers []string `json:"headers"`
 	Types   []string `json:"types"`
+	Limit   int      `json:"limit,omitempty"`
 }
 
 // NewQueryResponse returns a Response with table headers and row contents
-func NewQueryResponse(rows []map[string]interface{}, columnNames, columnTypes []string) *Response {
-	return newResponse(rows, queryMetaResponse{columnNames, columnTypes})
+func NewQueryResponse(
+	rows []map[string]interface{},
+	columnNames,
+	columnTypes []string,
+	limitSet bool,
+	limit int,
+) *Response {
+	if limitSet {
+		return newResponse(rows,
+			queryMetaResponse{Headers: columnNames, Types: columnTypes, Limit: limit})
+	}
+
+	return newResponse(rows,
+		queryMetaResponse{Headers: columnNames, Types: columnTypes})
 }
 
 // Column describes a table column in DB
