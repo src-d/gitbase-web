@@ -105,3 +105,43 @@ func (suite *QuerySuite) TestQuery() {
 
 	suite.Equal(http.StatusOK, res.Code)
 }
+
+func (suite *QuerySuite) TestTypes() {
+	columnNames := []string{"a", "b", "c", "d"}
+	columnTypes := []string{"BIT", "INT", "DOUBLE", "TEXT"}
+
+	columnValsPtr := genericVals(columnTypes)
+
+	mockRows := sqlmock.NewRows([]string{"a", "b", "c", "d"}).
+		AddRow(1, 1234, 1.56, "value").
+		AddRow(nil, nil, nil, nil)
+
+	suite.mock.ExpectQuery(".*").WillReturnRows(mockRows)
+
+	rows, err := suite.db.Query("select * from table")
+	suite.NoError(err)
+
+	rows.Next()
+	err = rows.Scan(columnValsPtr...)
+	suite.NoError(err)
+
+	colData, err := columnsData(columnNames, columnTypes, columnValsPtr)
+	suite.NoError(err)
+
+	suite.EqualValues(true, colData["a"])
+	suite.EqualValues(1234, colData["b"])
+	suite.EqualValues(1.56, colData["c"])
+	suite.EqualValues("value", colData["d"])
+
+	rows.Next()
+	err = rows.Scan(columnValsPtr...)
+	suite.NoError(err)
+
+	colData, err = columnsData(columnNames, columnTypes, columnValsPtr)
+	suite.NoError(err)
+
+	suite.Nil(colData["a"])
+	suite.Nil(colData["b"])
+	suite.Nil(colData["c"])
+	suite.Nil(colData["d"])
+}
