@@ -65,7 +65,7 @@ class ResultsTable extends Component {
         />
         {this.props.response.meta.limit && (
           <div className="limit-text">
-            results have a forced LIMIT of {this.props.response.meta.limit}
+            (results have a forced LIMIT of {this.props.response.meta.limit})
           </div>
         )}
       </Fragment>
