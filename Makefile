@@ -105,7 +105,7 @@ back-build: back-bindata
 back-bindata:
 	$(BINDATA) \
 		-pkg assets \
-		-o $(assets) \
+		-o ./server/assets/asset.go \
 		build/public/...
 
 back-lint: $(GO_LINTABLE_PACKAGES)
