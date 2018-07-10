@@ -18,12 +18,23 @@ GODEP := dep
 GOLINT := golint
 GOVET := go vet
 BINDATA := go-bindata
-DIFF := diff
 YARN := yarn --cwd $(FRONTEND_PATH)
 REMOVE := rm -rf
 MOVE := mv
 MKDIR := mkdir -p
 COMPOSE := docker-compose
+
+# To be used as -tags
+GO_BINDATA_TAG := bindata
+
+# Override Makefile.main defaults for arguments to be used in `go` commands.
+GO_BUILD_ARGS := -ldflags "$(LD_FLAGS)" -tags "$(GO_BINDATA_TAG)"
+
+# Environment and arguments to use in `go run` calls.
+GO_RUN_ENV := GITBASEPG_ENV=dev
+GO_RUN_ARGS += -tags "$(GO_BINDATA_TAG)"
+
+GORUN = $(GOCMD) run $(GO_RUN_ARGS)
 
 # Default rule
 all:
@@ -55,7 +66,6 @@ lint: back-lint front-lint
 
 validate-commit: | \
 	back-dependencies \
-	back-ensure-assets-proxy \
 	front-fix-lint-errors \
 	no-changes-in-commit
 
@@ -67,9 +77,9 @@ clean: front-clean
 build-path:
 	$(MKDIR) $(BUILD_PATH)
 
-## Compiles the assets, and serve the tool through its API
+# Compiles the assets, and serves the tool through its API
 
-serve: | front-dependencies front-build back-start
+serve: | front-dependencies front-build back-build back-start
 
 compose-serve-latest:
 	$(COMPOSE) pull && \
@@ -87,10 +97,6 @@ require-repos-folder:
 	$(MKDIR) $(GITBASEPG_REPOS_FOLDER)
 
 # Backend
-
-assets := ./server/assets/asset.go
-assets_back := $(assets).bak
-
 back-dependencies:
 	$(GODEP) ensure
 
@@ -108,10 +114,7 @@ $(GO_LINTABLE_PACKAGES):
 	$(GOVET) $@
 
 back-start:
-	GITBASEPG_ENV=dev go run cmd/gitbase-playground/main.go
-
-back-ensure-assets-proxy:
-	$(DIFF) $(assets) $(assets_back) || exit 1
+	$(GO_RUN_ENV) $(GORUN) cmd/gitbase-playground/main.go
 
 # Frontend
 
