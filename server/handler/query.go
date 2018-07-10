@@ -146,6 +146,11 @@ func columnsData(
 			if sqlVal.Valid {
 				colData[columnNames[i]] = sqlVal.Int64
 			}
+		case *sql.NullFloat64:
+			sqlVal, _ := val.(*sql.NullFloat64)
+			if sqlVal.Valid {
+				colData[columnNames[i]] = sqlVal.Float64
+			}
 		case *sql.NullString:
 			sqlVal, _ := val.(*sql.NullString)
 			if sqlVal.Valid {
