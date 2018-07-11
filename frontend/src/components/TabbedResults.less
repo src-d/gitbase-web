@@ -30,8 +30,16 @@
             }
         }
 
+        span.result-error-msg {
+            font-size: 14px;
+            color: @error-text;
+        }
+
         .animation-col {
             margin-top: 3em;
+            img {
+                max-height: 240px;
+            }
         }
 
         .message-col {
@@ -56,6 +64,7 @@
 
         .query-text {
             flex: 0 1 auto;
+            height: 100%;
             white-space: pre;
             font-family: @monospace-font;
             color: @secondary-tint-2;
