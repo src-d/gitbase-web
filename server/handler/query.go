@@ -83,49 +83,9 @@ func Query(db service.SQLDB) RequestProcessFunc {
 				return nil, err
 			}
 
-			colData := make(map[string]interface{}, len(columnTypes))
-
-			for i, val := range columnValsPtr {
-				colData[columnNames[i]] = nil
-
-				switch val.(type) {
-				case *sql.NullBool:
-					sqlVal, _ := val.(*sql.NullBool)
-					if sqlVal.Valid {
-						colData[columnNames[i]] = sqlVal.Bool
-					}
-				case *mysql.NullTime:
-					sqlVal, _ := val.(*mysql.NullTime)
-					if sqlVal.Valid {
-						colData[columnNames[i]] = sqlVal.Time
-					}
-				case *sql.NullInt64:
-					sqlVal, _ := val.(*sql.NullInt64)
-					if sqlVal.Valid {
-						colData[columnNames[i]] = sqlVal.Int64
-					}
-				case *sql.NullString:
-					sqlVal, _ := val.(*sql.NullString)
-					if sqlVal.Valid {
-						colData[columnNames[i]] = sqlVal.String
-					}
-				case *[]byte:
-					// DatabaseTypeName JSON is used for arrays of uast nodes and
-					// arrays of strings, but we don't know the exact type.
-					// We try with arry of uast nodes first and any JSON later
-					nodes, err := service.UnmarshallUAST(val)
-					if err == nil {
-						colData[columnNames[i]] = nodes
-						colData["__"+columnNames[i]+"-protobufs"] = val
-					} else {
-						var data interface{}
-
-						if err := json.Unmarshal(*val.(*[]byte), &data); err != nil {
-							return nil, err
-						}
-						colData[columnNames[i]] = data
-					}
-				}
+			colData, err := columnsData(columnNames, columnTypes, columnValsPtr)
+			if err != nil {
+				return nil, err
 			}
 
 			tableData = append(tableData, colData)
@@ -158,6 +118,64 @@ func columnsInfo(rows *sql.Rows) ([]string, []string, error) {
 	}
 
 	return names, typesStr, nil
+}
+
+func columnsData(
+	columnNames []string,
+	columnTypes []string,
+	columnValsPtr []interface{},
+) (map[string]interface{}, error) {
+	colData := make(map[string]interface{}, len(columnTypes))
+
+	for i, val := range columnValsPtr {
+		colData[columnNames[i]] = nil
+
+		switch val.(type) {
+		case *sql.NullBool:
+			sqlVal, _ := val.(*sql.NullBool)
+			if sqlVal.Valid {
+				colData[columnNames[i]] = sqlVal.Bool
+			}
+		case *mysql.NullTime:
+			sqlVal, _ := val.(*mysql.NullTime)
+			if sqlVal.Valid {
+				colData[columnNames[i]] = sqlVal.Time
+			}
+		case *sql.NullInt64:
+			sqlVal, _ := val.(*sql.NullInt64)
+			if sqlVal.Valid {
+				colData[columnNames[i]] = sqlVal.Int64
+			}
+		case *sql.NullFloat64:
+			sqlVal, _ := val.(*sql.NullFloat64)
+			if sqlVal.Valid {
+				colData[columnNames[i]] = sqlVal.Float64
+			}
+		case *sql.NullString:
+			sqlVal, _ := val.(*sql.NullString)
+			if sqlVal.Valid {
+				colData[columnNames[i]] = sqlVal.String
+			}
+		case *[]byte:
+			// DatabaseTypeName JSON is used for arrays of uast nodes and
+			// arrays of strings, but we don't know the exact type.
+			// We try with arry of uast nodes first and any JSON later
+			nodes, err := service.UnmarshallUAST(val)
+			if err == nil {
+				colData[columnNames[i]] = nodes
+				colData["__"+columnNames[i]+"-protobufs"] = val
+			} else {
+				var data interface{}
+
+				if err := json.Unmarshal(*val.(*[]byte), &data); err != nil {
+					return nil, err
+				}
+				colData[columnNames[i]] = data
+			}
+		}
+	}
+
+	return colData, nil
 }
 
 var noCommentsRegexp = regexp.MustCompile(`\/\*(?s:.)*?\*\/`)

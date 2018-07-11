@@ -88,6 +88,20 @@ func (suite *QueryIntegrationSuite) TestBoolFunctions() {
 	suite.IsType(true, firstRow["tag"])
 }
 
+func (suite *QueryIntegrationSuite) TestTypes() {
+	req, _ := http.NewRequest("POST", "/query", strings.NewReader(
+		`{ "query": "select SUM(blob_size/1024) as sum from blobs;" }`))
+
+	res := httptest.NewRecorder()
+	suite.handler.ServeHTTP(res, req)
+
+	okResponse(suite.Require(), res)
+
+	firstRow := firstRow(suite.Require(), res)
+	var fval float64 = 123.5
+	suite.IsType(fval, firstRow["sum"])
+}
+
 func (suite *QueryIntegrationSuite) TestWrongSQLSyntax() {
 	jsonRequest := `{ "query": "selectSELECT * from commits", "limit": 100 }`
 	req, _ := http.NewRequest("POST", "/query", strings.NewReader(jsonRequest))
