@@ -1,3 +1,5 @@
+// +build bindata
+
 package handler
 
 import (
@@ -59,15 +61,15 @@ func (s *Static) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		s.ServeIndexHTML(nil)(w, r)
+		s.serveIndexHTML(nil)(w, r)
 		return
 	}
 
 	s.serveAsset(w, r, filepath, b)
 }
 
-// ServeIndexHTML serves index.html file
-func (s *Static) ServeIndexHTML(initialState interface{}) http.HandlerFunc {
+// serveIndexHTML serves index.html file
+func (s *Static) serveIndexHTML(initialState interface{}) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		filepath := path.Join(s.dir, indexFileName)
 		b, err := assets.Asset(filepath)

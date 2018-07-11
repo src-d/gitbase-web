@@ -6,6 +6,7 @@
 
 # builds
 /build
+server/assets/asset.go
 
 # testing, logs, caches...
 /coverage
