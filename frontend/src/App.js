@@ -201,11 +201,7 @@ AND refs.ref_name = 'HEAD'`
 
     const newResults = new Map(this.state.results);
 
-    if (status === STATUS_SUCCESS) {
-      newResults.set(key, result);
-    } else {
-      newResults.delete(key);
-    }
+    newResults.set(key, result);
 
     this.setState({
       results: newResults,

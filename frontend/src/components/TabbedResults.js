@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import {
   Row,
   Col,
-  Alert,
   Tab,
   Button,
   OverlayTrigger,
@@ -19,6 +18,7 @@ import CloseIcon from '../icons/close-query-tab.svg';
 import TimerIcon from '../icons/history-tab.svg';
 import LoadingImg from '../icons/alex-loading-results.gif';
 import SuspendedImg from '../icons/alex-suspended-tab.gif';
+import ErrorImg from '../icons/broken-alex.gif';
 
 class TabTitle extends Component {
   constructor(props) {
@@ -209,11 +209,22 @@ class TabbedResults extends Component {
                 );
               } else if (query.errorMsg) {
                 content = (
-                  <Row className="errors-row">
-                    <Col xs={12}>
-                      <Alert bsStyle="danger">{query.errorMsg}</Alert>
-                    </Col>
-                  </Row>
+                  <Fragment>
+                    <span className="result-error-msg">{query.errorMsg}</span>
+                    <Row>
+                      <Col className="text-center animation-col" xs={12}>
+                        <img src={`${ErrorImg}?${key}`} alt="error animation" />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col
+                        className="text-center message-col last-message-col"
+                        xs={12}
+                      >
+                        QUERY FAILED
+                      </Col>
+                    </Row>
+                  </Fragment>
                 );
               } else if (query.response) {
                 content = (
