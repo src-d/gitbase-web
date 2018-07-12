@@ -213,7 +213,7 @@ class TabbedResults extends Component {
                     <span className="result-error-msg">{query.errorMsg}</span>
                     <Row>
                       <Col className="text-center animation-col" xs={12}>
-                        <img src={ErrorImg} alt="error animation" />
+                        <img src={`${ErrorImg}?${key}`} alt="error animation" />
                       </Col>
                     </Row>
                     <Row>
