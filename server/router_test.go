@@ -64,7 +64,8 @@ func (s *RouterTestSuite) GetResponse(method string, path string, body io.Reader
 }
 
 func (s *RouterTestSuite) TestVersion() {
-	expectedVersion := fmt.Sprintf(`{"status":200,"data":{"version":"%s"}}`, version)
+	expectedVersion := fmt.Sprintf(
+		`{"status":200,"data":{"version":"%s","bblfsh":"undefined","gitbase":"undefined"}}`, version)
 	response := s.GetResponse("GET", "/version", nil)
 	s.AssertResponseBodyStatus(response, 200, expectedVersion, "version should be served")
 }
