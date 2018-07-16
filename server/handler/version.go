@@ -13,21 +13,24 @@ import (
 // with a current version of server and dependencies
 func Version(version, bbblfshServerURL string, db service.SQLDB) RequestProcessFunc {
 	return func(r *http.Request) (*serializer.Response, error) {
-		cli, err := bblfsh.NewClient(bbblfshServerURL)
-		if err != nil {
-			return nil, err
-		}
-
-		resp, err := cli.NewVersionRequest().Do()
-		if err != nil {
-			return nil, err
-		}
-
 		// old versions of gitbase don't have VERSION() function
 		// so we set it to undefined and ignore error
 		gitbaseVersion := "undefined"
-		db.QueryRow("SELECT VERSION()").Scan(&gitbaseVersion)
+		row := db.QueryRow("SELECT VERSION()")
+		if row != nil {
+			row.Scan(&gitbaseVersion)
+		}
 
-		return serializer.NewVersionResponse(version, resp.Version, gitbaseVersion), nil
+		// ignore bblfsh errors and return undefined to be consistent with gitbase
+		bblfshVersion := "undefined"
+		cli, err := bblfsh.NewClient(bbblfshServerURL)
+		if err == nil {
+			resp, err := cli.NewVersionRequest().Do()
+			if err == nil && len(resp.Errors) == 0 {
+				bblfshVersion = resp.Version
+			}
+		}
+
+		return serializer.NewVersionResponse(version, bblfshVersion, gitbaseVersion), nil
 	}
 }
