@@ -45,7 +45,7 @@ func Router(
 	r.Post("/detect-lang", handler.APIHandlerFunc(handler.DetectLanguage()))
 	r.Get("/get-languages", handler.APIHandlerFunc(handler.GetLanguages(bbblfshServerURL)))
 
-	r.Get("/version", handler.APIHandlerFunc(handler.Version(version)))
+	r.Get("/version", handler.APIHandlerFunc(handler.Version(version, bbblfshServerURL, db)))
 
 	r.Get("/static/*", static.ServeHTTP)
 	r.Get("/*", static.ServeHTTP)

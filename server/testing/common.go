@@ -19,3 +19,8 @@ func (db *MockDB) Ping() error {
 func (db *MockDB) Query(query string, args ...interface{}) (*sql.Rows, error) {
 	return nil, nil
 }
+
+// QueryRow executes a query that is expected to return at most one row
+func (db *MockDB) QueryRow(query string, args ...interface{}) *sql.Row {
+	return nil
+}

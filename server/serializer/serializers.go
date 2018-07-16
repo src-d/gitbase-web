@@ -77,12 +77,14 @@ func NewEmptyResponse() *Response {
 }
 
 type versionResponse struct {
-	Version string `json:"version"`
+	Version        string `json:"version"`
+	BblfshVersion  string `json:"bblfsh"`
+	GitbaseVersion string `json:"gitbase"`
 }
 
 // NewVersionResponse returns a Response with current version of the server
-func NewVersionResponse(version string) *Response {
-	return newResponse(versionResponse{version}, nil)
+func NewVersionResponse(version, bblfshVersion, gitbaseVersion string) *Response {
+	return newResponse(versionResponse{version, bblfshVersion, gitbaseVersion}, nil)
 }
 
 type queryMetaResponse struct {
