@@ -72,7 +72,7 @@ Any of the previous execution methods accept configuration through the following
 | `GITBASEPG_DB_CONNECTION` | `root@tcp(localhost:3306)/none?maxAllowedPacket=4194304` | gitbase connection string |
 | `GITBASEPG_BBLFSH_SERVER_URL` | `127.0.0.1:9432` | Address where bblfsh server is listening |
 | `GITBASEPG_ENV` | `production` | Sets the log level. Use `dev` to enable debug log messages |
-| `GITBASEPG_SELECT_LIMIT` | `100` | Default `LIMIT` forced on all the SQL queries done from the UI |
+| `GITBASEPG_SELECT_LIMIT` | `100` | Default `LIMIT` forced on all the SQL queries done from the UI. Set it to 0 to remove any limit |
 | `GITBASEPG_FOOTER_HTML` | | Allows to add any custom html to the page footer. It must be a string encoded in base64. Use it, for example, to add your analytics tracking code snippet  |
 
 # Contribute

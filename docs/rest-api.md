@@ -42,7 +42,7 @@ Receives an SQL query and forwards it to the `gitbase` server.
 The request body can have:
 
 * `query`: An SQL statement string. Do not include `LIMIT` here.
-* `limit`: Number, will be added as SQL `LIMIT` to the query. Optional.
+* `limit`: Number, will be added as SQL `LIMIT` to the query. Optional. Will also be ignored if it is 0.
 
 The success response will contain:
 
