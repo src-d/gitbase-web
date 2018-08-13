@@ -84,6 +84,10 @@ clean: front-clean
 build-path:
 	$(MKDIR) $(BUILD_PATH)
 
+.PHONY: version
+version:
+	@echo $(VERSION)
+
 # Compiles the assets, and serves the tool through its API
 
 serve: | front-dependencies front-build back-build back-start

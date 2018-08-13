@@ -58,7 +58,7 @@ jobs:
       - make docker-build
       - export FOOTER_HTML='<div class="custom-base64-html"></div>'
       - export FOOTER_HTML_BASE64=`echo -n $FOOTER_HTML | base64`
-      - docker run --rm -d --publish 8080:8080 --env GITBASEPG_FOOTER_HTML=$FOOTER_HTML_BASE64 srcd/gitbase-playground:$TRAVIS_BRANCH
+      - docker run --rm -d --publish 8080:8080 --env GITBASEPG_FOOTER_HTML=$FOOTER_HTML_BASE64 srcd/gitbase-playground:$(make version)
       - sleep 5
       - curl http://127.0.0.1:8080 | grep "$FOOTER_HTML"
     # release to github
