@@ -43,6 +43,9 @@ $(MAKEFILE):
 	@git clone --quiet --depth 1 -b $(CI_BRANCH) $(CI_REPOSITORY) $(CI_PATH);
 -include $(MAKEFILE)
 
+# Override Makefile.main defaults for arguments to be used in `go` commands.
+GO_BUILD_ARGS := -ldflags "$(LD_FLAGS)" -tags "$(GO_BINDATA_TAG)"
+
 # TODO: remove when https://github.com/src-d/ci/pull/84 is merged
 .PHONY: godep
 GODEP ?= $(CI_PATH)/dep
@@ -59,9 +62,6 @@ dependencies: | front-dependencies exit
 # Makefile.main::test -> this::test
 test: front-test
 
-
-# Override Makefile.main defaults for arguments to be used in `go` commands.
-build: GO_BUILD_ARGS := -ldflags "$(LD_FLAGS)" -tags "$(GO_BINDATA_TAG)"
 # this::build -> Makefile.main::build -> Makefile.main::$(COMMANDS)
 # The @echo forces this prerequisites to be run before `Makefile.main::build` ones.
 build: front-build back-build
