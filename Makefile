@@ -27,9 +27,6 @@ COMPOSE := docker-compose
 # To be used as -tags
 GO_BINDATA_TAG := bindata
 
-# Override Makefile.main defaults for arguments to be used in `go` commands.
-GO_BUILD_ARGS := -ldflags "$(LD_FLAGS)" -tags "$(GO_BINDATA_TAG)"
-
 # Environment and arguments to use in `go run` calls.
 GO_RUN_ENV := GITBASEPG_ENV=dev
 GO_RUN_ARGS += -tags "$(GO_BINDATA_TAG)"
@@ -55,6 +52,9 @@ dependencies: | front-dependencies back-dependencies exit
 # Makefile.main::test -> this::test
 test: front-test
 
+
+# Override Makefile.main defaults for arguments to be used in `go` commands.
+build: GO_BUILD_ARGS := -ldflags "$(LD_FLAGS)" -tags "$(GO_BINDATA_TAG)"
 # this::build -> Makefile.main::build -> Makefile.main::$(COMMANDS)
 # The @echo forces this prerequisites to be run before `Makefile.main::build` ones.
 build: front-build back-build
