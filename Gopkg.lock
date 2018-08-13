@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:e0499b93857a1b91efbdc0c21e26f1130685de98035008f3b01eeeb0713798cb"
+  digest = "1:167b6f65a6656de568092189ae791253939f076df60231fdd64588ac703892a1"
   name = "github.com/BurntSushi/toml"
   packages = ["."]
   pruneopts = "NUT"
@@ -18,7 +18,7 @@
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:022ad3a0a82e52036c0f020c817db17b676fd611bedfad8fd72b67f829eb41a9"
+  digest = "1:717e36544bc2aaa9f037ba61f80bf088aa2e3fd3805320f0f6107089104a787d"
   name = "github.com/go-chi/chi"
   packages = [
     ".",
@@ -37,7 +37,7 @@
   version = "v1.4.0"
 
 [[projects]]
-  digest = "1:e774f48a41dc1766028d091b29afb5849a3bede1b079527d789c35475a8bf30d"
+  digest = "1:1ba798075c507fb2513d955f8c04314acdb233b269671224a602ed4dc550eb64"
   name = "github.com/gogo/protobuf"
   packages = [
     "gogoproto",
@@ -51,7 +51,7 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:713cc7628304d027a7e9edcb52da888a8912d6405250a8d9c8eff6f41dd54398"
+  digest = "1:03e14cff610a8a58b774e36bd337fa979482be86aab01be81fb8bbd6d0f07fc8"
   name = "github.com/golang/protobuf"
   packages = [
     "proto",
@@ -121,7 +121,7 @@
   version = "v1.0.5"
 
 [[projects]]
-  digest = "1:ea401d5768217268c640bfbdf50bc58780b948866e79ffac57b07e310a560510"
+  digest = "1:b31059dac028ff111793a8345eacf0f99d0f1150ead34ebf32fdd2b7d54c2d45"
   name = "github.com/stretchr/testify"
   packages = [
     "assert",
@@ -150,7 +150,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:cdc8cc9377bcb05ff97816bf398120c0a242f502b5eb2bb27d1d650b523e67e1"
+  digest = "1:35f88587465b83cd4cc04e9788c931c1b7365390669f6ec098470a3ccec963a5"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -166,7 +166,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5600c8993ef3231fccb5f179dc0f6b21f5897f1b3e82c750a4e9148bb7d2c396"
+  digest = "1:baa3044d8a33b3cd690c16fd555c5a543f980206cd1a696f7902307f57f911ec"
   name = "golang.org/x/sys"
   packages = [
     "unix",
@@ -176,7 +176,7 @@
   revision = "7138fd3d9dc8335c567ca206f4333fb75eb05d56"
 
 [[projects]]
-  digest = "1:a0f29009397dc27c9dc8440f0945d49e5cbb9b72d0b0fc745474d9bfdea2d9f8"
+  digest = "1:e7071ed636b5422cc51c0e3a6cebc229d6c9fffc528814b519a980641422d619"
   name = "golang.org/x/text"
   packages = [
     "collate",
@@ -215,7 +215,7 @@
   revision = "ff3583edef7de132f219f0efc00e097cabcc0ec0"
 
 [[projects]]
-  digest = "1:f778941d5c2e46da5e0f5d553d3e80bf70eb40d2e80bb4c649b625b9133f3d5f"
+  digest = "1:d0e5846da58e4e20d1bbd7502b24f31d37e3ac1e02a9042d95bd93c2d0c139dd"
   name = "google.golang.org/grpc"
   packages = [
     ".",
@@ -268,7 +268,7 @@
   version = "v2.6.1"
 
 [[projects]]
-  digest = "1:da126f28a82cb1a6c0c2a0091267dd4798c4b61f475ed7c1e37c17b1fbd7b5b8"
+  digest = "1:85ce4b06f191dd616ad7f4377843ea08db7db003757bd0a67e1b3ac4cbd5c2ef"
   name = "gopkg.in/bblfsh/sdk.v1"
   packages = [
     "manifest",
@@ -280,7 +280,7 @@
   version = "v1.16.0"
 
 [[projects]]
-  digest = "1:e642b2447a3a8ff721dc5ce3fea53043782926e0b948acf22f78b416c09c80a7"
+  digest = "1:d11329b27b0f34c399185531f3232493d7da40f576574da04776812b0a94f66b"
   name = "gopkg.in/src-d/enry.v1"
   packages = [
     ".",
