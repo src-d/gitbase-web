@@ -152,7 +152,7 @@ SELECT files.repository_id, files.file_path,
  )) as functions
 FROM files
 NATURAL JOIN refs
-WHERE 
+WHERE
 LANGUAGE(files.file_path,files.blob_content) = 'Go'
 AND refs.ref_name = 'HEAD'`
       }
@@ -259,7 +259,7 @@ AND refs.ref_name = 'HEAD'`
   }
 
   handleExampleClick(sql) {
-    this.setState({ sql }, this.handleSubmit);
+    this.setState({ sql });
   }
 
   loadSchema() {
