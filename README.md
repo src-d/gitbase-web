@@ -33,6 +33,12 @@ $ GITBASEPG_REPOS_FOLDER=$HOME/repos docker-compose up --force-recreate
 
 The server should be now available at [http://localhost:8080](http://localhost:8080).
 
+In case there are any containers left, you can use
+```bash
+docker-compose down
+```
+for cleanup.
+
 ## Without Docker Compose
 
 The playground will run the queries against a [gitbase](https://docs.sourced.tech/gitbase) server, and will request UASTs to a [bblfsh](https://doc.bblf.sh/) server. Make sure both are properly configured.
