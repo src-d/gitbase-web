@@ -2,7 +2,6 @@
 PROJECT := gitbase-playground
 COMMANDS := cmd/gitbase-playground
 DEPENDENCIES := \
-	github.com/golang/dep/cmd/dep \
 	github.com/jteeuwen/go-bindata \
 	github.com/golang/lint/golint
 DEPENDENCIES_DIRECTORY := ./vendor
@@ -14,7 +13,6 @@ FRONTEND_PATH := ./frontend
 FRONTEND_BUILD_PATH := $(FRONTEND_PATH)/build
 
 # Tools
-GODEP := dep
 GOLINT := golint
 GOVET := go vet
 BINDATA := go-bindata
@@ -45,9 +43,18 @@ $(MAKEFILE):
 	@git clone --quiet --depth 1 -b $(CI_BRANCH) $(CI_REPOSITORY) $(CI_PATH);
 -include $(MAKEFILE)
 
+# TODO: remove when https://github.com/src-d/ci/pull/84 is merged
+.PHONY: godep
+GODEP ?= $(CI_PATH)/dep
+godep:
+	export INSTALL_DIRECTORY=$(CI_PATH) ; \
+	test -f $(GODEP) || \
+		curl https://raw.githubusercontent.com/golang/dep/master/install.sh | bash ; \
+	$(GODEP) ensure -v
+
 # Makefile.main::dependencies -> Makefile.main::$(DEPENDENCIES) -> this::dependencies
 # The `exit` is needed to prevent running `Makefile.main::dependencies` commands.
-dependencies: | front-dependencies back-dependencies exit
+dependencies: | front-dependencies exit
 
 # Makefile.main::test -> this::test
 test: front-test
@@ -65,7 +72,7 @@ coverage: | test-coverage codecov
 lint: back-lint front-lint
 
 validate-commit: | \
-	back-dependencies \
+	godep \
 	front-fix-lint-errors \
 	no-changes-in-commit
 
@@ -95,10 +102,6 @@ require-repos-folder:
 		exit 1; \
 	fi
 	$(MKDIR) $(GITBASEPG_REPOS_FOLDER)
-
-# Backend
-back-dependencies:
-	$(GODEP) ensure
 
 back-build: back-bindata
 
