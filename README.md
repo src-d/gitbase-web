@@ -75,7 +75,7 @@ Any of the previous execution methods accept configuration through the following
 | `GITBASEPG_HOST` | `0.0.0.0` | IP address to bind the HTTP server |
 | `GITBASEPG_PORT` | `8080` | Port to bind the HTTP server |
 | `GITBASEPG_SERVER_URL` | | URL used to access the application in the form `HOSTNAME[:PORT]`. Leave it unset to allow connections from any proxy or public address |
-| `GITBASEPG_DB_CONNECTION` | `root@tcp(localhost:3306)/none?maxAllowedPacket=4194304` | gitbase connection string |
+| `GITBASEPG_DB_CONNECTION` | `root@tcp(localhost:3306)/none?maxAllowedPacket=4194304` | gitbase connection string. Use the DSN (Data Source Name) format described in the [Go MySQL Driver docs](https://github.com/go-sql-driver/mysql#dsn-data-source-name). |
 | `GITBASEPG_BBLFSH_SERVER_URL` | `127.0.0.1:9432` | Address where bblfsh server is listening |
 | `GITBASEPG_ENV` | `production` | Sets the log level. Use `dev` to enable debug log messages |
 | `GITBASEPG_SELECT_LIMIT` | `100` | Default `LIMIT` forced on all the SQL queries done from the UI. Set it to 0 to remove any limit |
