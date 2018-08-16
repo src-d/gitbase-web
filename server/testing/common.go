@@ -1,6 +1,9 @@
 package testing
 
-import "database/sql"
+import (
+	"context"
+	"database/sql"
+)
 
 // MockDB is a mock of *sql.DB
 type MockDB struct{}
@@ -17,6 +20,11 @@ func (db *MockDB) Ping() error {
 
 // Query sends a query to the DB
 func (db *MockDB) Query(query string, args ...interface{}) (*sql.Rows, error) {
+	return nil, nil
+}
+
+// QueryContext executes a query
+func (db *MockDB) QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error) {
 	return nil, nil
 }
 

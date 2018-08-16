@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -19,6 +20,10 @@ type RequestProcessFunc func(*http.Request) (*serializer.Response, error)
 func APIHandlerFunc(rp RequestProcessFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		response, err := rp(r)
+		if err == context.Canceled {
+			return
+		}
+
 		if response == nil {
 			response = serializer.NewEmptyResponse()
 		}

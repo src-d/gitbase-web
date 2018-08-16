@@ -1,12 +1,16 @@
 package handler
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
+	"sync"
 	"testing"
+	"time"
 
+	"github.com/pressly/lg"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
@@ -144,4 +148,41 @@ func (suite *QuerySuite) TestTypes() {
 	suite.Nil(colData["b"])
 	suite.Nil(colData["c"])
 	suite.Nil(colData["d"])
+}
+
+func (suite *QuerySuite) TestQueryAbort() {
+	// Ideally we would test that the sql query context is canceled, but
+	// go-sqlmock does not have something like ExpectContextCancellation
+
+	mockRows := sqlmock.NewRows([]string{"a", "b", "c", "d"})
+	suite.mock.ExpectQuery(".*").WillDelayFor(2 * time.Second).WillReturnRows(mockRows)
+
+	json := `{"query": "select * from repositories"}`
+	req, _ := http.NewRequest("POST", "/query", strings.NewReader(json))
+	res := httptest.NewRecorder()
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	ctx, cancel := context.WithCancel(req.Context())
+	req = req.WithContext(ctx)
+
+	var mockAPIHandlerFunc http.HandlerFunc = func(w http.ResponseWriter, r *http.Request) {
+		defer wg.Done()
+
+		_, err := suite.requestProcessFunc(suite.db)(r)
+		suite.Error(err)
+		suite.Equal(context.Canceled, err)
+	}
+
+	go func() {
+		handler := lg.RequestLogger(suite.logger)(mockAPIHandlerFunc)
+		handler.ServeHTTP(res, req)
+	}()
+
+	cancel()
+
+	wg.Wait()
+
+	suite.Equal(context.Canceled, ctx.Err())
 }
