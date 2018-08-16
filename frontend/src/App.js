@@ -59,6 +59,7 @@ class App extends Component {
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRemoveResult = this.handleRemoveResult.bind(this);
+    this.handleAbortQuery = this.handleAbortQuery.bind(this);
     this.handleTableClick = this.handleTableClick.bind(this);
     this.handleExampleClick = this.handleExampleClick.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
@@ -209,12 +210,12 @@ AND refs.ref_name = 'HEAD'`
     });
   }
 
-  handleSubmit() {
-    const { sql, history } = this.state;
-    const key = nanoid();
+  loadQuery(key, sql) {
+    const { history } = this.state;
+    const abortController = new window.AbortController();
 
     const loadingResults = new Map(this.state.results);
-    loadingResults.set(key, { sql, loading: true });
+    loadingResults.set(key, { sql, loading: true, abortController });
 
     this.setState(
       {
@@ -234,11 +235,11 @@ AND refs.ref_name = 'HEAD'`
     );
 
     api
-      .query(sql)
+      .query(sql, abortController.signal)
       .then(response => {
         this.setResult(key, { sql, response });
 
-        // If the schema of the list of languages were not loaded for some
+        // If the schema or the list of languages were not loaded for some
         // reason, we retry now
 
         if (!this.state.schema) {
@@ -249,9 +250,22 @@ AND refs.ref_name = 'HEAD'`
           this.loadLanguages();
         }
       })
-      .catch(msgArr =>
-        this.setResult(key, { sql, errorMsg: msgArr.join('; ') })
-      );
+      .catch(msgArr => {
+        this.setResult(key, { sql, errorMsg: msgArr.join('; ') });
+      });
+  }
+
+  handleSubmit() {
+    const { sql } = this.state;
+    const key = nanoid();
+    this.loadQuery(key, sql);
+  }
+
+  handleReload(key) {
+    const result = this.state.results.get(key);
+    if (result) {
+      this.loadQuery(key, result.sql);
+    }
   }
 
   handleTableClick(table) {
@@ -328,12 +342,22 @@ AND refs.ref_name = 'HEAD'`
   }
 
   handleRemoveResult(key) {
+    this.handleAbortQuery(key);
+
     const newResults = new Map(this.state.results);
     newResults.delete(key);
 
     this.setState({ results: newResults });
 
     this.stopInactiveTimer(key);
+  }
+
+  handleAbortQuery(key) {
+    const result = this.state.results.get(key);
+
+    if (result && result.abortController) {
+      result.abortController.abort();
+    }
   }
 
   handleResetHistory() {
@@ -378,33 +402,6 @@ AND refs.ref_name = 'HEAD'`
     this.setState({ results: newResults });
   }
 
-  handleReload(key) {
-    const { results } = this.state;
-
-    const result = results.get(key);
-    result.loading = true;
-
-    const newResults = new Map(results);
-    newResults.set(key, result);
-
-    this.setState({ results: newResults });
-
-    api
-      .query(result.sql)
-      .then(response => {
-        result.response = response;
-      })
-      .catch(msgArr => {
-        result.errorMsg = msgArr.join('; ');
-      })
-      .then(() => {
-        const newNewResults = new Map(results);
-        result.loading = false;
-        newResults.set(key, result);
-        this.setState({ results: newNewResults });
-      });
-  }
-
   render() {
     const { results, history } = this.state;
 
@@ -444,6 +441,7 @@ AND refs.ref_name = 'HEAD'`
                 handleResetHistory={this.handleResetHistory}
                 handleSetActiveResult={this.handleSetActiveResult}
                 handleReload={this.handleReload}
+                handleAbortQuery={this.handleAbortQuery}
                 showUAST={this.showUAST}
                 languages={this.state.languages}
               />
