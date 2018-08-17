@@ -1,6 +1,6 @@
 # Package configuration
-PROJECT := gitbase-playground
-COMMANDS := cmd/gitbase-playground
+PROJECT := gitbase-web
+COMMANDS := cmd/gitbase-web
 DEPENDENCIES := \
 	github.com/jteeuwen/go-bindata \
 	github.com/golang/lint/golint
@@ -121,7 +121,7 @@ $(GO_LINTABLE_PACKAGES):
 	$(GOVET) $@
 
 back-start:
-	$(GO_RUN_ENV) $(GORUN) cmd/gitbase-playground/main.go
+	$(GO_RUN_ENV) $(GORUN) cmd/gitbase-web/main.go
 
 # Frontend
 

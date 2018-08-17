@@ -8,4 +8,4 @@ RUN apt-get update && \
 
 ADD ./build/bin /bin
 
-ENTRYPOINT ["/bin/gitbase-playground"]
+ENTRYPOINT ["/bin/gitbase-web"]
