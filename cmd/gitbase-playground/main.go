@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/src-d/gitbase-playground/server"
-	"github.com/src-d/gitbase-playground/server/handler"
-	"github.com/src-d/gitbase-playground/server/service"
+	"github.com/src-d/gitbase-web/server"
+	"github.com/src-d/gitbase-web/server/handler"
+	"github.com/src-d/gitbase-web/server/service"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/kelseyhightower/envconfig"

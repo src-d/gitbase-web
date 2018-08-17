@@ -6,8 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/src-d/gitbase-playground/server/handler"
-	"github.com/src-d/gitbase-playground/server/serializer"
+	"github.com/src-d/gitbase-web/server/handler"
+	"github.com/src-d/gitbase-web/server/serializer"
 	"github.com/stretchr/testify/suite"
 )
 

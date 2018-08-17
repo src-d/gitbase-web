@@ -5,8 +5,8 @@ import (
 
 	bblfsh "gopkg.in/bblfsh/client-go.v2"
 
-	"github.com/src-d/gitbase-playground/server/serializer"
-	"github.com/src-d/gitbase-playground/server/service"
+	"github.com/src-d/gitbase-web/server/serializer"
+	"github.com/src-d/gitbase-web/server/service"
 )
 
 // Version returns a function that returns a *serializer.Response

@@ -9,7 +9,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/pressly/lg"
-	"github.com/src-d/gitbase-playground/server/serializer"
+	"github.com/src-d/gitbase-web/server/serializer"
 )
 
 // RequestProcessFunc is a function that takes an http.Request, and returns a serializer.Response and an error

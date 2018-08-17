@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/src-d/gitbase-playground/server/service"
+	"github.com/src-d/gitbase-web/server/service"
 	enry "gopkg.in/src-d/enry.v1"
 )
 

@@ -7,7 +7,7 @@ import (
 
 	"gopkg.in/src-d/enry.v1"
 
-	"github.com/src-d/gitbase-playground/server/serializer"
+	"github.com/src-d/gitbase-web/server/serializer"
 )
 
 type detectLangRequest struct {

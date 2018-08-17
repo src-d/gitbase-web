@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/src-d/gitbase-playground/server/service"
+	"github.com/src-d/gitbase-web/server/service"
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 
 	"github.com/pressly/lg"

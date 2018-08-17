@@ -7,10 +7,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/src-d/gitbase-playground/server"
-	"github.com/src-d/gitbase-playground/server/handler"
-	"github.com/src-d/gitbase-playground/server/service"
-	testingTools "github.com/src-d/gitbase-playground/server/testing"
+	"github.com/src-d/gitbase-web/server"
+	"github.com/src-d/gitbase-web/server/handler"
+	"github.com/src-d/gitbase-web/server/service"
+	testingTools "github.com/src-d/gitbase-web/server/testing"
 
 	"github.com/stretchr/testify/suite"
 )
