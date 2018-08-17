@@ -38,7 +38,7 @@ class Sidebar extends Component {
     return (
       <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
         <div className="header">
-          <h3>gitbase playgroun{'{d}'}</h3>
+          <h3>gitbase web</h3>
           <CollapseIcon className="big-icon" onClick={this.handleToggle} />
         </div>
         <div className="main">
