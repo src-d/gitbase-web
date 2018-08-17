@@ -1,9 +1,9 @@
-[![Build Status](https://travis-ci.org/src-d/gitbase-playground.svg)](https://travis-ci.org/src-d/gitbase-playground)
-[![codecov.io](https://codecov.io/github/src-d/gitbase-playground/coverage.svg)](https://codecov.io/github/src-d/gitbase-playground)
+[![Build Status](https://travis-ci.org/src-d/gitbase-web.svg)](https://travis-ci.org/src-d/gitbase-web)
+[![codecov.io](https://codecov.io/github/src-d/gitbase-web/coverage.svg)](https://codecov.io/github/src-d/gitbase-web)
 
-# Gitbase Playground
+# Gitbase Web
 
-Web application to query Git repositories using SQL. Powered by [gitbase](https://github.com/src-d/gitbase), it allows to perform SQL queries on the Git history and the [Universal AST](https://doc.bblf.sh/) of the code itself.
+Application to query Git repositories using SQL. Powered by [gitbase](https://github.com/src-d/gitbase), it allows to perform SQL queries on the Git history and the [Universal AST](https://doc.bblf.sh/) of the code itself.
 
 ![Screenshot](.github/screenshot.png?raw=true)
 
@@ -11,7 +11,7 @@ Web application to query Git repositories using SQL. Powered by [gitbase](https:
 
 ## With Docker Compose
 
-The easiest way to run Gitbase Playground and its dependencies is using [Docker Compose](https://docs.docker.com/compose/install/).
+The easiest way to run Gitbase Web and its dependencies is using [Docker Compose](https://docs.docker.com/compose/install/).
 
 The first step is to populate a directory with some Git repositories to be served by gitbase before running it. For example:
 
@@ -20,13 +20,13 @@ $ mkdir $HOME/repos
 $ cd $HOME/repos
 $ git clone git@github.com:src-d/gitbase.git
 $ git clone git@github.com:bblfsh/bblfshd.git
-$ git clone git@github.com:src-d/gitbase-playground.git
+$ git clone git@github.com:src-d/gitbase-web.git
 ```
 
-Next you will need to download the `docker-compose.yml` file from this repository and run `docker-compose`. This tool will run three different containers: the playground frontend itself, gitbase, and bblfshd. To kill the running containers use `Ctrl+C`.
+Next you will need to download the `docker-compose.yml` file from this repository and run `docker-compose`. This tool will run three different containers: the gitbase-web frontend itself, gitbase, and bblfshd. To kill the running containers use `Ctrl+C`.
 
 ```bash
-$ wget https://raw.githubusercontent.com/src-d/gitbase-playground/master/docker-compose.yml
+$ wget https://raw.githubusercontent.com/src-d/gitbase-web/master/docker-compose.yml
 $ docker-compose pull
 $ GITBASEPG_REPOS_FOLDER=$HOME/repos docker-compose up --force-recreate
 ```
@@ -41,29 +41,29 @@ for cleanup.
 
 ## Without Docker Compose
 
-The playground will run the queries against a [gitbase](https://docs.sourced.tech/gitbase) server, and will request UASTs to a [bblfsh](https://doc.bblf.sh/) server. Make sure both are properly configured.
+The application will run the queries against a [gitbase](https://docs.sourced.tech/gitbase) server, and will request UASTs to a [bblfsh](https://doc.bblf.sh/) server. Make sure both are properly configured.
 
-Then you can choose to run the Gitbase Playground either as a docker container, or as a binary.
+Then you can choose to run the web client either as a docker container, or as a binary.
 
 ### As a Docker
 
 ```bash
-$ docker pull srcd/gitbase-playground:latest
+$ docker pull srcd/gitbase-web:latest
 $ docker run -d \
     --publish 8080:8080 \
     --env GITBASEPG_DB_CONNECTION="root@tcp(<gitbase-ip>:3306)/none" \
     --env GITBASEPG_BBLFSH_SERVER_URL="<bblfshd-ip>:9432" \
-    srcd/gitbase-playground:latest
+    srcd/gitbase-web:latest
 ```
 
 ### As a Binary
 
-Download the binary from our [releases section](https://github.com/src-d/gitbase-playground/releases), and run it:
+Download the binary from our [releases section](https://github.com/src-d/gitbase-web/releases), and run it:
 
 ```bash
 $ export GITBASEPG_DB_CONNECTION="root@tcp(<gitbase-ip>:3306)/none"
 $ export GITBASEPG_BBLFSH_SERVER_URL="<bblfshd-ip>:9432"
-$ ./gitbase-playground
+$ ./gitbase-web
 ```
 
 # Configuration
@@ -83,7 +83,7 @@ Any of the previous execution methods accept configuration through the following
 
 # Contribute
 
-[Contributions](https://github.com/src-d/gitbase-playground/issues) are more than welcome, if you are interested please take a look to our [Contributing Guidelines](docs/CONTRIBUTING.md). There you will also find information on how to build and run the project from sources.
+[Contributions](https://github.com/src-d/gitbase-web/issues) are more than welcome, if you are interested please take a look to our [Contributing Guidelines](docs/CONTRIBUTING.md). There you will also find information on how to build and run the project from sources.
 
 # Code of Conduct
 

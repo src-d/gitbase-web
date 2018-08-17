@@ -151,7 +151,7 @@ curl -X POST \
     "status": 200,
     "data": [
         {
-            "content": "package server\n\nimport (\n\t\"net/http\"\n\n\t\"github.com/src-d/gitbase-playground/server/handler\"\n\n\t\"github.com/go-chi/chi\"\n\t\"github.com/go-chi/chi/middleware\"\n\t\"github.com/pressly/lg\"\n\t\"github.com/rs/cors\"\n\t\"github.com/sirupsen/logrus\"\n)\n\n// Router returns a Handler to serve the backend\nfunc Router(\n\tlogger *logrus.Logger,\n\tstatic *handler.Static,\n\tversion string,\n) http.Handler {\n\n\t// cors options\n\tcorsOptions := cors.Options{\n\t\tAllowedOrigins:   []string{\"*\"},\n\t\tAllowedMethods:   []string{\"GET\", \"POST\", \"PUT\", \"OPTIONS\"},\n\t\tAllowedHeaders:   []string{\"Location\", \"Authorization\", \"Content-Type\"},\n\t\tAllowCredentials: true,\n\t}\n\n\tr := chi.NewRouter()\n\n\tr.Use(middleware.Recoverer)\n\tr.Use(cors.New(corsOptions).Handler)\n\tr.Use(lg.RequestLogger(logger))\n\n\tr.Get(\"/version\", handler.APIHandlerFunc(handler.Version(version)))\n\n\tr.Get(\"/static/*\", static.ServeHTTP)\n\tr.Get(\"/*\", static.ServeHTTP)\n\n\treturn r\n}\n",
+            "content": "package server\n\nimport (\n\t\"net/http\"\n\n\t\"github.com/src-d/gitbase-web/server/handler\"\n\n\t\"github.com/go-chi/chi\"\n\t\"github.com/go-chi/chi/middleware\"\n\t\"github.com/pressly/lg\"\n\t\"github.com/rs/cors\"\n\t\"github.com/sirupsen/logrus\"\n)\n\n// Router returns a Handler to serve the backend\nfunc Router(\n\tlogger *logrus.Logger,\n\tstatic *handler.Static,\n\tversion string,\n) http.Handler {\n\n\t// cors options\n\tcorsOptions := cors.Options{\n\t\tAllowedOrigins:   []string{\"*\"},\n\t\tAllowedMethods:   []string{\"GET\", \"POST\", \"PUT\", \"OPTIONS\"},\n\t\tAllowedHeaders:   []string{\"Location\", \"Authorization\", \"Content-Type\"},\n\t\tAllowCredentials: true,\n\t}\n\n\tr := chi.NewRouter()\n\n\tr.Use(middleware.Recoverer)\n\tr.Use(cors.New(corsOptions).Handler)\n\tr.Use(lg.RequestLogger(logger))\n\n\tr.Get(\"/version\", handler.APIHandlerFunc(handler.Version(version)))\n\n\tr.Get(\"/static/*\", static.ServeHTTP)\n\tr.Get(\"/*\", static.ServeHTTP)\n\n\treturn r\n}\n",
             "hash": "fd30cea52792da5ece9156eea4022bdd87565633",
             "uast(blobs.content, \"go\")": [
                 {
@@ -259,7 +259,7 @@ curl -X GET http://localhost:8080/export?query=select+*+from+repositories
 
 ```json
 id
-/opt/repos/gitbase-playground
+/opt/repos/gitbase-web
 /opt/repos/go-git-fixtures
 ```
 
