@@ -50,13 +50,13 @@ func (suite *ExportIntegrationSuite) TestSuccess() {
 	r := csv.NewReader(res.Body)
 
 	record, err := r.Read()
-	suite.Nil(err)
-	suite.Equal(record, []string{"repository_id"})
+	suite.Require().Nil(err)
+	suite.Require().Equal(record, []string{"repository_id"})
 
 	record, err = r.Read()
-	suite.Nil(err)
-	suite.Equal(len(record), 1)
-	suite.True(len(record[0]) > 0)
+	suite.Require().Nil(err)
+	suite.Require().Equal(len(record), 1)
+	suite.Require().True(len(record[0]) > 0)
 }
 
 func (suite *ExportIntegrationSuite) TestError() {
