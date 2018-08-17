@@ -22,7 +22,7 @@ func NewLogger(env string) *logrus.Logger {
 				logrus.FieldKeyMsg:   "message",
 			},
 		}
-		logger.SetLevel(logrus.WarnLevel)
+		logger.SetLevel(logrus.InfoLevel)
 	}
 
 	return logger
