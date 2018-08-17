@@ -27,6 +27,7 @@
     "format": "eslint --fix 'src/**/*.js'"
   },
   "devDependencies": {
+    "abortcontroller-polyfill": "^1.1.9",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-jest": "^21.15.1",

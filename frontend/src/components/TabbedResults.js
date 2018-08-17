@@ -198,11 +198,22 @@ class TabbedResults extends Component {
                       </Col>
                     </Row>
                     <Row>
+                      <Col className="text-center message-col" xs={12}>
+                        RUNNING QUERY
+                      </Col>
+                    </Row>
+                    <Row>
                       <Col
                         className="text-center message-col last-message-col"
                         xs={12}
                       >
-                        RUNNING QUERY
+                        <Button
+                          className="animation-action cancel"
+                          bsStyle="gbpl-tertiary"
+                          onClick={() => this.props.handleAbortQuery(key)}
+                        >
+                          CANCEL
+                        </Button>
                       </Col>
                     </Row>
                   </Fragment>
@@ -253,7 +264,7 @@ class TabbedResults extends Component {
                         xs={12}
                       >
                         <Button
-                          className="reload"
+                          className="animation-action reload"
                           bsStyle="gbpl-tertiary"
                           onClick={() => this.props.handleReload(key)}
                         >
@@ -340,6 +351,7 @@ TabbedResults.propTypes = {
   handleResetHistory: PropTypes.func.isRequired,
   handleSetActiveResult: PropTypes.func.isRequired,
   handleReload: PropTypes.func.isRequired,
+  handleAbortQuery: PropTypes.func.isRequired,
   showUAST: PropTypes.func.isRequired,
   languages: CodeViewer.propTypes.languages
 };

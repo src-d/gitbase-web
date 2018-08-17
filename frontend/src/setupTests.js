@@ -1,5 +1,6 @@
 import path from 'path';
 import os from 'os';
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import initButtonStyles from './utils/bootstrap';
 
 const { LocalStorage } = require('node-localstorage');

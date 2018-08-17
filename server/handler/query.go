@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -63,7 +64,7 @@ func Query(db service.SQLDB) RequestProcessFunc {
 		}
 
 		query, limitSet := addLimit(queryRequest.Query, queryRequest.Limit)
-		rows, err := db.Query(query)
+		rows, err := db.QueryContext(r.Context(), query)
 		if err != nil {
 			return nil, dbError(err)
 		}
@@ -210,6 +211,10 @@ func addLimit(query string, limit int) (string, bool) {
 
 // dbError transform DB error to HTTP error
 func dbError(err error) error {
+	if err == context.Canceled {
+		return err
+	}
+
 	if mysqlErr, ok := err.(*mysql.MySQLError); ok {
 		return serializer.NewMySQLError(
 			http.StatusBadRequest,

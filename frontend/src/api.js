@@ -32,6 +32,10 @@ function normalizeError(err) {
     if (err.title) {
       return err.title;
     }
+    // fetch abort
+    if (err.name === 'AbortError') {
+      return 'The user aborted the request.';
+    }
     // javascript error
     if (err.message) {
       return err.message;
@@ -81,14 +85,15 @@ function apiCall(url, options = {}) {
     .catch(err => Promise.reject(normalizeErrors(err)));
 }
 
-function query(sql) {
+function query(sql, signal) {
   const startTime = new Date();
   return apiCall(`/query`, {
     method: 'POST',
     body: {
       query: sql,
       limit: selectLimit
-    }
+    },
+    signal
   }).then(res => {
     res.meta.elapsedTime = new Date() - startTime;
     return res;
