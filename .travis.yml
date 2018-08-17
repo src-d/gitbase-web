@@ -47,7 +47,7 @@ jobs:
       - docker exec -it bblfshd bblfshctl driver install go docker://bblfsh/go-driver:latest
       - docker exec -it bblfshd bblfshctl driver install javascript docker://bblfsh/javascript-driver:latest
       - mkdir $HOME/repos
-      - git clone https://github.com/src-d/gitbase-playground.git $HOME/repos/gitbase-playground
+      - git clone https://github.com/src-d/gitbase-web.git $HOME/repos/gitbase-web
       - docker run -d --name gitbase -p "3367:3306" -e "BBLFSH_ENDPOINT=bblfshd:9432" --volume $HOME/repos:/opt/repos --link bblfshd srcd/gitbase
       - sleep 15
       - GITBASEPG_DB_CONNECTION='root@tcp(localhost:3367)/none' GITBASEPG_INTEGRATION_TESTS=true make test

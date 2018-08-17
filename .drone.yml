@@ -1,6 +1,6 @@
 workspace:
   base: /go
-  path: src/github.com/src-d/gitbase-playground
+  path: src/github.com/src-d/gitbase-web
 
 branches: [master]
 
