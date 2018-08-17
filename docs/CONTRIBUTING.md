@@ -1,4 +1,4 @@
-# Gitbase Playground Contribution Guidelines
+# Gitbase Web Contribution Guidelines
 
 As all source{d} projects, this project follows the
 [source{d} Contributing Guidelines](https://github.com/src-d/guide/blob/master/engineering/documents/CONTRIBUTING.md).
@@ -11,7 +11,7 @@ Refer to the main [README](../README.md) for the common requirements and configu
 
 Make sure you also satisfy these requirements:
 - [Install Go](https://golang.org/doc/install) and [configure the $GOPATH](https://github.com/golang/go/wiki/SettingGOPATH).
-- This project should be cloned in `$GOPATH/github.com/src-d/gitbase-playground`.
+- This project should be cloned in `$GOPATH/github.com/src-d/gitbase-web`.
 - Install [Node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com/en/docs/install).
 
 ## Run bblfsh and gitbase Dependencies
@@ -37,7 +37,7 @@ $ mkdir $HOME/repos
 $ cd $HOME/repos
 $ git clone git@github.com:src-d/gitbase.git
 $ git clone git@github.com:bblfsh/bblfshd.git
-$ git clone git@github.com:src-d/gitbase-playground.git
+$ git clone git@github.com:src-d/gitbase-web.git
 ```
 
 Launch gitbase:
@@ -69,8 +69,8 @@ Each one of the following sections describes an alternative method to run the pr
 They all require the project is cloned into your `$GOPATH`.
 
 ```bash
-$ go get -d -u github.com/src-d/gitbase-playground/...
-$ cd $GOPATH/github.com/src-d/gitbase-playground
+$ go get -d -u github.com/src-d/gitbase-web/...
+$ cd $GOPATH/github.com/src-d/gitbase-web
 ```
 
 ## Run from Sources
@@ -90,7 +90,7 @@ Instead of rebuilding the frontend and restarting the backend every time you do 
 In one terminal run the Go backend:
 
 ```bash
-$ GITBASEPG_ENV=dev go run cmd/gitbase-playground/main.go
+$ GITBASEPG_ENV=dev go run cmd/gitbase-web/main.go
 ```
 
 In another terminal, run the frontend:
@@ -101,7 +101,7 @@ $ yarn --cwd frontend start
 
 ## Run with Docker Compose from Sources
 
-The file `docker-compose.build.yml` overrides the default compose file. Using it a new docker image, `gitbase-playground-dev`, will be created from the current sources.
+The file `docker-compose.build.yml` overrides the default compose file. Using it a new docker image, `gitbase-web-dev`, will be created from the current sources.
 
 ```bash
 $ make dependencies
@@ -151,7 +151,7 @@ Use the `GITBASEPG_INTEGRATION_TESTS=true` environment variable with the same `m
 
 The integration tests require that `gitbase` and `bblfshd` are running and reachable. See the [Requirements section](#requirements) above for more details.
 
-It is also required to configure the running `gitbase` to serve a copy of the `https://github.com/src-d/gitbase-playground` repository.
+It is also required to configure the running `gitbase` to serve a copy of the `https://github.com/src-d/gitbase-web` repository.
 
 ```bash
 $ GITBASEPG_INTEGRATION_TESTS=true make test

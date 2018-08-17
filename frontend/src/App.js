@@ -408,7 +408,7 @@ AND refs.ref_name = 'HEAD'`
     return (
       <div className="app">
         <Helmet>
-          <title>Gitbase Playground</title>
+          <title>Gitbase Web</title>
         </Helmet>
         <Grid className="full-height app-grid" fluid={true}>
           <Row className="main-row full-height">
