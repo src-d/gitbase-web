@@ -30,7 +30,7 @@ helm_deploy: &helm_deploy
   image: quay.io/ipedrazas/drone-helm:master-9b37211
   skip_tls_verify: true
   helm_repos: srcd-charts=https://src-d.github.io/charts/
-  chart: srcd-charts/gitbase-playground
+  chart: srcd-charts/gitbase-web
   release: gp
   tiller_ns: kube-system
   wait: true
@@ -63,7 +63,7 @@ pipeline:
     <<: *helm_deploy
     prefix: STG
     secrets: [ STG_API_SERVER, STG_KUBERNETES_TOKEN ]
-    values: gitbasePlayground.image.tag=commit-${DRONE_COMMIT_SHA:0:7},ingress.globalStaticIpName=gitbase-playground-staging,ingress.hostname=gitbase-playground-staging.srcd.run
+    values: gitbaseWeb.image.tag=commit-${DRONE_COMMIT_SHA:0:7},ingress.globalStaticIpName=gitbase-playground-staging,ingress.hostname=gitbase-playground-staging.srcd.run
     values_files: [.helm-staging.yml]
     when:
       branch: [master]
