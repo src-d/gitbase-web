@@ -21,7 +21,7 @@ docker_image: &docker_image
   group: docker
   image: plugins/docker
   registry: docker.io
-  repo: srcd/gitbase-playground
+  repo: srcd/gitbase-web
   secrets: [ docker_username, docker_password ]
   dockerfile: Dockerfile
   debug: true
