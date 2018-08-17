@@ -10,7 +10,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/src-d/gitbase-playground/server/assets"
+	"github.com/src-d/gitbase-web/server/assets"
 )
 
 const (

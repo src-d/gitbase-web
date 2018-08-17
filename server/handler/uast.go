@@ -13,8 +13,8 @@ import (
 	"gopkg.in/bblfsh/sdk.v1/protocol"
 	"gopkg.in/bblfsh/sdk.v1/uast"
 
-	"github.com/src-d/gitbase-playground/server/serializer"
-	"github.com/src-d/gitbase-playground/server/service"
+	"github.com/src-d/gitbase-web/server/serializer"
+	"github.com/src-d/gitbase-web/server/service"
 )
 
 type parseRequest struct {

@@ -11,8 +11,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/src-d/gitbase-playground/server/serializer"
-	"github.com/src-d/gitbase-playground/server/service"
+	"github.com/src-d/gitbase-web/server/serializer"
+	"github.com/src-d/gitbase-web/server/service"
 
 	"github.com/go-sql-driver/mysql"
 )

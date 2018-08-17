@@ -6,8 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/src-d/gitbase-playground/server/handler"
-	"github.com/src-d/gitbase-playground/server/service"
+	"github.com/src-d/gitbase-web/server/handler"
+	"github.com/src-d/gitbase-web/server/service"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
