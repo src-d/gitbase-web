@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import 'bootstrap/dist/css/bootstrap.css';
 import './variables.less';
 import App from './App';
