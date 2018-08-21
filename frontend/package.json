@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "abortcontroller-polyfill": "^1.1.9",
     "bootstrap": "3",
     "codemirror": "^5.37.0",
     "nanoid": "^1.0.3",
@@ -27,7 +28,6 @@
     "format": "eslint --fix 'src/**/*.js'"
   },
   "devDependencies": {
-    "abortcontroller-polyfill": "^1.1.9",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-jest": "^21.15.1",
