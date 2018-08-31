@@ -19,7 +19,7 @@ services:
     volumes:
       - ${GITBASEPG_REPOS_FOLDER}:/opt/repos
   bblfsh:
-    image: "bblfsh/bblfshd:v2.5.0"
+    image: "bblfsh/bblfshd"
     privileged: true
     volumes:
       - type: volume
