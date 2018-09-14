@@ -33,11 +33,11 @@ $ GITBASEPG_REPOS_FOLDER=$HOME/repos docker-compose up --force-recreate
 
 The server should be now available at [http://localhost:8080](http://localhost:8080).
 
-In case there are any containers left, you can use
+In case there are any containers left, you can stop and remove them running:
+
 ```bash
 docker-compose down
 ```
-for cleanup.
 
 ## Without Docker Compose
 
