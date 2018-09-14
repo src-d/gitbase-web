@@ -46,15 +46,6 @@ $(MAKEFILE):
 # Override Makefile.main defaults for arguments to be used in `go` commands.
 GO_BUILD_ARGS := -ldflags "$(LD_FLAGS)" -tags "$(GO_BINDATA_TAG)"
 
-# TODO: remove when https://github.com/src-d/ci/pull/84 is merged
-.PHONY: godep
-GODEP ?= $(CI_PATH)/dep
-godep:
-	export INSTALL_DIRECTORY=$(CI_PATH) ; \
-	test -f $(GODEP) || \
-		curl https://raw.githubusercontent.com/golang/dep/master/install.sh | bash ; \
-	$(GODEP) ensure -v
-
 # Makefile.main::dependencies -> Makefile.main::$(DEPENDENCIES) -> this::dependencies
 # The `exit` is needed to prevent running `Makefile.main::dependencies` commands.
 dependencies: | front-dependencies exit
