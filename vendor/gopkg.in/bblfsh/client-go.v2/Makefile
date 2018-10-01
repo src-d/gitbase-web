@@ -1,6 +1,6 @@
 # Package configuration
 PROJECT = client-go
-LIBUAST_VERSION ?= 1.9.4
+LIBUAST_VERSION ?= 2.0.1
 
 TOOLS_FOLDER = tools
 

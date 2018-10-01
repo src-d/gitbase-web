@@ -10,6 +10,14 @@
   version = "v0.3.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:867b9f2be08ff92c487e1b653d18a879a811aae72404fff0fd8de752adaf6c39"
+  name = "github.com/antchfx/xpath"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "3de91f3991a1af6e495d49c9218318b5544b20e3"
+
+[[projects]]
   digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
@@ -37,7 +45,7 @@
   version = "v1.4.0"
 
 [[projects]]
-  digest = "1:1ba798075c507fb2513d955f8c04314acdb233b269671224a602ed4dc550eb64"
+  digest = "1:983cb7d70588854e2706e32c61698bbf0eab4956fca89e86c1c10d7213679a0e"
   name = "github.com/gogo/protobuf"
   packages = [
     "gogoproto",
@@ -47,8 +55,8 @@
     "types",
   ]
   pruneopts = "NUT"
-  revision = "1adfc126b41513cc696b209667c8656ea7aac67c"
-  version = "v1.0.0"
+  revision = "636bf0302bc95575d69441b25a2603156ffdddf1"
+  version = "v1.1.1"
 
 [[projects]]
   digest = "1:03e14cff610a8a58b774e36bd337fa979482be86aab01be81fb8bbd6d0f07fc8"
@@ -215,7 +223,7 @@
   revision = "ff3583edef7de132f219f0efc00e097cabcc0ec0"
 
 [[projects]]
-  digest = "1:d0e5846da58e4e20d1bbd7502b24f31d37e3ac1e02a9042d95bd93c2d0c139dd"
+  digest = "1:5b805b8e03b29399b344655cac16873f026e54dc0a7c17b381f6f4d4c7b6d741"
   name = "google.golang.org/grpc"
   packages = [
     ".",
@@ -231,7 +239,9 @@
     "internal",
     "internal/backoff",
     "internal/channelz",
+    "internal/envconfig",
     "internal/grpcrand",
+    "internal/transport",
     "keepalive",
     "metadata",
     "naming",
@@ -242,11 +252,10 @@
     "stats",
     "status",
     "tap",
-    "transport",
   ]
   pruneopts = "NUT"
-  revision = "168a6198bcb0ef175f7dacec0b8691fc141dc9b8"
-  version = "v1.13.0"
+  revision = "8dea3dc473e90c8179e519d91302d0597c0ca1d1"
+  version = "v1.15.0"
 
 [[projects]]
   digest = "1:4fe5671ee9615984167403a07ea67e0cbb7396f3ab335294ef767ac79b972ffc"
@@ -257,15 +266,15 @@
   version = "v1.3.0"
 
 [[projects]]
-  digest = "1:c2d45df8b6f2ae9c80f660ba4b634a39b02fdd4e520f557a75ca5db6d9aa579d"
+  digest = "1:ace997f8ef569276114f7a4e2a8b44cc8ee34b4d756ccbeb73f612589d98b0b3"
   name = "gopkg.in/bblfsh/client-go.v2"
   packages = [
     ".",
     "tools",
   ]
   pruneopts = "UT"
-  revision = "78d31dfeb56c06d98fd56c0da270559e8002968d"
-  version = "v2.6.1"
+  revision = "47a750b0793f5094635bd013001c435bacc6ac48"
+  version = "v2.8.8"
 
 [[projects]]
   digest = "1:85ce4b06f191dd616ad7f4377843ea08db7db003757bd0a67e1b3ac4cbd5c2ef"
@@ -278,6 +287,27 @@
   pruneopts = "NUT"
   revision = "96e92bdde3785e655b8095a576addd52b96c6c61"
   version = "v1.16.0"
+
+[[projects]]
+  digest = "1:c86f8b8c3a3b44c31190b0a70d1adbab4fc264a2245ee893e572658bcd40dead"
+  name = "gopkg.in/bblfsh/sdk.v2"
+  packages = [
+    "driver",
+    "driver/manifest",
+    "protocol",
+    "protocol/v1",
+    "uast",
+    "uast/nodes",
+    "uast/nodes/nodesproto",
+    "uast/nodes/nodesproto/pio",
+    "uast/query",
+    "uast/query/xpath",
+    "uast/role",
+    "uast/transformer",
+  ]
+  pruneopts = "NUT"
+  revision = "85fd47713ba40fc3bffe4214090a552074841431"
+  version = "v2.2.3"
 
 [[projects]]
   digest = "1:d11329b27b0f34c399185531f3232493d7da40f576574da04776812b0a94f66b"
