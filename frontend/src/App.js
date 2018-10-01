@@ -45,6 +45,7 @@ class App extends Component {
       sql: '',
       results: new Map(),
       schema: undefined,
+      version: undefined,
       languages: [],
       history: [],
       lastResult: null,
@@ -246,6 +247,10 @@ AND refs.ref_name = 'HEAD'`
           this.loadSchema();
         }
 
+        if (!this.state.version) {
+          this.loadVersion();
+        }
+
         if (this.state.languages.length === 0) {
           this.loadLanguages();
         }
@@ -304,6 +309,19 @@ AND refs.ref_name = 'HEAD'`
       });
   }
 
+  loadVersion() {
+    api
+      .version()
+      .then(version => {
+        this.setState({ version });
+      })
+      .catch(msgArr => {
+        // left as console message for now, we don't have UI for errors
+        // eslint-disable-next-line no-console
+        console.error(`Error while loading version: ${msgArr}`);
+      });
+  }
+
   handleModalClose() {
     this.setState({ showModal: false, modalTitle: null, modalContent: null });
   }
@@ -330,6 +348,7 @@ AND refs.ref_name = 'HEAD'`
       .then(languages => this.setState({ languages }))
       .catch(err =>
         // we don't have UI for this error
+        // eslint-disable-next-line no-console
         console.error(`Can't get list of languages from bblfsh: ${err}`)
       );
   }
@@ -338,6 +357,7 @@ AND refs.ref_name = 'HEAD'`
     this.setState(loadStateFromStorage());
     this.loadSchema();
     this.loadLanguages();
+    this.loadVersion();
     this.handleExampleClick(this.exampleQueries[0].sql);
   }
 
@@ -414,6 +434,7 @@ AND refs.ref_name = 'HEAD'`
           <Row className="main-row full-height">
             <Sidebar
               schema={this.state.schema}
+              version={this.state.version}
               onTableClick={this.handleTableClick}
               onExampleClick={this.handleExampleClick}
               exampleQueries={this.exampleQueries}
