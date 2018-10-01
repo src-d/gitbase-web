@@ -1,16 +1,22 @@
 package service
 
 import (
+	"bytes"
+	"encoding/binary"
 	"encoding/json"
+	"fmt"
+	"io"
 
 	"gopkg.in/bblfsh/sdk.v1/protocol"
 	"gopkg.in/bblfsh/sdk.v1/uast"
+	errors "gopkg.in/src-d/go-errors.v1"
 )
 
 // need to move to service to avoid circular imports
 
-// UnmarshallUAST tries to cast data as [][]byte and unmarshall uast nodes
-func UnmarshallUAST(data interface{}) ([]*Node, error) {
+// UnmarshalUASTOld tries to cast data as [][]byte and unmarshall uast node.
+// This is the format returned by gitbase <= v0.16.0
+func UnmarshalUASTOld(data interface{}) ([]*Node, error) {
 	var protobufs [][]byte
 	if err := json.Unmarshal(*data.(*[]byte), &protobufs); err != nil {
 		return nil, err
@@ -24,6 +30,56 @@ func UnmarshallUAST(data interface{}) ([]*Node, error) {
 			return nil, err
 		}
 		nodes[i] = (*Node)(n)
+	}
+
+	return nodes, nil
+}
+
+// TODO (carlosms): Duplicated code from gitbase,
+// (internal/function/uast_utils.go) we should reuse that instead
+
+var (
+	// ErrParseBlob is returned when the blob can't be parsed with bblfsh.
+	ErrParseBlob = errors.NewKind("unable to parse the given blob using bblfsh: %s")
+
+	// ErrUnmarshalUAST is returned when an error arises unmarshaling UASTs.
+	ErrUnmarshalUAST = errors.NewKind("error unmarshaling UAST: %s")
+
+	// ErrMarshalUAST is returned when an error arises marshaling UASTs.
+	ErrMarshalUAST = errors.NewKind("error marshaling uast node: %s")
+)
+
+// UnmarshalUAST returns UAST nodes from data marshaled by gitbase
+func UnmarshalUAST(data []byte) ([]*Node, error) {
+	if len(data) == 0 {
+		return nil, nil
+	}
+
+	nodes := []*Node{}
+	buf := bytes.NewBuffer(data)
+	for {
+		var nodeLen int32
+		if err := binary.Read(
+			buf, binary.BigEndian, &nodeLen,
+		); err != nil {
+			if err == io.EOF {
+				break
+			}
+
+			return nil, ErrUnmarshalUAST.New(err)
+		}
+
+		node := uast.NewNode()
+		nodeBytes := buf.Next(int(nodeLen))
+		if int32(len(nodeBytes)) != nodeLen {
+			return nil, ErrUnmarshalUAST.New(fmt.Errorf("malformed data"))
+		}
+
+		if err := node.Unmarshal(nodeBytes); err != nil {
+			return nil, ErrUnmarshalUAST.New(err)
+		}
+
+		nodes = append(nodes, (*Node)(node))
 	}
 
 	return nodes, nil

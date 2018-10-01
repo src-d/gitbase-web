@@ -109,7 +109,7 @@ func Filter() RequestProcessFunc {
 			return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		nodes, err := service.UnmarshallUAST(&data)
+		nodes, err := service.UnmarshalUAST(data)
 		if err != nil {
 			return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
