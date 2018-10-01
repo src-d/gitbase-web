@@ -42,7 +42,8 @@ jobs:
         - make coverage
         - make validate-commit
     - script:
-      - docker run -d --name bblfshd --privileged --volume $HOME/bblfsh-drivers:/var/lib/bblfshd -p "9432:9432" bblfsh/bblfshd
+      # TODO (carlosms) fixed bblfshd version because latest fails with https://github.com/bblfsh/bblfshd/issues/195
+      - docker run -d --name bblfshd --privileged --volume $HOME/bblfsh-drivers:/var/lib/bblfshd -p "9432:9432" bblfsh/bblfshd:v2.7.2
       - sleep 5
       - docker exec -it bblfshd bblfshctl driver install go docker://bblfsh/go-driver:latest
       - docker exec -it bblfshd bblfshctl driver install javascript docker://bblfsh/javascript-driver:latest
