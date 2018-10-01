@@ -39,7 +39,9 @@ func genericVals(colTypes []string) []interface{} {
 			columnValsPtr[i] = new(sql.NullFloat64)
 		case "JSON":
 			columnValsPtr[i] = new([]byte)
-		default: // All the text and binary variations
+		default:
+			// All the text and binary variations. For some reason BLOB is actually
+			// returned as TEXT
 			columnValsPtr[i] = new(sql.NullString)
 		}
 	}
@@ -153,15 +155,25 @@ func columnsData(
 				colData[columnNames[i]] = sqlVal.Float64
 			}
 		case *sql.NullString:
+			// DatabaseTypeName TEXT is used for text or blobs. We try
+			// to parse as UAST first
 			sqlVal, _ := val.(*sql.NullString)
 			if sqlVal.Valid {
-				colData[columnNames[i]] = sqlVal.String
+				nodes, err := service.UnmarshalUAST([]byte(sqlVal.String))
+				if err == nil {
+					colData[columnNames[i]] = nodes
+					colData["__"+columnNames[i]+"-protobufs"] = []byte(sqlVal.String)
+				} else {
+					colData[columnNames[i]] = sqlVal.String
+				}
 			}
 		case *[]byte:
 			// DatabaseTypeName JSON is used for arrays of uast nodes and
 			// arrays of strings, but we don't know the exact type.
 			// We try with arry of uast nodes first and any JSON later
-			nodes, err := service.UnmarshallUAST(val)
+
+			// This is deprecated, only used by gitbase <= v0.16.0.
+			nodes, err := service.UnmarshalUASTOld(val)
 			if err == nil {
 				colData[columnNames[i]] = nodes
 				colData["__"+columnNames[i]+"-protobufs"] = val

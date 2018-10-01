@@ -72,15 +72,29 @@ func Export(db service.SQLDB) http.HandlerFunc {
 							record[i] = strconv.FormatInt(sqlVal.Int64, 10)
 						}
 					case *sql.NullString:
+						// DatabaseTypeName TEXT is used for text or blobs. We try
+						// to parse as UAST first
 						sqlVal, _ := val.(*sql.NullString)
 						if sqlVal.Valid {
-							record[i] = sqlVal.String
+							nodes, err := service.UnmarshalUAST([]byte(sqlVal.String))
+
+							if err == nil {
+								b, err := json.Marshal(nodes)
+								if err != nil {
+									return err
+								}
+								record[i] = string(b)
+							} else {
+								record[i] = sqlVal.String
+							}
 						}
 					case *[]byte:
 						// DatabaseTypeName JSON is used for arrays of uast nodes and
 						// arrays of strings, but we don't know the exact type.
 						// We try with arry of uast nodes first and any JSON later
-						nodes, err := service.UnmarshallUAST(val)
+
+						// This is deprecated, only used by gitbase <= v0.16.0.
+						nodes, err := service.UnmarshalUASTOld(val)
 						if err == nil {
 							b, err := json.Marshal(nodes)
 							if err != nil {
