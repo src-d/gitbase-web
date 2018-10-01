@@ -128,8 +128,9 @@ function ResultInfo({ result }) {
   if (result.response && result.response.meta) {
     return (
       <span className="meta meta-success">
-        <SuccessIcon className="big-icon" />Showing rows (query took{' '}
-        {result.response.meta.elapsedTime / 1000} seconds)
+        <SuccessIcon className="big-icon" />
+        {`Returned ${result.response.data.length} rows
+        (${result.response.meta.elapsedTime / 1000} seconds)`}
       </span>
     );
   }
