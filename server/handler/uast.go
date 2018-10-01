@@ -52,13 +52,10 @@ func Parse(bbblfshServerURL string) RequestProcessFunc {
 			Language(req.Language).
 			Filename(req.Filename).
 			Content(req.Content).
+			Mode(bblfsh.Semantic).
 			Do()
 		if err != nil {
-			if bblfshErr, ok := err.(bblfsh.FatalError); ok {
-				return nil, serializer.NewHTTPError(http.StatusBadRequest, bblfshErr.Error())
-			}
-
-			return nil, err
+			return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
 		if resp.Status == protocol.Error {
