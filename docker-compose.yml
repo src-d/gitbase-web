@@ -12,7 +12,7 @@ services:
     depends_on:
       - gitbase
   gitbase:
-    image: "srcd/gitbase:v0.16.0"
+    image: "srcd/gitbase:v0.17.0-rc.3"
     environment:
       BBLFSH_ENDPOINT: bblfsh:9432
       GITBASE_UNSTABLE_SQUASH_ENABLE: "true"
