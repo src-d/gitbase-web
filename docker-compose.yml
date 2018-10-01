@@ -12,14 +12,14 @@ services:
     depends_on:
       - gitbase
   gitbase:
-    image: "srcd/gitbase"
+    image: "srcd/gitbase:v0.16.0"
     environment:
       BBLFSH_ENDPOINT: bblfsh:9432
       GITBASE_UNSTABLE_SQUASH_ENABLE: "true"
     volumes:
       - ${GITBASEPG_REPOS_FOLDER}:/opt/repos
   bblfsh:
-    image: "bblfsh/bblfshd"
+    image: "bblfsh/bblfshd:v2.7.2"
     privileged: true
     volumes:
       - type: volume
