@@ -9,3 +9,4 @@ RUN apt-get update && \
 ADD ./build/bin /bin
 
 ENTRYPOINT ["/bin/gitbase-web"]
+CMD ["serve"]

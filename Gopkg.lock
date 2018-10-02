@@ -65,6 +65,14 @@
   version = "v1.1.0"
 
 [[projects]]
+  digest = "1:d0fbb40af7faf9cc62d1728be5fdd140ae17ce6e2aac6371971a0a6a2cc139d3"
+  name = "github.com/jessevdk/go-flags"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "c6ca198ec95c841fdb89fc0de7496fed11ab854e"
+  version = "v1.4.0"
+
+[[projects]]
   digest = "1:b8870bf2606dca65dc382f4cb8b7a434f17ff36a915451bda12788e9620be368"
   name = "github.com/kelseyhightower/envconfig"
   packages = ["."]
@@ -73,12 +81,36 @@
   version = "v1.3.0"
 
 [[projects]]
+  digest = "1:08c231ec84231a7e23d67e4b58f975e1423695a32467a362ee55a803f9de8061"
+  name = "github.com/mattn/go-colorable"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "167de6bfdfba052fa6b2d3664c8f5272e23c9072"
+  version = "v0.0.9"
+
+[[projects]]
+  digest = "1:bffa444ca07c69c599ae5876bc18b25bfd5fa85b297ca10a25594d284a7e9c5d"
+  name = "github.com/mattn/go-isatty"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c"
+  version = "v0.0.4"
+
+[[projects]]
   branch = "master"
   digest = "1:e1ca43ca8774cfff2a43265116b8ccc8221fcb994843a1124071d65dab1507e9"
   name = "github.com/mcuadros/go-lookup"
   packages = ["."]
   pruneopts = "NUT"
   revision = "5650f26be7675b629fff8356a50d906fa03e9c8b"
+
+[[projects]]
+  branch = "master"
+  digest = "1:063d55b87e200bced5e2be658cc70acafb4c5bbc4afa04d4b82f66298b73d089"
+  name = "github.com/mgutz/ansi"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "9520e82c474b0a04dd04f8a40959027271bab992"
 
 [[projects]]
   digest = "1:5cf3f025cbee5951a4ee961de067c8a89fc95a5adabead774f82822efabab121"
@@ -121,6 +153,14 @@
   version = "v1.0.5"
 
 [[projects]]
+  digest = "1:fcd6de2209e4598560eb0fdbe1c535553db7f5c2d0f24ee3ece77b7ae8334ce1"
+  name = "github.com/src-d/envconfig"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "0280e33525f5d88edb71638a80b31724153225ba"
+  version = "v1.0.0"
+
+[[projects]]
   digest = "1:b31059dac028ff111793a8345eacf0f99d0f1150ead34ebf32fdd2b7d54c2d45"
   name = "github.com/stretchr/testify"
   packages = [
@@ -139,6 +179,14 @@
   packages = ["."]
   pruneopts = "NUT"
   revision = "56fed4a05683322f125e2d78ee269bb102280392"
+
+[[projects]]
+  digest = "1:c950ed18f9e7d881d16e226c5612fea8acceb241a0d04c3dad5c0d22c24381c5"
+  name = "github.com/x-cray/logrus-prefixed-formatter"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "bb2702d423886830dee131692131d35648c382e2"
+  version = "v0.5.2"
 
 [[projects]]
   branch = "master"
@@ -292,12 +340,28 @@
   version = "v1.6.4"
 
 [[projects]]
+  branch = "master"
+  digest = "1:e94a01f8f9d83588646b3d3f34c83fef13969d6bcdd36439328601d1fe15c155"
+  name = "gopkg.in/src-d/go-cli.v0"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "af27c1c1917553e2b9fd8fb7c822345df6615d34"
+
+[[projects]]
   digest = "1:e79c76b3315c08c2c9d4d09d308ef2be7e4a4161fdcbe5c56040b3641f21096c"
   name = "gopkg.in/src-d/go-errors.v1"
   packages = ["."]
   pruneopts = "NUT"
   revision = "8bbbeeb767dfdd053b9b45d5a16a4f4ce2c6f694"
   version = "v1.0.0"
+
+[[projects]]
+  digest = "1:0d4af6fbf8a26e281ba21b1075844804a6509fbd170369a6f466a8b2fcdbb0b2"
+  name = "gopkg.in/src-d/go-log.v1"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "289c0569da6b085f689b7b133944816c3428ed64"
+  version = "v1.0.1"
 
 [[projects]]
   digest = "1:20d5d24cfd1dac53cbf730d5c9861c0792c68ae547e67fc16fa0ed0660481b0a"
@@ -327,6 +391,7 @@
     "gopkg.in/bblfsh/sdk.v1/protocol",
     "gopkg.in/bblfsh/sdk.v1/uast",
     "gopkg.in/src-d/enry.v1",
+    "gopkg.in/src-d/go-cli.v0",
     "gopkg.in/src-d/go-errors.v1",
   ]
   solver-name = "gps-cdcl"
