@@ -449,7 +449,6 @@ AND refs.ref_name = 'HEAD'`
               <QueryBox
                 sql={this.state.sql}
                 schema={this.state.schema}
-                result={this.state.lastResult}
                 handleTextChange={this.handleTextChange}
                 handleSubmit={this.handleSubmit}
                 exportUrl={api.queryExport(this.state.sql)}

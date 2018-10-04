@@ -12,38 +12,7 @@ import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/sql-hint';
 
 import './QueryBox.less';
-import SuccessIcon from '../icons/success-query.svg';
-import ErrorIcon from '../icons/error-query.svg';
 import HelpIcon from '../icons/help.svg';
-
-function ResultInfo({ result }) {
-  if (!result) {
-    return null;
-  }
-
-  if (result.response && result.response.meta) {
-    return (
-      <span className="meta meta-success">
-        <SuccessIcon className="big-icon" />Showing rows (query took{' '}
-        {result.response.meta.elapsedTime / 1000} seconds)
-      </span>
-    );
-  }
-
-  if (result.errorMsg) {
-    return (
-      <span className="meta meta-error">
-        <ErrorIcon className="big-icon" />Query Failed - {result.errorMsg}
-      </span>
-    );
-  }
-
-  return null;
-}
-
-ResultInfo.propTypes = {
-  result: PropTypes.object
-};
 
 class QueryBox extends Component {
   constructor(props) {
@@ -95,7 +64,6 @@ class QueryBox extends Component {
   }
 
   render() {
-    const { result } = this.props;
     const { codeMirrorTables } = this.state;
 
     const options = {
@@ -138,9 +106,7 @@ class QueryBox extends Component {
             </Col>
           </Row>
           <Row className="button-row">
-            <Col xs={7} className="meta-wrapper no-spacing">
-              <ResultInfo result={result} />
-            </Col>
+            <Col xs={7} />
             <Col xs={5} className="buttons-wrapper no-spacing">
               <Button
                 bsStyle="gbpl-secondary-tint-2-link"
@@ -179,7 +145,6 @@ QueryBox.propTypes = {
       ).isRequired
     })
   ),
-  result: PropTypes.object,
   enabled: PropTypes.bool,
   handleTextChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,

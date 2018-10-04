@@ -19,6 +19,8 @@ import TimerIcon from '../icons/history-tab.svg';
 import LoadingImg from '../icons/alex-loading-results.gif';
 import SuspendedImg from '../icons/alex-suspended-tab.gif';
 import ErrorImg from '../icons/broken-alex.gif';
+import SuccessIcon from '../icons/success-query.svg';
+import ErrorIcon from '../icons/error-query.svg';
 
 class TabTitle extends Component {
   constructor(props) {
@@ -116,6 +118,36 @@ TabTitle.propTypes = {
   active: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   handleRemoveResult: PropTypes.func.isRequired
+};
+
+function ResultInfo({ result }) {
+  if (!result) {
+    return null;
+  }
+
+  if (result.response && result.response.meta) {
+    return (
+      <span className="meta meta-success">
+        <SuccessIcon className="big-icon" />
+        {`Returned ${result.response.data.length} rows
+        (${result.response.meta.elapsedTime / 1000} seconds)`}
+      </span>
+    );
+  }
+
+  if (result.errorMsg) {
+    return (
+      <span className="meta meta-error">
+        <ErrorIcon className="big-icon" />Query Failed - {result.errorMsg}
+      </span>
+    );
+  }
+
+  return null;
+}
+
+ResultInfo.propTypes = {
+  result: PropTypes.object
 };
 
 class TabbedResults extends Component {
@@ -221,7 +253,6 @@ class TabbedResults extends Component {
               } else if (query.errorMsg) {
                 content = (
                   <Fragment>
-                    <span className="result-error-msg">{query.errorMsg}</span>
                     <Row>
                       <Col className="text-center animation-col" xs={12}>
                         <img src={`${ErrorImg}?${key}`} alt="error animation" />
@@ -301,6 +332,9 @@ class TabbedResults extends Component {
                       EDIT
                     </Button>
                   </div>
+                </div>
+                <div className="meta-row">
+                  <ResultInfo result={query} />
                 </div>
                 {content}
               </Tab>

@@ -54,8 +54,9 @@
     }
 
     .query-row {
+        flex: 0 0 auto;
+
         display: flex;
-        margin-bottom: 2em;
 
         .query-text,
         .edit-query {
@@ -82,6 +83,36 @@
                 padding-top: 0px;
                 margin-left: 1ex;
                 border-top: 0px;
+            }
+        }
+    }
+
+    .meta-row {
+        flex: 0 0 auto;
+        margin-top: 0.5em;
+
+        .meta {
+            .big-icon {
+                margin-right: 15px;
+            }
+
+            display: table-cell;
+            vertical-align: middle;
+
+            font-size: 14px;
+
+            &.meta-success {
+                svg path {
+                    fill: @success;
+                }
+            }
+
+            &.meta-error {
+                color: @error-text;
+
+                svg path {
+                    fill: @error-text;
+                }
             }
         }
     }
