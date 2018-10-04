@@ -18,16 +18,14 @@ Make sure you also satisfy these requirements:
 
 As with a normal deployment, if you don't use Docker Compose you will need to configure a [gitbase](https://docs.sourced.tech/gitbase) server, and a [bblfsh](https://doc.bblf.sh/) server. It is recommended to read their documentation, but here is a quick guide on how to run both as docker containers.
 
-Launch bblfshd and install the required drivers:
+Launch bblfshd. The `-drivers` image already contains all the recommended drivers:
 
 ```bash
 $ docker run \
     --privileged \
     --publish 9432:9432 \
-    --volume /var/lib/bblfshd:/var/lib/bblfshd \
     --name bblfsh \
-    bblfsh/bblfshd
-$ docker exec -it bblfsh bblfshctl driver install --recommended
+    bblfsh/bblfshd:latest-drivers
 ```
 
 gitbase will serve Git repositories, so you will need to to populate a directory with them:

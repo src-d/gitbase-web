@@ -42,11 +42,10 @@ jobs:
         - make coverage
         - make validate-commit
     - script:
-      # TODO (carlosms) fixed bblfshd version because latest fails with https://github.com/bblfsh/bblfshd/issues/195
-      - docker run -d --name bblfshd --privileged --volume $HOME/bblfsh-drivers:/var/lib/bblfshd -p "9432:9432" bblfsh/bblfshd:v2.7.2
+      - docker run -d --name bblfshd --privileged --volume $HOME/bblfsh-drivers:/var/lib/bblfshd -p "9432:9432" bblfsh/bblfshd
       - sleep 5
-      - docker exec -it bblfshd bblfshctl driver install go docker://bblfsh/go-driver:latest
-      - docker exec -it bblfshd bblfshctl driver install javascript docker://bblfsh/javascript-driver:latest
+      - docker exec -it bblfshd bblfshctl driver install --force go docker://bblfsh/go-driver:latest
+      - docker exec -it bblfshd bblfshctl driver install --force javascript docker://bblfsh/javascript-driver:latest
       - mkdir $HOME/repos
       - git clone https://github.com/src-d/gitbase-web.git $HOME/repos/gitbase-web
       - docker run -d --name gitbase -p "3367:3306" -e "BBLFSH_ENDPOINT=bblfshd:9432" --volume $HOME/repos:/opt/repos --link bblfshd srcd/gitbase
