@@ -142,21 +142,6 @@ FROM ( SELECT MONTH(committer_when) as month,
         ON YEAR(c.committer_when) = 2018 AND r.commit_hash = c.commit_hash
     WHERE r.ref_name = 'HEAD'
 ) as t GROUP BY committer_email, committer_name, month, repository_id`
-      },
-      {
-        name: 'Number of functions per file for Go',
-        sql: ` /* Number of funtions per file for Golang at HEAD */
-SELECT files.repository_id, files.file_path,
- ARRAY_LENGTH(UAST(
-   files.blob_content,
-   LANGUAGE(files.file_path, files.blob_content),
-   '//*[@roleFunction and @roleDeclaration]'
- )) as functions
-FROM files
-NATURAL JOIN refs
-WHERE
-LANGUAGE(files.file_path,files.blob_content) = 'Go'
-AND refs.ref_name = 'HEAD'`
       }
     ];
   }
