@@ -10,6 +10,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/src-d/gitbase-web/server/service"
+	common "github.com/src-d/gitbase-web/server/testing"
+
 	"github.com/pressly/lg"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -116,7 +119,7 @@ func (suite *QuerySuite) TestTypes() {
 
 	columnValsPtr := genericVals(columnTypes)
 
-	mockRows := sqlmock.NewRows([]string{"a", "b", "c", "d"}).
+	mockRows := sqlmock.NewRows(columnNames).
 		AddRow(1, 1234, 1.56, "value").
 		AddRow(nil, nil, nil, nil)
 
@@ -148,6 +151,38 @@ func (suite *QuerySuite) TestTypes() {
 	suite.Nil(colData["b"])
 	suite.Nil(colData["c"])
 	suite.Nil(colData["d"])
+}
+
+func (suite *QuerySuite) TestUASTType() {
+	columnNames := []string{"filename", "uast_a", "uast_b"}
+	columnTypes := []string{"TEXT", "TEXT", "TEXT"}
+
+	columnValsPtr := genericVals(columnTypes)
+
+	mockRows := sqlmock.NewRows(columnNames).
+		AddRow("hello.js", "", common.UASTMarshaled)
+
+	suite.mock.ExpectQuery(".*").WillReturnRows(mockRows)
+
+	rows, err := suite.db.Query("select * from table")
+	suite.NoError(err)
+
+	rows.Next()
+	err = rows.Scan(columnValsPtr...)
+	suite.NoError(err)
+
+	colData, err := columnsData(columnNames, columnTypes, columnValsPtr)
+	suite.NoError(err)
+
+	suite.EqualValues("hello.js", colData["filename"])
+	suite.Nil(colData["__filename-protobufs"])
+
+	suite.EqualValues("", colData["uast_a"])
+	suite.Nil(colData["__uast_a-protobufs"])
+
+	var nodeArr []*service.Node
+	suite.IsType(nodeArr, colData["uast_b"])
+	suite.EqualValues(common.UASTMarshaled, colData["__uast_b-protobufs"])
 }
 
 func (suite *QuerySuite) TestQueryAbort() {

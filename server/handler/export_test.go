@@ -1,6 +1,7 @@
 package handler_test
 
 import (
+	"encoding/csv"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -8,6 +9,8 @@ import (
 
 	"github.com/src-d/gitbase-web/server/handler"
 	"github.com/src-d/gitbase-web/server/service"
+	common "github.com/src-d/gitbase-web/server/testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
@@ -53,6 +56,45 @@ func (suite *ExportSuite) TestSuccess() {
 	suite.handler.ServeHTTP(res, req)
 
 	suite.Equal(http.StatusOK, res.Code)
+}
+
+func (suite *ExportSuite) TestSuccessUAST() {
+	rows := sqlmock.NewRows([]string{"a", "b", "uast"}).
+		AddRow(1, "one", common.UASTMarshaled).
+		AddRow(2, "two", "")
+
+	suite.mock.ExpectQuery(".*").WillReturnRows(rows)
+
+	req, _ := http.NewRequest("GET", "/export/?query=select+*+from+repositories", nil)
+	res := httptest.NewRecorder()
+
+	suite.handler.ServeHTTP(res, req)
+	suite.Equal(http.StatusOK, res.Code)
+
+	r := csv.NewReader(res.Body)
+
+	expected := [][]string{
+		[]string{
+			"a",
+			"b",
+			"uast",
+		},
+		[]string{
+			"1",
+			"one",
+			common.UASTMarshaledJSON,
+		},
+		[]string{
+			"2",
+			"two",
+			"",
+		},
+	}
+
+	records, err := r.ReadAll()
+	suite.Require().Nil(err)
+	suite.Require().Equal(expected, records)
+
 }
 
 func (suite *ExportSuite) TestDBError() {
