@@ -20,19 +20,26 @@ class Sidebar extends Component {
     this.setState({ collapsed: !this.state.collapsed });
   }
 
-  link(text, url) {
+  link(text, url, version) {
     return (
       <div>
         <a href={url} target="_blank" rel="noopener noreferrer">
           <LinkIcon className="small-icon" />
           {text}
         </a>
+        {version && <span className="version">{version}</span>}
       </div>
     );
   }
 
   render() {
-    const { schema, onTableClick, onExampleClick, exampleQueries } = this.props;
+    const {
+      schema,
+      version,
+      onTableClick,
+      onExampleClick,
+      exampleQueries
+    } = this.props;
     const { collapsed } = this.state;
 
     return (
@@ -57,7 +64,21 @@ class Sidebar extends Component {
         </div>
         <div className="footer list">
           {this.link('go-git', 'https://github.com/src-d/go-git')}
-          {this.link('babelfish', 'https://doc.bblf.sh')}
+          {this.link(
+            'babelfish',
+            'https://doc.bblf.sh',
+            version ? version.bblfsh : ''
+          )}
+          {this.link(
+            'gitbase',
+            'https://docs.sourced.tech/gitbase',
+            version ? version.gitbase : ''
+          )}
+          {this.link(
+            'gitbase-web',
+            'https://github.com/src-d/gitbase-web',
+            version ? version.version : ''
+          )}
           {this.link('source{d} © 2018', 'https://sourced.tech')}
         </div>
       </div>
@@ -67,6 +88,11 @@ class Sidebar extends Component {
 
 Sidebar.propTypes = {
   schema: Schema.propTypes.schema,
+  version: PropTypes.shape({
+    version: PropTypes.string.isRequired,
+    bblfsh: PropTypes.string.isRequired,
+    gitbase: PropTypes.string.isRequired
+  }),
   onTableClick: PropTypes.func,
   onExampleClick: PropTypes.func,
   exampleQueries: SampleQueries.propTypes.exampleQueries

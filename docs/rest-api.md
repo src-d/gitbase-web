@@ -337,3 +337,22 @@ curl -X POST \
     }
 }
 ```
+
+## GET /version
+
+Returns the current version of the server, gitbase, and bblfshd.
+
+```bash
+curl -X GET http://localhost:8080/version
+```
+
+```json
+{
+   "status" : 200,
+   "data" : {
+      "gitbase" : "8.0.11-undefined",
+      "bblfsh" : "v2.7.2",
+      "version" : "dev"
+   }
+}
+```

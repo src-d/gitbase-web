@@ -166,6 +166,10 @@ function filterUAST(protobufs, filter) {
   }).then(res => res.data);
 }
 
+function version() {
+  return apiCall(`/version`).then(res => res.data);
+}
+
 export default {
   query,
   schema,
@@ -173,5 +177,6 @@ export default {
   detectLang,
   parseCode,
   getLanguages,
-  filterUAST
+  filterUAST,
+  version
 };
