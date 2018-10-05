@@ -78,7 +78,7 @@ func Export(db service.SQLDB) http.HandlerFunc {
 						if sqlVal.Valid {
 							nodes, err := service.UnmarshalUAST([]byte(sqlVal.String))
 
-							if err == nil {
+							if err == nil && nodes != nil {
 								b, err := json.Marshal(nodes)
 								if err != nil {
 									return err

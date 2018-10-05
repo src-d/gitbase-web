@@ -160,7 +160,7 @@ func columnsData(
 			sqlVal, _ := val.(*sql.NullString)
 			if sqlVal.Valid {
 				nodes, err := service.UnmarshalUAST([]byte(sqlVal.String))
-				if err == nil {
+				if err == nil && nodes != nil {
 					colData[columnNames[i]] = nodes
 					colData["__"+columnNames[i]+"-protobufs"] = []byte(sqlVal.String)
 				} else {
