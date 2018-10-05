@@ -42,7 +42,9 @@ func (suite *QuerySuite) TestAddLimit() {
 			SELECT * FROM repositories
 			`, "SELECT * FROM repositories LIMIT 100"},
 		{"  SELECT * FROM repositories  ", "SELECT * FROM repositories LIMIT 100"},
-		{"  SELECT * FROM repositories  ; ", "SELECT * FROM repositories   LIMIT 100"},
+		{"  SELECT * FROM repositories  ; ", "SELECT * FROM repositories LIMIT 100"},
+		{`  SELECT * FROM repositories  
+; `, "SELECT * FROM repositories LIMIT 100"},
 		{"/* comment */ SELECT * FROM repositories", "SELECT * FROM repositories LIMIT 100"},
 		{"SELECT * FROM repositories /* comment */", "SELECT * FROM repositories LIMIT 100"},
 		{"SELECT * FROM repositories; /* comment */", "SELECT * FROM repositories LIMIT 100"},
@@ -50,7 +52,17 @@ func (suite *QuerySuite) TestAddLimit() {
 			multiline */ SELECT * FROM repositories; /* comment
 			multiline */`, "SELECT * FROM repositories LIMIT 100"},
 		{"select * from repositories limit 1", "select * from repositories limit 1"},
+		{"select * from repositories limit 1;", "select * from repositories limit 1"},
+		{"select * from repositories limit 1 ;", "select * from repositories limit 1"},
+		{`select * from repositories limit 1
+;`, "select * from repositories limit 1"},
+		{`select * from repositories limit 1 
+ ; `, "select * from repositories limit 1"},
 		{"select * from repositories limit 900", "select * from repositories LIMIT 100"},
+		{"select * from repositories limit 900;", "select * from repositories LIMIT 100"},
+		{"select * from repositories limit 900 ; ", "select * from repositories LIMIT 100"},
+		{`select * from repositories limit 900
+ ; `, "select * from repositories LIMIT 100"},
 		{"select * from repositories limit qwe", "select * from repositories limit qwe LIMIT 100"},
 	}
 
