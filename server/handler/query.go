@@ -66,7 +66,31 @@ func Query(db service.SQLDB) RequestProcessFunc {
 		}
 
 		query, limitSet := addLimit(queryRequest.Query, queryRequest.Limit)
-		rows, err := db.QueryContext(r.Context(), query)
+
+		// go-sql-driver/mysql QueryContext stops waiting for the query results on
+		// context cancel, but it does not actually cancel the query on the server
+
+		c := make(chan error, 1)
+
+		var rows *sql.Rows
+		go func() {
+			rows, err = db.QueryContext(r.Context(), query)
+			c <- err
+		}()
+
+		// It may happen that the QueryContext returns with an error because of
+		// context cancellation. In this case, the select may enter on the second
+		// case. We check if the context was cancelled with Err() instead of Done()
+		select {
+		case <-r.Context().Done():
+		case err = <-c:
+		}
+
+		if r.Context().Err() != nil {
+			killQuery(db, query)
+			return nil, dbError(r.Context().Err())
+		}
+
 		if err != nil {
 			return nil, dbError(err)
 		}
@@ -100,6 +124,47 @@ func Query(db service.SQLDB) RequestProcessFunc {
 
 		return serializer.NewQueryResponse(
 			tableData, columnNames, columnTypes, limitSet, queryRequest.Limit), nil
+	}
+}
+
+func killQuery(db service.SQLDB, query string) {
+	pRows, pErr := db.Query("SHOW FULL PROCESSLIST")
+	if pErr != nil {
+		// TODO (carlosms) log error when we migrate to go-log
+		return
+	}
+	defer pRows.Close()
+
+	found := false
+	var foundID int
+
+	for pRows.Next() {
+		var id int
+		var info sql.NullString
+		var rb sql.RawBytes
+		// The columns are:
+		// Id, User, Host, db, Command, Time, State, Info
+		// gitbase returns the query on "Info".
+		if err := pRows.Scan(&id, &rb, &rb, &rb, &rb, &rb, &rb, &info); err != nil {
+			// TODO (carlosms) log error when we migrate to go-log
+			return
+		}
+
+		if info.Valid && info.String == query {
+			if found {
+				// Found more than one match for current query, we cannot know which
+				// one is ours. Skip the cancellation
+				// TODO (carlosms) log error when we migrate to go-log
+				return
+			}
+
+			found = true
+			foundID = id
+		}
+	}
+
+	if found {
+		db.Exec(fmt.Sprintf("KILL %d", foundID))
 	}
 }
 

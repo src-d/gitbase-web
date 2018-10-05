@@ -12,4 +12,5 @@ type SQLDB interface {
 	QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error)
 	QueryRow(query string, args ...interface{}) *sql.Row
 	Ping() error
+	Exec(query string, args ...interface{}) (sql.Result, error)
 }
