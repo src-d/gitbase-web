@@ -51,6 +51,8 @@ func (c *ServeCommand) Execute(args []string) error {
 	}
 	defer db.Close()
 
+	db.SetMaxIdleConns(0)
+
 	static := handler.NewStatic("build/public", c.ServerURL, c.SelectLimit, c.FooterHTML)
 
 	// start the router
