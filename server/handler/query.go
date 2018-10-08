@@ -203,7 +203,7 @@ func addLimit(query string, limit int) (string, bool) {
 
 	noComments := noCommentsRegexp.ReplaceAllLiteralString(query, "")
 
-	query = strings.TrimRight(strings.TrimSpace(noComments), ";")
+	query = strings.TrimSpace(strings.TrimRight(strings.TrimSpace(noComments), ";"))
 	upperQuery := strings.ToUpper(query)
 
 	if strings.HasPrefix(upperQuery, "SELECT") {
