@@ -39,5 +39,9 @@ func (suite *HandlerUnitSuite) SetupTest() {
 }
 
 func (suite *HandlerUnitSuite) TearDownTest() {
-	suite.db.Close()
+	defer suite.db.Close()
+
+	if err := suite.mock.ExpectationsWereMet(); err != nil {
+		suite.FailNowf("there were unfulfilled expectations:", err.Error())
+	}
 }

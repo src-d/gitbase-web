@@ -83,8 +83,6 @@ func (suite *QuerySuite) TestBadRequest() {
 		`{"query": "select * from repositories", "limit": "string"}`,
 	}
 
-	suite.mock.ExpectQuery(".*").WillReturnError(fmt.Errorf("forced err"))
-
 	for _, tc := range testCases {
 		suite.T().Run(tc, func(t *testing.T) {
 			a := assert.New(t)
@@ -201,8 +199,16 @@ func (suite *QuerySuite) TestQueryAbort() {
 	// Ideally we would test that the sql query context is canceled, but
 	// go-sqlmock does not have something like ExpectContextCancellation
 
-	mockRows := sqlmock.NewRows([]string{"a", "b", "c", "d"})
-	suite.mock.ExpectQuery(".*").WillDelayFor(2 * time.Second).WillReturnRows(mockRows)
+	mockRows := sqlmock.NewRows([]string{"a", "b", "c", "d"}).AddRow(1, "one", 1.5, 100)
+	suite.mock.ExpectQuery(`select \* from repositories`).WillDelayFor(2 * time.Second).WillReturnRows(mockRows)
+
+	mockProcessRows := sqlmock.NewRows(
+		[]string{"Id", "User", "Host", "db", "Command", "Time", "State", "Info"}).
+		AddRow(1234, nil, "localhost:3306", nil, "query", 2, "SquashedTable(refs, commit_files, files)(1/5)", "select * from files").
+		AddRow(1288, nil, "localhost:3306", nil, "query", 2, "SquashedTable(refs, commit_files, files)(1/5)", "select * from repositories")
+	suite.mock.ExpectQuery("SHOW FULL PROCESSLIST").WillReturnRows(mockProcessRows)
+
+	suite.mock.ExpectExec("KILL 1288")
 
 	json := `{"query": "select * from repositories"}`
 	req, _ := http.NewRequest("POST", "/query", strings.NewReader(json))
@@ -226,6 +232,11 @@ func (suite *QuerySuite) TestQueryAbort() {
 		handler := lg.RequestLogger(suite.logger)(mockAPIHandlerFunc)
 		handler.ServeHTTP(res, req)
 	}()
+
+	// Without this wait the Request is cancelled before the handler has time to
+	// start the query. Which also works fine, but we want to test a cancellation
+	// for a query that is in progress
+	time.Sleep(200 * time.Millisecond)
 
 	cancel()
 
