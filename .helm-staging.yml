@@ -48,3 +48,6 @@ gitbaseServer:
     pullPolicy: IfNotPresent
   squashEnable: "true"
   readonly: "true"
+
+nodeSelector:
+  cloud.google.com/gke-nodepool: default-pool
