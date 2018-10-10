@@ -88,7 +88,7 @@ Instead of rebuilding the frontend and restarting the backend every time you do 
 In one terminal run the Go backend:
 
 ```bash
-$ GITBASEPG_ENV=dev go run cmd/gitbase-web/main.go serve
+$ LOG_LEVEL=DEBUG go run cmd/gitbase-web/main.go serve
 ```
 
 In another terminal, run the frontend:

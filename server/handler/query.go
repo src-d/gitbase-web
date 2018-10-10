@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/pressly/lg"
 	"github.com/src-d/gitbase-web/server/serializer"
 	"github.com/src-d/gitbase-web/server/service"
 
@@ -87,7 +88,7 @@ func Query(db service.SQLDB) RequestProcessFunc {
 		}
 
 		if r.Context().Err() != nil {
-			killQuery(db, query)
+			killQuery(r, db, query)
 			return nil, dbError(r.Context().Err())
 		}
 
@@ -127,10 +128,11 @@ func Query(db service.SQLDB) RequestProcessFunc {
 	}
 }
 
-func killQuery(db service.SQLDB, query string) {
-	pRows, pErr := db.Query("SHOW FULL PROCESSLIST")
+func killQuery(r *http.Request, db service.SQLDB, query string) {
+	const showProcessList = "SHOW FULL PROCESSLIST"
+	pRows, pErr := db.Query(showProcessList)
 	if pErr != nil {
-		// TODO (carlosms) log error when we migrate to go-log
+		lg.RequestLog(r).WithError(pErr).Errorf("failed to execute %q", showProcessList)
 		return
 	}
 	defer pRows.Close()
@@ -146,7 +148,7 @@ func killQuery(db service.SQLDB, query string) {
 		// Id, User, Host, db, Command, Time, State, Info
 		// gitbase returns the query on "Info".
 		if err := pRows.Scan(&id, &rb, &rb, &rb, &rb, &rb, &rb, &info); err != nil {
-			// TODO (carlosms) log error when we migrate to go-log
+			lg.RequestLog(r).WithError(err).Errorf("failed to scan the results of %q", showProcessList)
 			return
 		}
 
@@ -154,7 +156,7 @@ func killQuery(db service.SQLDB, query string) {
 			if found {
 				// Found more than one match for current query, we cannot know which
 				// one is ours. Skip the cancellation
-				// TODO (carlosms) log error when we migrate to go-log
+				lg.RequestLog(r).Errorf("cannot cancel the query, found more than one match in gitbase")
 				return
 			}
 
