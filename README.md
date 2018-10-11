@@ -77,9 +77,13 @@ Any of the previous execution methods accept configuration through the following
 | `GITBASEPG_SERVER_URL` | `--server` | | URL used to access the application in the form `HOSTNAME[:PORT]`. Leave it unset to allow connections from any proxy or public address |
 | `GITBASEPG_DB_CONNECTION` | `--db` | `root@tcp(localhost:3306)/none?maxAllowedPacket=4194304` | gitbase connection string. Use the DSN (Data Source Name) format described in the [Go MySQL Driver docs](https://github.com/go-sql-driver/mysql#dsn-data-source-name). |
 | `GITBASEPG_BBLFSH_SERVER_URL` | `--bblfsh` | `127.0.0.1:9432` | Address where bblfsh server is listening |
-| `GITBASEPG_ENV` | `--env` | `production` | Sets the log level. Use `dev` to enable debug log messages |
 | `GITBASEPG_SELECT_LIMIT` | `--select-limit` | `100` | Default `LIMIT` forced on all the SQL queries done from the UI. Set it to 0 to remove any limit |
 | `GITBASEPG_FOOTER_HTML` | `--footer` | | Allows to add any custom html to the page footer. It must be a string encoded in base64. Use it, for example, to add your analytics tracking code snippet  |
+| `LOG_LEVEL` | `--log-level=`  | `info` | Logging level (`info`, `debug`, `warning` or `error`) |
+| `LOG_FORMAT` | `--log-format=`  |  | log format (`text` or `json`), defaults to `text` on a terminal and `json` otherwise |
+| `LOG_FIELDS` | `--log-fields=`  |  | default fields for the logger, specified in json |
+| `LOG_FORCE_FORMAT` | `--log-force-format` | | ignore if it is running on a terminal or not |
+
 
 # Contribute
 

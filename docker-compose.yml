@@ -6,7 +6,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      GITBASEPG_ENV: ${GITBASEPG_ENV}
       GITBASEPG_DB_CONNECTION: root@tcp(gitbase:3306)/none?maxAllowedPacket=4194304
       GITBASEPG_BBLFSH_SERVER_URL: bblfsh:9432
     depends_on:

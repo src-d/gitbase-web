@@ -2,15 +2,17 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"net/http"
 
+	"github.com/sirupsen/logrus"
 	"github.com/src-d/gitbase-web/server"
 	"github.com/src-d/gitbase-web/server/handler"
-	"github.com/src-d/gitbase-web/server/service"
 
 	_ "github.com/go-sql-driver/mysql"
 	"gopkg.in/src-d/go-cli.v0"
+	"gopkg.in/src-d/go-log.v1"
 )
 
 // version will be replaced automatically by the CI build.
@@ -30,7 +32,7 @@ var app = cli.New(name, version, build, "gitbase web client")
 // https://github.com/go-sql-driver/mysql/pull/680
 type ServeCommand struct {
 	cli.PlainCommand `name:"serve" short-description:"serve the app" long-description:"starts serving the application"`
-	Env              string `long:"env" env:"GITBASEPG_ENV" default:"production" description:"Sets the log level. Use 'dev' to enable debug log messages"`
+	cli.LogOptions   `group:"Log Options"`
 	Host             string `long:"host" env:"GITBASEPG_HOST" default:"0.0.0.0" description:"IP address to bind the HTTP server"`
 	Port             int    `long:"port" env:"GITBASEPG_PORT" default:"8080" description:"Port to bind the HTTP server"`
 	ServerURL        string `long:"server" env:"GITBASEPG_SERVER_URL" description:"URL used to access the application in the form 'HOSTNAME[:PORT]'. Leave it unset to allow connections from any proxy or public address"`
@@ -41,13 +43,12 @@ type ServeCommand struct {
 }
 
 func (c *ServeCommand) Execute(args []string) error {
-	// logger
-	logger := service.NewLogger(c.Env)
+	c.initLog()
 
 	// database
 	db, err := sql.Open("mysql", c.DBConn)
 	if err != nil {
-		logger.Fatalf("error opening the database: %s", err)
+		return fmt.Errorf("error opening the database: %s", err.Error())
 	}
 	defer db.Close()
 
@@ -56,14 +57,35 @@ func (c *ServeCommand) Execute(args []string) error {
 	static := handler.NewStatic("build/public", c.ServerURL, c.SelectLimit, c.FooterHTML)
 
 	// start the router
-	router := server.Router(logger, static, version, db, c.BblfshServerURL)
-	logger.Infof("listening on %s:%d", c.Host, c.Port)
-	err = http.ListenAndServe(fmt.Sprintf("%s:%d", c.Host, c.Port), router)
-	logger.Fatal(err)
+	router := server.Router(logrus.StandardLogger(), static, version, db, c.BblfshServerURL)
 
-	return nil
+	log.With(log.Fields{"version": version, "build": build}).
+		Infof("listening on %s:%d", c.Host, c.Port)
+
+	err = http.ListenAndServe(fmt.Sprintf("%s:%d", c.Host, c.Port), router)
+	log.Errorf(err, "")
+	return err
 }
 
+func (c *ServeCommand) initLog() {
+	if c.LogFields == "" {
+		bytes, err := json.Marshal(log.Fields{"app": name})
+		if err != nil {
+			panic(err)
+		}
+		c.LogFields = string(bytes)
+	}
+
+	log.DefaultFactory = &log.LoggerFactory{
+		Level:       c.LogLevel,
+		Format:      c.LogFormat,
+		Fields:      c.LogFields,
+		ForceFormat: c.LogForceFormat,
+	}
+	log.DefaultFactory.ApplyToLogrus()
+
+	log.DefaultLogger = log.New(nil)
+}
 func main() {
 	app.AddCommand(&ServeCommand{})
 

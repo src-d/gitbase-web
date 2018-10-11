@@ -26,7 +26,7 @@ COMPOSE := docker-compose
 GO_BINDATA_TAG := bindata
 
 # Environment and arguments to use in `go run` calls.
-GO_RUN_ENV := GITBASEPG_ENV=dev
+GO_RUN_ENV := LOG_LEVEL=DEBUG
 GO_RUN_ARGS += -tags "$(GO_BINDATA_TAG)"
 
 GORUN = $(GOCMD) run $(GO_RUN_ARGS)

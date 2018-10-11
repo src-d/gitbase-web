@@ -423,6 +423,7 @@
     "gopkg.in/src-d/enry.v1",
     "gopkg.in/src-d/go-cli.v0",
     "gopkg.in/src-d/go-errors.v1",
+    "gopkg.in/src-d/go-log.v1",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
