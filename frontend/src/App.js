@@ -198,7 +198,9 @@ FROM ( SELECT MONTH(committer_when) as month,
 
   loadQuery(key, sql) {
     const { history } = this.state;
-    const abortController = new window.AbortController();
+    const abortController = window.AbortController
+      ? new window.AbortController()
+      : undefined;
 
     const loadingResults = new Map(this.state.results);
     loadingResults.set(key, { sql, loading: true, abortController });
@@ -220,8 +222,9 @@ FROM ( SELECT MONTH(committer_when) as month,
       () => this.handleSetActiveResult(key)
     );
 
+    const signal = abortController ? abortController.signal : undefined;
     api
-      .query(sql, abortController.signal)
+      .query(sql, signal)
       .then(response => {
         this.setResult(key, { sql, response });
 
