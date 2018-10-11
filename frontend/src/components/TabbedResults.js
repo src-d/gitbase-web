@@ -210,6 +210,8 @@ class TabbedResults extends Component {
     const { codeModalShow, codeModalContent } = this.state;
     const { showUAST, history, languages } = this.props;
 
+    const cancelDisabled = window.AbortController === undefined;
+
     return (
       <div className="results-padding full-height full-width">
         <DivTabs
@@ -242,6 +244,7 @@ class TabbedResults extends Component {
                         <Button
                           className="animation-action cancel"
                           bsStyle="gbpl-tertiary"
+                          disabled={cancelDisabled}
                           onClick={() => this.props.handleAbortQuery(key)}
                         >
                           CANCEL
