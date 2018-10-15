@@ -3,7 +3,7 @@ PROJECT := gitbase-web
 COMMANDS := cmd/gitbase-web
 DEPENDENCIES := \
 	github.com/jteeuwen/go-bindata \
-	github.com/golang/lint/golint
+	golang.org/x/lint/golint
 DEPENDENCIES_DIRECTORY := ./vendor
 
 PKG_OS = linux
