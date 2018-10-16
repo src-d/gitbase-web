@@ -12,7 +12,9 @@ import (
 	"github.com/src-d/gitbase-web/server/service"
 	testingTools "github.com/src-d/gitbase-web/server/testing"
 
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/suite"
+	log "gopkg.in/src-d/go-log.v1"
 )
 
 func TestRouterTestSuite(t *testing.T) {
@@ -29,11 +31,12 @@ type RouterTestSuite struct {
 const version = "test-version"
 
 func (s *RouterTestSuite) SetupSuite() {
-	logger := service.NewLogger("dev")
+	(&log.LoggerFactory{}).ApplyToLogrus()
+
 	staticHandler := &handler.Static{}
 	s.db = &testingTools.MockDB{}
 	s.router = server.Router(
-		logger,
+		logrus.StandardLogger(),
 		staticHandler,
 		version,
 		s.db,
