@@ -44,7 +44,7 @@ gitbaseServer:
       url: https://github.com/src-d/siva-java.git
   image:
     repository: srcd/gitbase
-    tag: v0.17.0-rc.4
+    tag: v0.17.1
     pullPolicy: IfNotPresent
   squashEnable: "true"
   readonly: "true"
