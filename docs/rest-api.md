@@ -41,7 +41,7 @@ Receives an SQL query and forwards it to the `gitbase` server.
 
 The request body can have:
 
-* `query`: An SQL statement string. Do not include `LIMIT` here.
+* `query`: A SQL statement string. Do not include `LIMIT` here.
 * `limit`: Number, will be added as SQL `LIMIT` to the query. Optional. Will also be ignored if it is 0.
 
 The success response will contain:
@@ -109,7 +109,7 @@ curl -X POST \
 }
 ```
 
-A failure:
+A failure response:
 
 ```bash
 curl -X POST \
@@ -134,7 +134,7 @@ curl -X POST \
 }
 ```
 
-For a query with uast nodes the protobuf response is unmarshalled and the json is returned:
+For a query with UAST nodes, the protobuf response is unmarshalled and the JSON is returned:
 
 ```bash
 curl -X POST \
@@ -245,7 +245,7 @@ curl -X POST \
 
 The endpoint also receives additional parameters:
 
-- `serverUrl` - allows to override bblfsh server url.
+- `serverUrl` - allows to override bblfsh server URL.
 - `filename` - can be used instead of language. Then the bblfsh server would try to guess the language.
 - `filter` - [xpath query](https://doc.bblf.sh/user/uast-querying.html) to filter the results.
 
@@ -314,7 +314,7 @@ curl -X GET http://localhost:8080/get-languages
 ## POST /filter
 
 Accepts an array of UAST protobufs encoded using base64 and a UAST filter query.
-Returns the filtered UAST JSON as result.
+Returns the resulting filtered UAST JSON.
 
 ```bash
 curl -X POST \
