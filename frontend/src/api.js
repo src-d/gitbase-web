@@ -145,7 +145,7 @@ function parseCode(language, content, filter, customServerUrl) {
       serverUrl: customServerUrl
     }
   }).then(res => {
-    if (res.data.status !== 0) {
+    if (res.status !== 200) {
       throw normalizeErrors(res.data.errors);
     }
     return res.data.uast;
