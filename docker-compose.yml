@@ -11,12 +11,12 @@ services:
     depends_on:
       - gitbase
   gitbase:
-    image: "srcd/gitbase:v0.17.1"
+    image: "srcd/gitbase:v0.18.0-beta.1"
     environment:
       BBLFSH_ENDPOINT: bblfsh:9432
       GITBASE_UNSTABLE_SQUASH_ENABLE: "true"
     volumes:
       - ${GITBASEPG_REPOS_FOLDER}:/opt/repos
   bblfsh:
-    image: "bblfsh/bblfshd:v2.9.0-drivers"
+    image: "bblfsh/bblfshd:v2.9.2-drivers"
     privileged: true
