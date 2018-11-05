@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/src-d/gitbase-web/server/service"
+	"gopkg.in/bblfsh/sdk.v2/uast/nodes"
 	enry "gopkg.in/src-d/enry.v1"
 )
 
@@ -152,7 +153,7 @@ func NewLanguagesResponse(langs []service.Language) *Response {
 	return newResponse(langs, nil)
 }
 
-// UASTFilterResponse return a Response with UAST
-func UASTFilterResponse(resp *service.Node) *Response {
+// UASTFilterResponse return a Response with UAST search results
+func UASTFilterResponse(resp nodes.Array) *Response {
 	return newResponse(resp, nil)
 }

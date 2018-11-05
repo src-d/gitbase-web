@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	bblfsh "gopkg.in/bblfsh/client-go.v2"
+	bblfsh "gopkg.in/bblfsh/client-go.v3"
 
 	"github.com/src-d/gitbase-web/server/serializer"
 	"github.com/src-d/gitbase-web/server/service"
@@ -26,7 +26,7 @@ func Version(version, bbblfshServerURL string, db service.SQLDB) RequestProcessF
 		cli, err := bblfsh.NewClient(bbblfshServerURL)
 		if err == nil {
 			resp, err := cli.NewVersionRequest().Do()
-			if err == nil && len(resp.Errors) == 0 {
+			if err == nil {
 				bblfshVersion = resp.Version
 			}
 		}

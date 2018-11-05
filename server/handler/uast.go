@@ -3,18 +3,17 @@ package handler
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"sort"
-	"strings"
-
-	bblfsh "gopkg.in/bblfsh/client-go.v2"
-	"gopkg.in/bblfsh/client-go.v2/tools"
-	"gopkg.in/bblfsh/sdk.v1/protocol"
-	"gopkg.in/bblfsh/sdk.v1/uast"
 
 	"github.com/src-d/gitbase-web/server/serializer"
 	"github.com/src-d/gitbase-web/server/service"
+
+	"gopkg.in/bblfsh/client-go.v3"
+	"gopkg.in/bblfsh/client-go.v3/tools"
+	"gopkg.in/bblfsh/sdk.v2/uast/nodes"
 )
 
 type parseRequest struct {
@@ -25,7 +24,8 @@ type parseRequest struct {
 	Filter    string `json:"filter"`
 }
 
-// Parse returns a function that parse content using bblfsh and returns UAST
+// Parse returns a function that parses text contents using bblfsh and
+// returns UAST
 func Parse(bbblfshServerURL string) RequestProcessFunc {
 	return func(r *http.Request) (*serializer.Response, error) {
 		var req parseRequest
@@ -48,37 +48,31 @@ func Parse(bbblfshServerURL string) RequestProcessFunc {
 			return nil, err
 		}
 
-		resp, err := cli.NewParseRequest().
+		resp, lang, err := cli.NewParseRequest().
 			Language(req.Language).
 			Filename(req.Filename).
 			Content(req.Content).
 			Mode(bblfsh.Semantic).
-			Do()
+			UAST()
+
+		if bblfsh.ErrSyntax.Is(err) {
+			return nil, serializer.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("error parsing UAST: %s", err))
+		}
 		if err != nil {
-			return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
+			return nil, serializer.NewHTTPError(http.StatusInternalServerError, err.Error())
 		}
 
-		if resp.Status == protocol.Error {
-			return nil, serializer.NewHTTPError(http.StatusBadRequest, "incorrect request")
-		}
-
-		if resp.Status != protocol.Ok {
-			return nil, serializer.NewHTTPError(http.StatusBadRequest, strings.Join(resp.Errors, "\n"))
-		}
-
-		if resp.UAST != nil && req.Filter != "" {
-			filtered, err := tools.Filter(resp.UAST, req.Filter)
+		if req.Filter != "" {
+			resp, err = applyXpath(resp, req.Filter)
 			if err != nil {
 				return nil, err
 			}
-
-			resp.UAST = &uast.Node{
-				InternalType: "Search results",
-				Children:     filtered,
-			}
 		}
 
-		return serializer.NewParseResponse((*service.ParseResponse)(resp)), nil
+		return serializer.NewParseResponse(&service.ParseResponse{
+			UAST: resp,
+			Lang: lang,
+		}), nil
 	}
 }
 
@@ -106,33 +100,38 @@ func Filter() RequestProcessFunc {
 			return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		nodes, err := service.UnmarshalUAST(data)
+		reqNodes, err := service.UnmarshalNodes(data)
 		if err != nil {
 			return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		resp := &uast.Node{InternalType: "Search results"}
+		var resp nodes.Array
 
 		if req.Filter != "" {
-			for _, n := range nodes {
-				filtered, err := tools.Filter((*uast.Node)(n), req.Filter)
-				if err != nil {
-					if e, ok := err.(*tools.ErrInvalidArgument); ok {
-						return nil, serializer.NewHTTPError(http.StatusBadRequest, e.Error())
-					}
-					return nil, serializer.NewHTTPError(http.StatusInternalServerError, err.Error())
-				}
-
-				resp.Children = append(resp.Children, filtered...)
+			resp, err = applyXpath(reqNodes, req.Filter)
+			if err != nil {
+				return nil, err
 			}
 		} else {
-			for _, n := range nodes {
-				resp.Children = append(resp.Children, (*uast.Node)(n))
-			}
+			resp = reqNodes
 		}
 
-		return serializer.UASTFilterResponse((*service.Node)(resp)), nil
+		return serializer.UASTFilterResponse(resp), nil
 	}
+}
+
+func applyXpath(n nodes.Node, query string) (nodes.Array, serializer.HTTPError) {
+	iter, err := tools.Filter(n, query)
+	if err != nil {
+		return nil, serializer.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	results := nodes.Array{}
+	for iter.Next() {
+		results = append(results, iter.Node().(nodes.Node))
+	}
+
+	return results, nil
 }
 
 // GetLanguages returns a list of supported languages by bblfsh
@@ -148,7 +147,7 @@ func GetLanguages(bbblfshServerURL string) RequestProcessFunc {
 			return nil, err
 		}
 
-		langs := service.DriverManifestsToLangs(resp.Languages)
+		langs := service.DriverManifestsToLangs(resp)
 
 		sort.Slice(langs, func(i, j int) bool {
 			return langs[i].Name < langs[j].Name
