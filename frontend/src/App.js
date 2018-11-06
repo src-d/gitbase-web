@@ -79,16 +79,10 @@ class App extends Component {
 SELECT f.repository_id, f.file_path,
        LANGUAGE(f.file_path, f.blob_content) AS lang, f.blob_content,
        UAST(f.blob_content, LANGUAGE(f.file_path, f.blob_content)) AS uast
-FROM   files AS f
-       JOIN commit_files cf ON
-            f.repository_id=cf.repository_id AND
-            f.file_path=cf.file_path AND
-            f.blob_hash=cf.blob_hash AND
-            f.tree_hash=cf.tree_hash
-       JOIN refs ON
-            cf.repository_id = refs.repository_id AND
-            cf.commit_hash = refs.commit_hash
-WHERE  ref_name = 'HEAD'
+FROM   refs AS r
+       NATURAL JOIN commit_files
+       NATURAL JOIN files AS f
+WHERE  r.ref_name = 'HEAD'
        AND f.file_path REGEXP('.*main.go')`
       },
 
