@@ -1,7 +1,11 @@
 import path from 'path';
 import os from 'os';
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import initButtonStyles from './utils/bootstrap';
+
+configure({ adapter: new Adapter() });
 
 const { LocalStorage } = require('node-localstorage');
 // URL API for node
