@@ -54,7 +54,9 @@ function EditorUASTSpitPane({
   handleLangChange,
   handleShowLocationsChange,
   handleFilterChange,
-  handleSearch
+  handleSearch,
+  mode,
+  handleModeChange
 }) {
   return (
     <SplitPane split="vertical" defaultSize={500} minSize={1} maxSize={-15}>
@@ -72,6 +74,8 @@ function EditorUASTSpitPane({
         handleShowLocationsChange={handleShowLocationsChange}
         handleFilterChange={handleFilterChange}
         handleSearch={handleSearch}
+        mode={mode}
+        handleModeChange={handleModeChange}
       />
     </SplitPane>
   );
@@ -87,7 +91,9 @@ EditorUASTSpitPane.propTypes = {
   handleLangChange: PropTypes.func.isRequired,
   handleShowLocationsChange: PropTypes.func.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired
+  handleSearch: PropTypes.func.isRequired,
+  mode: PropTypes.string.isRequired,
+  handleModeChange: PropTypes.func.isRequired
 };
 
 const EditorWithUAST = withUASTEditor(EditorUASTSpitPane);
@@ -104,7 +110,8 @@ class CodeViewer extends Component {
       uast: null,
       error: null,
       showLocations: false,
-      filter: ''
+      filter: '',
+      mode: api.defaultUastMode
     };
 
     this.handleLangChange = this.handleLangChange.bind(this);
@@ -113,6 +120,7 @@ class CodeViewer extends Component {
     this.removeError = this.removeError.bind(this);
     this.handleShowLocationsChange = this.handleShowLocationsChange.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.handleModeChange = this.handleModeChange.bind(this);
   }
 
   componentDidMount() {
@@ -154,7 +162,12 @@ class CodeViewer extends Component {
     this.setState({ error: null, uast: null, uastLoading: true });
 
     api
-      .parseCode(this.state.language, this.props.code, this.state.filter)
+      .parseCode(
+        this.state.language,
+        this.props.code,
+        this.state.mode,
+        this.state.filter
+      )
       .then(res => {
         this.setState({ uast: res });
       })
@@ -176,6 +189,13 @@ class CodeViewer extends Component {
     this.setState({ filter: e.target.value });
   }
 
+  handleModeChange(mode) {
+    this.setState({ mode });
+    if (this.state.showUast) {
+      this.parseCode();
+    }
+  }
+
   render() {
     const { showModal, onHide, code, languages } = this.props;
     const {
@@ -186,7 +206,8 @@ class CodeViewer extends Component {
       uast,
       error,
       showLocations,
-      filter
+      filter,
+      mode
     } = this.state;
 
     if (loading) {
@@ -230,6 +251,8 @@ class CodeViewer extends Component {
                 handleShowLocationsChange={this.handleShowLocationsChange}
                 handleFilterChange={this.handleFilterChange}
                 handleSearch={this.parseCode}
+                mode={mode}
+                handleModeChange={this.handleModeChange}
               />
               {error ? (
                 <div className="error">
