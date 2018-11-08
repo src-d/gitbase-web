@@ -107,6 +107,59 @@ func (suite *UASTFilterSuite) TestFilterError() {
 	suite.Equal(http.StatusBadRequest, res.Code)
 }
 
+type UASTModeSuite struct {
+	suite.Suite
+	handler http.Handler
+}
+
+func TestUASTModeSuite(t *testing.T) {
+	q := new(UASTModeSuite)
+	q.handler = lg.RequestLogger(logrus.New())(handler.APIHandlerFunc(handler.Parse(bblfshServerURL())))
+
+	if !isIntegration() {
+		t.Skip("use the env var GITBASEPG_INTEGRATION_TESTS=true to run this test")
+	}
+
+	suite.Run(t, q)
+}
+
+func (suite *UASTModeSuite) TestSuccess() {
+	testCases := []string{
+		`{ "content": "console.log('test')", "language": "javascript", "mode": "" }`,
+		`{ "content": "console.log('test')", "language": "javascript", "mode": "native" }`,
+		`{ "content": "console.log('test')", "language": "javascript", "mode": "annotated" }`,
+		`{ "content": "console.log('test')", "language": "javascript", "mode": "semantic" }`,
+	}
+
+	for _, tc := range testCases {
+		suite.T().Run(tc, func(t *testing.T) {
+			req, _ := http.NewRequest("POST", "/parse", strings.NewReader(tc))
+
+			res := httptest.NewRecorder()
+			suite.handler.ServeHTTP(res, req)
+
+			suite.Require().Equal(http.StatusOK, res.Code, res.Body.String())
+
+			var resBody serializer.Response
+			err := json.Unmarshal(res.Body.Bytes(), &resBody)
+			suite.Nil(err)
+
+			suite.Equal(res.Code, resBody.Status)
+			suite.NotEmpty(resBody.Data)
+		})
+	}
+}
+
+func (suite *UASTModeSuite) TestWrongMode() {
+	jsonRequest := `{ "content": "console.log('test')", "language": "javascript", "mode": "foo" }`
+	req, _ := http.NewRequest("POST", "/parse", strings.NewReader(jsonRequest))
+
+	res := httptest.NewRecorder()
+	suite.handler.ServeHTTP(res, req)
+
+	suite.Equal(http.StatusBadRequest, res.Code)
+}
+
 // JSON: [<UAST(console.log("test"))>]
 // Easy to obtain in the frontend with SELECT UAST('console.log("test")', 'JavaScript') AS uast
 // Gitbase v0.18.0-beta.1, Bblfsh v2.9.2-drivers

@@ -16,12 +16,21 @@ import (
 	"gopkg.in/bblfsh/sdk.v2/uast/nodes"
 )
 
+type uastMode = string
+
+const (
+	native    uastMode = "native"
+	annotated uastMode = "annotated"
+	semantic  uastMode = "semantic"
+)
+
 type parseRequest struct {
-	ServerURL string `json:"serverUrl"`
-	Language  string `json:"language"`
-	Filename  string `json:"filename"`
-	Content   string `json:"content"`
-	Filter    string `json:"filter"`
+	ServerURL string   `json:"serverUrl"`
+	Language  string   `json:"language"`
+	Filename  string   `json:"filename"`
+	Content   string   `json:"content"`
+	Filter    string   `json:"filter"`
+	Mode      uastMode `json:"mode"`
 }
 
 // Parse returns a function that parses text contents using bblfsh and
@@ -48,11 +57,26 @@ func Parse(bbblfshServerURL string) RequestProcessFunc {
 			return nil, err
 		}
 
+		var mode bblfsh.Mode
+		switch req.Mode {
+		case native:
+			mode = bblfsh.Native
+		case annotated:
+			mode = bblfsh.Annotated
+		case semantic:
+			mode = bblfsh.Semantic
+		case "":
+			mode = bblfsh.Semantic
+		default:
+			return nil, serializer.NewHTTPError(http.StatusBadRequest,
+				fmt.Sprintf(`invalid "mode" %q; it must be one of "native", "annotated", "semantic"`, req.Mode))
+		}
+
 		resp, lang, err := cli.NewParseRequest().
 			Language(req.Language).
 			Filename(req.Filename).
 			Content(req.Content).
-			Mode(bblfsh.Semantic).
+			Mode(mode).
 			UAST()
 
 		if bblfsh.ErrSyntax.Is(err) {
