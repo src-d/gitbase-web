@@ -8059,10 +8059,10 @@ ua-parser-js@^0.7.18:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.18.tgz#a7bfd92f56edfb117083b69e31d2aa8882d4b1ed"
   integrity sha512-LtzwHlVHwFGTptfNSgezHp7WUlwiqb0gA9AALRbKaERfxwJoiX0A73QbTToxteIAuIaFshhgIZfqK8s7clqgnA==
 
-uast-viewer@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/uast-viewer/-/uast-viewer-0.0.8.tgz#e0e4c5bcad6bf3d62dcc48800a4350d800a01987"
-  integrity sha1-4OTFvK1r89YtzEiACkNQ2ACgGYc=
+uast-viewer@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/uast-viewer/-/uast-viewer-0.2.0.tgz#081cc7f2f67bf5db03dc53cd8a451f491c49e699"
+  integrity sha512-BTYLYY6xSu0ITjC4lO2Kb14Nw4oYKh7i3mChf4HygNJRTJ93FHaYTmyqS38cA3+1FsGnEyKSz+BwATGONLJPDQ==
 
 uglify-js@3.4.x, uglify-js@^3.0.13:
   version "3.4.3"

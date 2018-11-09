@@ -5,7 +5,6 @@ import { Button } from 'react-bootstrap';
 import './UASTViewerPane.less';
 
 const ROOT_ID = 1;
-const SEARCH_RESULTS_TYPE = 'Search results';
 
 function getSearchResults(uast) {
   if (!uast) {
@@ -17,8 +16,8 @@ function getSearchResults(uast) {
     return null;
   }
 
-  if (rootNode.InternalType === SEARCH_RESULTS_TYPE) {
-    return rootNode.Children;
+  if (Array.isArray(rootNode.n)) {
+    return rootNode.n.map(c => c.id);
   }
 
   return null;

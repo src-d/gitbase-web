@@ -314,15 +314,15 @@
   version = "v1.3.0"
 
 [[projects]]
-  digest = "1:ace997f8ef569276114f7a4e2a8b44cc8ee34b4d756ccbeb73f612589d98b0b3"
-  name = "gopkg.in/bblfsh/client-go.v2"
+  digest = "1:eba695f96ba6e41be194d11b78981af7c4a3f3d8a0ede3c59160a0cef8b280e6"
+  name = "gopkg.in/bblfsh/client-go.v3"
   packages = [
     ".",
     "tools",
   ]
-  pruneopts = "UT"
-  revision = "47a750b0793f5094635bd013001c435bacc6ac48"
-  version = "v2.8.8"
+  pruneopts = "NUT"
+  revision = "675e9da023b6645dcfd9dd39393d1e20541052df"
+  version = "v3.1.0"
 
 [[projects]]
   digest = "1:85ce4b06f191dd616ad7f4377843ea08db7db003757bd0a67e1b3ac4cbd5c2ef"
@@ -337,13 +337,13 @@
   version = "v1.16.0"
 
 [[projects]]
-  digest = "1:c86f8b8c3a3b44c31190b0a70d1adbab4fc264a2245ee893e572658bcd40dead"
+  digest = "1:5166e4d339268a5b203719502801a8e879402a109476fb98b294b7d45f2dcc76"
   name = "gopkg.in/bblfsh/sdk.v2"
   packages = [
     "driver",
+    "driver/errors",
     "driver/manifest",
     "protocol",
-    "protocol/v1",
     "uast",
     "uast/nodes",
     "uast/nodes/nodesproto",
@@ -354,8 +354,8 @@
     "uast/transformer",
   ]
   pruneopts = "NUT"
-  revision = "85fd47713ba40fc3bffe4214090a552074841431"
-  version = "v2.2.3"
+  revision = "c40738ca4cc89a0a04a08b9e46ae42a1e7663fe9"
+  version = "v2.6.0"
 
 [[projects]]
   digest = "1:d11329b27b0f34c399185531f3232493d7da40f576574da04776812b0a94f66b"
@@ -415,10 +415,11 @@
     "github.com/stretchr/testify/require",
     "github.com/stretchr/testify/suite",
     "gopkg.in/DATA-DOG/go-sqlmock.v1",
-    "gopkg.in/bblfsh/client-go.v2",
-    "gopkg.in/bblfsh/client-go.v2/tools",
+    "gopkg.in/bblfsh/client-go.v3",
+    "gopkg.in/bblfsh/client-go.v3/tools",
     "gopkg.in/bblfsh/sdk.v1/protocol",
-    "gopkg.in/bblfsh/sdk.v1/uast",
+    "gopkg.in/bblfsh/sdk.v2/uast/nodes",
+    "gopkg.in/bblfsh/sdk.v2/uast/nodes/nodesproto",
     "gopkg.in/src-d/enry.v1",
     "gopkg.in/src-d/go-cli.v0",
     "gopkg.in/src-d/go-errors.v1",

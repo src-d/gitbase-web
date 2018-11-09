@@ -6,10 +6,6 @@
   unused-packages = true
   non-go = true
 
-  [[prune.project]]
-    name = "gopkg.in/bblfsh/client-go.v2"
-    non-go = false
-
 [[constraint]]
   name = "github.com/go-chi/chi"
   version = "3.3.2"
@@ -39,12 +35,16 @@
   version = "1.2.2"
 
 [[constraint]]
+  name = "gopkg.in/bblfsh/client-go.v3"
+  version = "3.1.0"
+
+[[override]]
   name = "gopkg.in/bblfsh/sdk.v1"
   version = "1.16.0"
 
 [[constraint]]
-  name = "gopkg.in/bblfsh/client-go.v2"
-  version = "2.8.4"
+  name = "gopkg.in/bblfsh/sdk.v2"
+  version = "2.3.0"
 
 [[constraint]]
   name = "gopkg.in/DATA-DOG/go-sqlmock.v1"
