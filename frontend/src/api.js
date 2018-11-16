@@ -135,12 +135,16 @@ function detectLang(content, filename) {
   }).then(res => res.data);
 }
 
-function parseCode(language, content, filter, customServerUrl) {
+const defaultUastMode = 'semantic';
+const uastModes = ['semantic', 'annotated', 'native'];
+
+function parseCode(language, content, mode, filter, customServerUrl) {
   return apiCall('/parse', {
     method: 'POST',
     body: {
       language,
       content,
+      mode,
       filter,
       serverUrl: customServerUrl
     }
@@ -178,5 +182,7 @@ export default {
   parseCode,
   getLanguages,
   filterUAST,
-  version
+  version,
+  uastModes,
+  defaultUastMode
 };

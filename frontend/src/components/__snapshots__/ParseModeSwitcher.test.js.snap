@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders correctly 1`] = `
+<div
+  style={
+    Object {
+      "padding": "20px",
+    }
+  }
+>
+  <label
+    style={
+      Object {
+        "marginRight": "20px",
+        "textTransform": "capitalize",
+      }
+    }
+  >
+    <input
+      checked={true}
+      onChange={[Function]}
+      type="radio"
+      value="semantic"
+    />
+     
+    semantic
+  </label>
+  <label
+    style={
+      Object {
+        "marginRight": "20px",
+        "textTransform": "capitalize",
+      }
+    }
+  >
+    <input
+      checked={false}
+      onChange={[Function]}
+      type="radio"
+      value="annotated"
+    />
+     
+    annotated
+  </label>
+  <label
+    style={
+      Object {
+        "marginRight": "20px",
+        "textTransform": "capitalize",
+      }
+    }
+  >
+    <input
+      checked={false}
+      onChange={[Function]}
+      type="radio"
+      value="native"
+    />
+     
+    native
+  </label>
+</div>
+`;

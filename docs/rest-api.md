@@ -212,7 +212,7 @@ curl -X POST \
 
 ## POST /parse
 
-Receives a file content and returns UAST.
+Receives a file content and returns UAST parsed by the bblfsh server.
 
 ```bash
 curl -X POST \
@@ -221,6 +221,7 @@ curl -X POST \
   -d '{
   "language": "javascript",
   "content": "console.log(test)"
+  "mode": "annotated"
 }'
 ```
 
@@ -243,8 +244,11 @@ curl -X POST \
 }
 ```
 
-The endpoint also receives additional parameters:
+The endpoint accepts these parameters:
 
+- `language`: Language name.
+- `content`: The file contents to parse.
+- `mode`: Transformation mode. Can be one of `native`, `annotated`, `semantic`. The default is `semantic`.
 - `serverUrl` - allows to override bblfsh server URL.
 - `filename` - can be used instead of language. Then the bblfsh server would try to guess the language.
 - `filter` - [xpath query](https://doc.bblf.sh/user/uast-querying.html) to filter the results.
