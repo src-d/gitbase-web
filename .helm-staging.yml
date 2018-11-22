@@ -1,3 +1,7 @@
+service:
+  type: NodePort
+  port: 8080
+
 bblfshdServer:
   image:
     repository: bblfsh/bblfshd
