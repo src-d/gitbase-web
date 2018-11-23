@@ -69,6 +69,10 @@ func UnmarshalUAST(data []byte) ([]*Node, error) {
 			return nil, ErrUnmarshalUAST.New(err)
 		}
 
+		if nodeLen < 1 {
+			return nil, ErrUnmarshalUAST.New(fmt.Errorf("malformed data"))
+		}
+
 		node := uast.NewNode()
 		nodeBytes := buf.Next(int(nodeLen))
 		if int32(len(nodeBytes)) != nodeLen {
