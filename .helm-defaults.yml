@@ -1,0 +1,60 @@
+service:
+  type: NodePort
+  port: 8080
+
+bblfshdServer:
+  image:
+    repository: bblfsh/bblfshd
+    tag: v2.10.0
+    pullPolicy: IfNotPresent
+  drivers:
+    install: true
+    languages:
+      python:
+        repository: bblfsh/python-driver
+        tag: v2.4.0
+      cpp:
+        repository: bblfsh/cpp-driver
+        tag: v0.3.0
+      java:
+        repository: bblfsh/java-driver
+        tag: v2.3.0
+      php:
+        repository: bblfsh/php-driver
+        tag: v2.4.0
+      ruby:
+        repository: bblfsh/ruby-driver
+        tag: v2.4.0
+      javascript:
+        repository: bblfsh/javascript-driver
+        tag: v2.3.0
+      bash:
+        repository: bblfsh/bash-driver
+        tag: v2.1.0
+      go:
+        repository: bblfsh/go-driver
+        tag: v2.3.0
+
+gitbaseServer:
+  # commit defaults to HEAD unless given
+  repositories:
+    go-git:
+      url: https://github.com/src-d/go-git.git
+      #commit: v4.4.0
+    gitbase:
+      url: https://github.com/src-d/gitbase.git
+    gitbase-web:
+      url: https://github.com/src-d/gitbase-web.git
+    bblfshd:
+      url: https://github.com/bblfsh/bblfshd.git
+    siva-java:
+      url: https://github.com/src-d/siva-java.git
+  image:
+    repository: srcd/gitbase
+    tag: v0.17.1
+    pullPolicy: IfNotPresent
+  squashEnable: "true"
+  readonly: "true"
+
+nodeSelector:
+  cloud.google.com/gke-nodepool: default-pool
