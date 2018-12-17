@@ -31,6 +31,7 @@ helm_deploy: &helm_deploy
   skip_tls_verify: true
   helm_repos: srcd-charts=https://src-d.github.io/charts/
   chart: srcd-charts/gitbase-web
+  chart-version: 0.5.0
   release: gp
   tiller_ns: kube-system
   wait: true
@@ -63,8 +64,8 @@ pipeline:
     <<: *helm_deploy
     prefix: STG
     secrets: [ STG_API_SERVER, STG_KUBERNETES_TOKEN ]
-    values: gitbaseWeb.image.tag=commit-${DRONE_COMMIT_SHA:0:7},ingress.globalStaticIpName=gitbase-playground-staging,ingress.hostname=gitbase-playground-staging.srcd.run
-    values_files: [.helm-staging.yml]
+    values: gitbaseWeb.image.tag=commit-${DRONE_COMMIT_SHA:0:7}
+    values_files: [ .helm-defaults.yml, .helm-staging.yml]
     when:
       branch: [master]
       event: [push]
