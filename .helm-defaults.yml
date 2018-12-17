@@ -58,3 +58,15 @@ gitbaseServer:
 
 nodeSelector:
   cloud.google.com/gke-nodepool: default-pool
+
+affinity:
+   podAntiAffinity:
+     requiredDuringSchedulingIgnoredDuringExecution:
+     - labelSelector:
+        matchExpressions:
+         - key: app
+           operator: In
+           values:
+        #if the chart name is changed or a nameOverride is used, this value has to be changed to the new name.
+           - gitbase-web
+       topologyKey: kubernetes.io/hostname
