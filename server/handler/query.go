@@ -226,7 +226,7 @@ func columnsData(
 			// to parse as UAST first
 			sqlVal, _ := val.(*sql.NullString)
 			if sqlVal.Valid {
-				nodes, err := service.UnmarshalUAST([]byte(sqlVal.String))
+				nodes, err := service.UnmarshalNodes([]byte(sqlVal.String))
 				if err == nil && nodes != nil {
 					colData[columnNames[i]] = nodes
 					colData["__"+columnNames[i]+"-protobufs"] = []byte(sqlVal.String)
@@ -235,23 +235,13 @@ func columnsData(
 				}
 			}
 		case *[]byte:
-			// DatabaseTypeName JSON is used for arrays of uast nodes and
-			// arrays of strings, but we don't know the exact type.
-			// We try with arry of uast nodes first and any JSON later
+			// DatabaseTypeName JSON is used for arrays of strings
+			var data interface{}
 
-			// This is deprecated, only used by gitbase <= v0.16.0.
-			nodes, err := service.UnmarshalUASTOld(val)
-			if err == nil {
-				colData[columnNames[i]] = nodes
-				colData["__"+columnNames[i]+"-protobufs"] = val
-			} else {
-				var data interface{}
-
-				if err := json.Unmarshal(*val.(*[]byte), &data); err != nil {
-					return nil, err
-				}
-				colData[columnNames[i]] = data
+			if err := json.Unmarshal(*val.(*[]byte), &data); err != nil {
+				return nil, err
 			}
+			colData[columnNames[i]] = data
 		}
 	}
 

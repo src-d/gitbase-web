@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import UASTViewer from 'uast-viewer';
 import { Button } from 'react-bootstrap';
 import './UASTViewerPane.less';
+import ParseModeSwitcher from './ParseModeSwitcher';
 
 const ROOT_ID = 1;
-const SEARCH_RESULTS_TYPE = 'Search results';
 
 function getSearchResults(uast) {
   if (!uast) {
@@ -17,8 +17,8 @@ function getSearchResults(uast) {
     return null;
   }
 
-  if (rootNode.InternalType === SEARCH_RESULTS_TYPE) {
-    return rootNode.Children;
+  if (Array.isArray(rootNode.n)) {
+    return rootNode.n.map(c => c.id);
   }
 
   return null;
@@ -35,7 +35,9 @@ function UASTViewerPane({
   filter,
   handleShowLocationsChange,
   handleFilterChange,
-  handleSearch
+  handleSearch,
+  mode,
+  handleModeChange
 }) {
   let content = null;
 
@@ -56,6 +58,15 @@ function UASTViewerPane({
         />
       );
     }
+  }
+
+  let modeSwitcher = null;
+  if (mode) {
+    modeSwitcher = (
+      <div className="uast-mode-wrapper">
+        <ParseModeSwitcher mode={mode} handleModeChange={handleModeChange} />
+      </div>
+    );
   }
 
   return (
@@ -87,7 +98,6 @@ function UASTViewerPane({
             SEARCH
           </Button>
           <Button
-            className="edit-query"
             bsStyle="gbpl-primary-tint-2-link"
             href="https://doc.bblf.sh/using-babelfish/uast-querying.html"
             target="_blank"
@@ -96,6 +106,7 @@ function UASTViewerPane({
           </Button>
         </form>
       </div>
+      {modeSwitcher}
       {content}
     </div>
   );
@@ -108,7 +119,11 @@ UASTViewerPane.propTypes = {
   filter: PropTypes.string,
   handleShowLocationsChange: PropTypes.func.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired
+  handleSearch: PropTypes.func.isRequired,
+  // If mode is empty the mode selector will be hidden
+  mode: PropTypes.string,
+  // Mandatory if mode is set
+  handleModeChange: PropTypes.func
 };
 
 export default UASTViewerPane;

@@ -17,7 +17,7 @@
     "react-split-pane": "^0.1.77",
     "react-switch": "^3.0.4",
     "react-table": "^6.8.2",
-    "uast-viewer": "^0.0.8"
+    "uast-viewer": "^0.2.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -28,6 +28,8 @@
     "format": "eslint --fix 'src/**/*.js'"
   },
   "devDependencies": {
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-jest": "^21.15.1",

@@ -76,10 +76,10 @@ func Export(db service.SQLDB) http.HandlerFunc {
 						// to parse as UAST first
 						sqlVal, _ := val.(*sql.NullString)
 						if sqlVal.Valid {
-							nodes, err := service.UnmarshalUAST([]byte(sqlVal.String))
+							nodes, err := service.UnmarshalNodes([]byte(sqlVal.String))
 
 							if err == nil && nodes != nil {
-								b, err := json.Marshal(nodes)
+								b, err := json.MarshalIndent(nodes, "", "  ")
 								if err != nil {
 									return err
 								}
@@ -89,21 +89,6 @@ func Export(db service.SQLDB) http.HandlerFunc {
 							}
 						}
 					case *[]byte:
-						// DatabaseTypeName JSON is used for arrays of uast nodes and
-						// arrays of strings, but we don't know the exact type.
-						// We try with arry of uast nodes first and any JSON later
-
-						// This is deprecated, only used by gitbase <= v0.16.0.
-						nodes, err := service.UnmarshalUASTOld(val)
-						if err == nil {
-							b, err := json.Marshal(nodes)
-							if err != nil {
-								return err
-							}
-							record[i] = string(b)
-							continue
-						}
-
 						record[i] = string(*v)
 					}
 				}

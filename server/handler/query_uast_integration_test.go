@@ -51,8 +51,8 @@ func (suite *QueryUast) TestUastFunctions() {
 	var jsonObj map[string]interface{}
 	suite.IsType(jsonObj, uasts[0])
 
-	// check that roles were converted correctly
+	// check that root node roles were converted correctly
 	uast := uasts[0].(map[string]interface{})
-	roles := uast["Roles"].([]interface{})
-	suite.Equal("File", roles[1].(string))
+	roles := uast["@role"].([]interface{})
+	suite.Equal("File", roles[0].(string))
 }

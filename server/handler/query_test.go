@@ -10,13 +10,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/src-d/gitbase-web/server/service"
 	common "github.com/src-d/gitbase-web/server/testing"
 
 	"github.com/pressly/lg"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
+	"gopkg.in/bblfsh/sdk.v2/uast/nodes"
 )
 
 type QuerySuite struct {
@@ -190,7 +190,7 @@ func (suite *QuerySuite) TestUASTType() {
 	suite.EqualValues("", colData["uast_a"])
 	suite.Nil(colData["__uast_a-protobufs"])
 
-	var nodeArr []*service.Node
+	var nodeArr nodes.Array
 	suite.IsType(nodeArr, colData["uast_b"])
 	suite.EqualValues(common.UASTMarshaled, colData["__uast_b-protobufs"])
 }
