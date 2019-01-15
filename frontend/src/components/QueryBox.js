@@ -11,6 +11,7 @@ import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/sql-hint';
 
+import HelpModal from './HelpModal';
 import './QueryBox.less';
 import HelpIcon from '../icons/help.svg';
 
@@ -20,10 +21,14 @@ class QueryBox extends Component {
 
     this.state = {
       schema: undefined,
-      codeMirrorTables: {}
+      codeMirrorTables: {},
+      showModal: false
     };
 
     this.codemirror = React.createRef();
+
+    this.showHelpModal = this.showHelpModal.bind(this);
+    this.handleHelpModalClose = this.handleHelpModalClose.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -63,6 +68,18 @@ class QueryBox extends Component {
     );
   }
 
+  showHelpModal() {
+    this.setState({
+      showModal: true
+    });
+  }
+
+  handleHelpModalClose() {
+    this.setState({
+      showModal: false
+    });
+  }
+
   render() {
     const { codeMirrorTables } = this.state;
 
@@ -98,8 +115,7 @@ class QueryBox extends Component {
               <Button
                 className="help-button"
                 bsStyle="gbpl-primary-tint-2-link"
-                href="https://docs.sourced.tech/gitbase"
-                target="_blank"
+                onClick={this.showHelpModal}
               >
                 <HelpIcon className="big-icon" />HELP
               </Button>
@@ -126,6 +142,10 @@ class QueryBox extends Component {
               </Button>
             </Col>
           </Row>
+          <HelpModal
+            showModal={this.state.showModal}
+            onHide={this.handleHelpModalClose}
+          />
         </div>
       </div>
     );
