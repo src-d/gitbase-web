@@ -20,7 +20,11 @@ class HelpModal extends Component {
           <div>
             For a reference of gitbase SQL, please read{' '}
             <strong>
-              <a href="https://docs.sourced.tech/gitbase">
+              <a
+                href="https://docs.sourced.tech/gitbase"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 docs.sourced.tech/gitbase
               </a>
             </strong>
