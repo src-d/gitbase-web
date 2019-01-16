@@ -20,6 +20,7 @@ global.localStorage = new LocalStorage(
 
 global.window = document.defaultView;
 global.window.localStorage = global.localStorage;
+global.window.URLSearchParams = require('@ungap/url-search-params');
 
 initButtonStyles();
 
