@@ -112,7 +112,7 @@ $(GO_LINTABLE_PACKAGES):
 	$(GOVET) $@
 
 back-start:
-	$(GO_RUN_ENV) $(GORUN) cmd/gitbase-web/main.go serve
+	$(GO_RUN_ENV) $(GORUN) cmd/gitbase-web/main.go
 
 # Frontend
 
