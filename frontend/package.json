@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -28,6 +29,7 @@
     "format": "eslint --fix 'src/**/*.js'"
   },
   "devDependencies": {
+    "@ungap/url-search-params": "^0.1.2",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "eslint-config-airbnb-base": "^12.1.0",

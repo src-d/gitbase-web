@@ -1,9 +1,10 @@
 const envVars = window.gitbasepg || { SERVER_URL: '', SELECT_LIMIT: 100 };
 
-const serverUrl = envVars.SERVER_URL || window.location.origin;
+const serverUrl = envVars.SERVER_URL;
 const selectLimit = envVars.SELECT_LIMIT;
 
-const apiUrl = url => `${serverUrl}${url}`;
+// if serverUrl is unset, this replaces the leading / in order to work behind proxies with a path other than /.
+const apiUrl = url => `${serverUrl}${url}`.replace(/^\/+/g, '');
 
 function statusError(resp) {
   return new Error(resp.statusText || `${resp.status} Error`);
@@ -101,9 +102,11 @@ function query(sql, signal) {
 }
 
 function queryExport(sql) {
-  const url = new URL(apiUrl('/export'));
-  url.searchParams.append('query', sql);
-  return url.toString();
+  const rawUrl = apiUrl('/export');
+  const params = new URLSearchParams();
+  params.append('query', sql);
+  const url = `${rawUrl}?${params.toString()}`;
+  return url;
 }
 
 /* Returns an array in the form:
