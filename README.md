@@ -76,6 +76,7 @@ Any of the previous execution methods accept configuration through the following
 | `GITBASEPG_PORT` | `--port` | `8080` | Port to bind the HTTP server |
 | `GITBASEPG_SERVER_URL` | `--server` | | URL used to access the application in the form `HOSTNAME[:PORT]`. Leave it unset to allow connections from any proxy or public address |
 | `GITBASEPG_DB_CONNECTION` | `--db` | `root@tcp(localhost:3306)/none?maxAllowedPacket=4194304` | gitbase connection string. Use the DSN (Data Source Name) format described in the [Go MySQL Driver docs](https://github.com/go-sql-driver/mysql#dsn-data-source-name). |
+| `GITBASEPG_CONN_MAX_LIFETIME` | `--conn-max-lifetime` | `30` | Maximum amount of time a SQL connection may be reused, in seconds. Make sure this value is lower than the timeout configured in the gitbase server, set with [`GITBASE_CONNECTION_TIMEOUT`](https://docs.sourced.tech/gitbase/using-gitbase/configuration#environment-variables) |
 | `GITBASEPG_BBLFSH_SERVER_URL` | `--bblfsh` | `127.0.0.1:9432` | Address where bblfsh server is listening |
 | `GITBASEPG_SELECT_LIMIT` | `--select-limit` | `100` | Default `LIMIT` forced on all the SQL queries done from the UI. Set it to 0 to remove any limit |
 | `GITBASEPG_FOOTER_HTML` | `--footer` | | Allows to add any custom html to the page footer. It must be a string encoded in base64. Use it, for example, to add your analytics tracking code snippet  |
