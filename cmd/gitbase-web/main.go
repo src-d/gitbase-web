@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/src-d/gitbase-web/server"
@@ -37,6 +38,7 @@ type ServeCommand struct {
 	Port             int    `long:"port" env:"GITBASEPG_PORT" default:"8080" description:"Port to bind the HTTP server"`
 	ServerURL        string `long:"server" env:"GITBASEPG_SERVER_URL" description:"URL used to access the application in the form 'HOSTNAME[:PORT]'. Leave it unset to allow connections from any proxy or public address"`
 	DBConn           string `long:"db" env:"GITBASEPG_DB_CONNECTION" default:"root@tcp(localhost:3306)/none?maxAllowedPacket=4194304" description:"gitbase connection string. Use the DSN (Data Source Name) format described in the Go MySQL Driver docs: https://github.com/go-sql-driver/mysql#dsn-data-source-name"`
+	ConnMaxLifetime  int    `long:"conn-max-lifetime" env:"GITBASEPG_CONN_MAX_LIFETIME" default:"30" description:"Connections max life time since their creation in seconds"`
 	SelectLimit      int    `long:"select-limit" env:"GITBASEPG_SELECT_LIMIT" default:"100" description:"Default 'LIMIT' forced on all the SQL queries done from the UI. Set it to 0 to remove any limit"`
 	BblfshServerURL  string `long:"bblfsh" env:"GITBASEPG_BBLFSH_SERVER_URL" default:"127.0.0.1:9432" description:"Address where bblfsh server is listening"`
 	FooterHTML       string `long:"footer" env:"GITBASEPG_FOOTER_HTML" description:"Allows to add any custom html to the page footer. It must be a string encoded in base64. Use it, for example, to add your analytics tracking code snippet"`
@@ -52,7 +54,7 @@ func (c *ServeCommand) Execute(args []string) error {
 	}
 	defer db.Close()
 
-	db.SetMaxIdleConns(0)
+	db.SetConnMaxLifetime(time.Duration(c.ConnMaxLifetime) * time.Second)
 
 	static := handler.NewStatic("build/public", c.ServerURL, c.SelectLimit, c.FooterHTML)
 
