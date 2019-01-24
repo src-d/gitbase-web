@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/pressly/lg"
 	"github.com/src-d/gitbase-web/server/serializer"
 	"github.com/src-d/gitbase-web/server/service"
 
@@ -74,8 +73,16 @@ func Query(db service.SQLDB) RequestProcessFunc {
 		c := make(chan error, 1)
 
 		var rows *sql.Rows
+		conn, err := db.Conn(r.Context())
+		defer conn.Close()
+
+		connID, err := getConnID(r, conn)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get connection id: %s", err)
+		}
+
 		go func() {
-			rows, err = db.QueryContext(r.Context(), query)
+			rows, err = conn.QueryContext(r.Context(), query)
 			c <- err
 		}()
 
@@ -88,13 +95,14 @@ func Query(db service.SQLDB) RequestProcessFunc {
 		}
 
 		if r.Context().Err() != nil {
-			killQuery(r, db, query)
+			db.Exec(fmt.Sprintf("KILL %d", connID))
 			return nil, dbError(r.Context().Err())
 		}
 
 		if err != nil {
 			return nil, dbError(err)
 		}
+
 		defer rows.Close()
 
 		columnNames, columnTypes, err := columnsInfo(rows)
@@ -128,46 +136,20 @@ func Query(db service.SQLDB) RequestProcessFunc {
 	}
 }
 
-func killQuery(r *http.Request, db service.SQLDB, query string) {
-	const showProcessList = "SHOW FULL PROCESSLIST"
-	pRows, pErr := db.Query(showProcessList)
-	if pErr != nil {
-		lg.RequestLog(r).WithError(pErr).Errorf("failed to execute %q", showProcessList)
-		return
-	}
-	defer pRows.Close()
+func getConnID(r *http.Request, conn *sql.Conn) (uint32, error) {
+	const connIDQuery = "SELECT CONNECTION_ID()"
+	var connID uint32
 
-	found := false
-	var foundID int
-
-	for pRows.Next() {
-		var id int
-		var info sql.NullString
-		var rb sql.RawBytes
-		// The columns are:
-		// Id, User, Host, db, Command, Time, State, Info
-		// gitbase returns the query on "Info".
-		if err := pRows.Scan(&id, &rb, &rb, &rb, &rb, &rb, &rb, &info); err != nil {
-			lg.RequestLog(r).WithError(err).Errorf("failed to scan the results of %q", showProcessList)
-			return
-		}
-
-		if info.Valid && info.String == query {
-			if found {
-				// Found more than one match for current query, we cannot know which
-				// one is ours. Skip the cancellation
-				lg.RequestLog(r).Errorf("cannot cancel the query, found more than one match in gitbase")
-				return
-			}
-
-			found = true
-			foundID = id
-		}
+	row := conn.QueryRowContext(context.Background(), connIDQuery)
+	if row == nil {
+		return 0, fmt.Errorf("failed to execute %q", connIDQuery)
 	}
 
-	if found {
-		db.Exec(fmt.Sprintf("KILL %d", foundID))
+	if err := row.Scan(&connID); err != nil {
+		return 0, fmt.Errorf("failed to scan the results of %q: %s", connIDQuery, err)
 	}
+
+	return connID, nil
 }
 
 // columnsInfo returns the column names and column types, or error

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -14,8 +15,9 @@ import (
 
 	"github.com/pressly/lg"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"gopkg.in/DATA-DOG/go-sqlmock.v1"
+	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 	"gopkg.in/bblfsh/sdk.v2/uast/nodes"
 )
 
@@ -43,7 +45,7 @@ func (suite *QuerySuite) TestAddLimit() {
 			`, "SELECT * FROM repositories LIMIT 100"},
 		{"  SELECT * FROM repositories  ", "SELECT * FROM repositories LIMIT 100"},
 		{"  SELECT * FROM repositories  ; ", "SELECT * FROM repositories LIMIT 100"},
-		{`  SELECT * FROM repositories  
+		{`  SELECT * FROM repositories
 ; `, "SELECT * FROM repositories LIMIT 100"},
 		{"/* comment */ SELECT * FROM repositories", "SELECT * FROM repositories LIMIT 100"},
 		{"SELECT * FROM repositories /* comment */", "SELECT * FROM repositories LIMIT 100"},
@@ -56,7 +58,7 @@ func (suite *QuerySuite) TestAddLimit() {
 		{"select * from repositories limit 1 ;", "select * from repositories limit 1"},
 		{`select * from repositories limit 1
 ;`, "select * from repositories limit 1"},
-		{`select * from repositories limit 1 
+		{`select * from repositories limit 1
  ; `, "select * from repositories limit 1"},
 		{"select * from repositories limit 900", "select * from repositories LIMIT 100"},
 		{"select * from repositories limit 900;", "select * from repositories LIMIT 100"},
@@ -98,6 +100,8 @@ func (suite *QuerySuite) TestBadRequest() {
 }
 
 func (suite *QuerySuite) TestQueryErr() {
+	mockProcessRows := sqlmock.NewRows([]string{"Id"}).AddRow(1288)
+	suite.mock.ExpectQuery("SELECT CONNECTION_ID()").WillReturnRows(mockProcessRows)
 	suite.mock.ExpectQuery(".*").WillReturnError(fmt.Errorf("forced err"))
 
 	json := `{"query": "select * from repositories"}`
@@ -108,12 +112,25 @@ func (suite *QuerySuite) TestQueryErr() {
 	suite.Equal(http.StatusBadRequest, res.Code)
 }
 
+func (suite *QuerySuite) TestQueryConnIdErr() {
+	suite.mock.ExpectQuery("SELECT CONNECTION_ID()").WillReturnError(sql.ErrNoRows)
+
+	json := `{"query": "select * from repositories"}`
+	req, _ := http.NewRequest("POST", "/query", strings.NewReader(json))
+	res := httptest.NewRecorder()
+	suite.handler.ServeHTTP(res, req)
+
+	suite.Equal(http.StatusInternalServerError, res.Code)
+}
+
 func (suite *QuerySuite) TestQuery() {
 	rows := sqlmock.NewRows([]string{"a", "b", "c", "d"}).
 		AddRow(1, "one", 1.5, 100).
 		AddRow(nil, nil, nil, nil)
 
-	suite.mock.ExpectQuery(".*").WillReturnRows(rows)
+	mockProcessRows := sqlmock.NewRows([]string{"Id"}).AddRow(1288)
+	suite.mock.ExpectQuery("SELECT CONNECTION_ID()").WillReturnRows(mockProcessRows)
+	suite.mock.ExpectQuery(`select \* from repositories`).WillReturnRows(rows)
 
 	json := `{"query": "select * from repositories"}`
 	req, _ := http.NewRequest("POST", "/query", strings.NewReader(json))
@@ -199,14 +216,13 @@ func (suite *QuerySuite) TestQueryAbort() {
 	// Ideally we would test that the sql query context is canceled, but
 	// go-sqlmock does not have something like ExpectContextCancellation
 
+	require := require.New(suite.T())
+
+	mockProcessRows := sqlmock.NewRows([]string{"Id"}).AddRow(1288)
+	suite.mock.ExpectQuery("SELECT CONNECTION_ID()").WillReturnRows(mockProcessRows)
+
 	mockRows := sqlmock.NewRows([]string{"a", "b", "c", "d"}).AddRow(1, "one", 1.5, 100)
 	suite.mock.ExpectQuery(`select \* from repositories`).WillDelayFor(2 * time.Second).WillReturnRows(mockRows)
-
-	mockProcessRows := sqlmock.NewRows(
-		[]string{"Id", "User", "Host", "db", "Command", "Time", "State", "Info"}).
-		AddRow(1234, nil, "localhost:3306", nil, "query", 2, "SquashedTable(refs, commit_files, files)(1/5)", "select * from files").
-		AddRow(1288, nil, "localhost:3306", nil, "query", 2, "SquashedTable(refs, commit_files, files)(1/5)", "select * from repositories")
-	suite.mock.ExpectQuery("SHOW FULL PROCESSLIST").WillReturnRows(mockProcessRows)
 
 	suite.mock.ExpectExec("KILL 1288")
 
@@ -224,8 +240,8 @@ func (suite *QuerySuite) TestQueryAbort() {
 		defer wg.Done()
 
 		_, err := suite.requestProcessFunc(suite.db)(r)
-		suite.Error(err)
-		suite.Equal(context.Canceled, err)
+		require.Error(err)
+		require.Equal(context.Canceled, err)
 	}
 
 	go func() {
@@ -242,5 +258,5 @@ func (suite *QuerySuite) TestQueryAbort() {
 
 	wg.Wait()
 
-	suite.Equal(context.Canceled, ctx.Err())
+	require.Equal(context.Canceled, ctx.Err())
 }

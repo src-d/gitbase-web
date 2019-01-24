@@ -8,6 +8,11 @@ import (
 // MockDB is a mock of *sql.DB
 type MockDB struct{}
 
+// Conn returns a conn from the pool
+func (db *MockDB) Conn(ctx context.Context) (*sql.Conn, error) {
+	return nil, nil
+}
+
 // Close closes the DB connection
 func (db *MockDB) Close() error {
 	return nil

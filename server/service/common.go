@@ -8,6 +8,7 @@ import (
 // SQLDB describes a *sql.DB
 type SQLDB interface {
 	Close() error
+	Conn(context.Context) (*sql.Conn, error)
 	Query(query string, args ...interface{}) (*sql.Rows, error)
 	QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error)
 	QueryRow(query string, args ...interface{}) *sql.Row
