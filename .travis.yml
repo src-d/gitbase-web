@@ -38,7 +38,7 @@ jobs:
       - docker exec -it bblfshd bblfshctl driver install --force javascript docker://bblfsh/javascript-driver:latest
       - mkdir $HOME/repos
       - git clone https://github.com/src-d/gitbase-web.git $HOME/repos/gitbase-web
-      - docker run -d --name gitbase -p "3367:3306" -e "BBLFSH_ENDPOINT=bblfshd:9432" --volume $HOME/repos:/opt/repos --link bblfshd srcd/gitbase:v0.18.0
+      - docker run -d --name gitbase -p "3367:3306" -e "BBLFSH_ENDPOINT=bblfshd:9432" --volume $HOME/repos:/opt/repos --link bblfshd srcd/gitbase:v0.19.0-beta3
       - sleep 15
       - GITBASEPG_DB_CONNECTION='root@tcp(localhost:3367)/none' GITBASEPG_INTEGRATION_TESTS=true make test
     - script:
