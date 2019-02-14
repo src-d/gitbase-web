@@ -137,6 +137,14 @@
   revision = "9520e82c474b0a04dd04f8a40959027271bab992"
 
 [[projects]]
+  digest = "1:7a880746686307655232135521a665f5c719013a978cf2d560c050fbb27489f0"
+  name = "github.com/moovweb/rubex"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "cb849acea6148000db8a55743f71476b0897ea41"
+  version = "6.3.107"
+
+[[projects]]
   digest = "1:7da29c22bcc5c2ffb308324377dc00b5084650348c2799e573ed226d8cc9faf0"
   name = "github.com/opentracing/opentracing-go"
   packages = [
@@ -386,16 +394,18 @@
   version = "v2.14.0"
 
 [[projects]]
-  digest = "1:d11329b27b0f34c399185531f3232493d7da40f576574da04776812b0a94f66b"
+  digest = "1:57a3ce4850faf6af62c1a8c9ae41870084cfabaeba01b57cdc81967c11246a04"
   name = "gopkg.in/src-d/enry.v1"
   packages = [
     ".",
     "data",
+    "data/rule",
     "internal/tokenizer",
+    "regex",
   ]
   pruneopts = "NUT"
-  revision = "6712d4219fb747194f38d0fc72121ca0a46ebcea"
-  version = "v1.6.4"
+  revision = "349975078557b0663f7a68ea3e1536de289cc4ca"
+  version = "v1.7.0"
 
 [[projects]]
   digest = "1:5b120881c392f818b3427e8b3788da19bf6db136b497f4c1bd253932f415fe15"
