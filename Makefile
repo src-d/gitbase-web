@@ -6,7 +6,7 @@ DEPENDENCIES := \
 	golang.org/x/lint/golint
 DEPENDENCIES_DIRECTORY := ./vendor
 
-PKG_OS = linux
+PKG_OS = linux darwin windows
 
 GO_LINTABLE_PACKAGES := $(shell go list ./... | grep -v '/vendor/')
 FRONTEND_PATH := ./frontend
