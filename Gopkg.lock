@@ -408,11 +408,12 @@
   version = "v1.7.0"
 
 [[projects]]
-  digest = "1:5b120881c392f818b3427e8b3788da19bf6db136b497f4c1bd253932f415fe15"
+  branch = "master"
+  digest = "1:d7584e5306287c1de78a8de5e0d4e76cf556b6db1cc8025571f0d61f2327bc8b"
   name = "gopkg.in/src-d/go-cli.v0"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "b67fb56aacf6ab362e2758a584eb346816a18ff8"
+  revision = "d492247bbc0df2be12b7767179b14ea23430964f"
 
 [[projects]]
   digest = "1:e79c76b3315c08c2c9d4d09d308ef2be7e4a4161fdcbe5c56040b3641f21096c"

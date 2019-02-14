@@ -52,4 +52,4 @@
 
 [[constraint]]
   name = "gopkg.in/src-d/go-cli.v0"
-  revision = "b67fb56aacf6ab362e2758a584eb346816a18ff8"
+  branch= "master"
