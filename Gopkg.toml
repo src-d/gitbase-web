@@ -38,10 +38,6 @@
   name = "gopkg.in/bblfsh/client-go.v3"
   version = "3.2.0"
 
-[[override]]
-  name = "gopkg.in/bblfsh/sdk.v1"
-  version = "1.16.0"
-
 [[constraint]]
   name = "gopkg.in/bblfsh/sdk.v2"
   version = "2.3.0"
