@@ -141,8 +141,8 @@
   name = "github.com/pressly/lg"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "1606101ac495c40058c2f7229388a964c7a26149"
-  version = "v1.1.0"
+  revision = "bfbc64b4561fef198c68289c2610ccc4696d57d1"
+  version = "v1.1.1"
 
 [[projects]]
   digest = "1:810d960260b42c751f5254f6dbff5e6c79c8047b90a9bf4a06bba479b99aff1d"
