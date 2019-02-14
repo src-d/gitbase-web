@@ -70,7 +70,7 @@ func (suite *DetectLangSuite) TestDetect() {
 	suite.Equal(http.StatusOK, res.Code)
 
 	lang, langType := langResponse(res.Body.Bytes())
-	suite.Equal("Matlab", lang)
+	suite.Equal("MATLAB", lang)
 	suite.Equal(enry.Programming, langType)
 }
 
