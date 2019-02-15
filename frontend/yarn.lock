@@ -7022,12 +7022,12 @@ react-style-proptype@^3.0.0:
   dependencies:
     prop-types "^15.5.4"
 
-react-switch@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-switch/-/react-switch-3.0.4.tgz#52958b2736b4d21b4f0050997955c5365019ca7b"
-  integrity sha512-11WipoiPNHZx4fWzF/fsYXu+w+HZb8tzNTo7ymaJES8uc3nJZl46rxg1DAB1u669W7SOnshDNnJZOi28IblOeg==
+react-switch@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-switch/-/react-switch-4.0.1.tgz#6adace6126f15ff5efbbf104936a7f5846619097"
+  integrity sha512-RKo0VDbETmVPHfyP9m89YHhl9i0dtI1+3OuQsFhZi16ynEnRseRLR81wttrimfpa9nkqgICWoG6KnR7fFKJvrA==
   dependencies:
-    prop-types "^15.6.1"
+    prop-types "^15.6.2"
 
 react-table@^6.9.2:
   version "6.9.2"
