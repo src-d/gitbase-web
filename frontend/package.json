@@ -7,7 +7,7 @@
     "abortcontroller-polyfill": "^1.2.3",
     "bootstrap": "3",
     "codemirror": "^5.43.0",
-    "nanoid": "^1.0.3",
+    "nanoid": "^2.0.1",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.1",
