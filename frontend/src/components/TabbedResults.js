@@ -138,7 +138,8 @@ function ResultInfo({ result }) {
   if (result.errorMsg) {
     return (
       <span className="meta meta-error">
-        <ErrorIcon className="big-icon" />Query Failed - {result.errorMsg}
+        <ErrorIcon className="big-icon" />
+        Query Failed - {result.errorMsg}
       </span>
     );
   }

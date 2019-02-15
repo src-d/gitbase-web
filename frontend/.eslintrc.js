@@ -22,4 +22,9 @@ module.exports = {
     'class-methods-use-this': 0, // strange rule. It doesn't allow to create method render() without this
     'no-case-declarations': 0, // otherwise code is very ugly
   },
+  settings: {
+    "react": {
+      "version": "detect",
+    },
+  }
 };

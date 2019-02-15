@@ -376,12 +376,14 @@ FROM ( SELECT MONTH(committer_when) as month,
     this.stopInactiveTimer(key);
 
     const hiddenKeys = Array.from(results.keys()).filter(k => k !== key);
-    hiddenKeys.filter(k => !this.timers[k]).forEach(k => {
-      this.timers[k] = window.setTimeout(
-        () => this.removeResultContent(k),
-        INACTIVE_TIMEOUT
-      );
-    });
+    hiddenKeys
+      .filter(k => !this.timers[k])
+      .forEach(k => {
+        this.timers[k] = window.setTimeout(
+          () => this.removeResultContent(k),
+          INACTIVE_TIMEOUT
+        );
+      });
   }
 
   stopInactiveTimer(key) {

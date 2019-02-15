@@ -117,7 +117,8 @@ class QueryBox extends Component {
                 bsStyle="gbpl-primary-tint-2-link"
                 onClick={this.showHelpModal}
               >
-                <HelpIcon className="big-icon" />HELP
+                <HelpIcon className="big-icon" />
+                HELP
               </Button>
             </Col>
           </Row>
