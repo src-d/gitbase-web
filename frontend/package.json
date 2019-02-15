@@ -43,7 +43,7 @@
     "react-app-rewire-svg-react-loader": "codebandits/react-app-rewire-svg-react-loader",
     "react-app-rewired": "^1.5.2",
     "react-test-renderer": "^16.4.0",
-    "whatwg-url": "^6.4.1"
+    "whatwg-url": "^7.0.0"
   },
   "proxy": {
     "/query": {
