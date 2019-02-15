@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"gopkg.in/bblfsh/sdk.v1/protocol"
+	bblfsh "gopkg.in/bblfsh/client-go.v3"
 	"gopkg.in/bblfsh/sdk.v2/uast/nodes"
 	"gopkg.in/bblfsh/sdk.v2/uast/nodes/nodesproto"
 	errors "gopkg.in/src-d/go-errors.v1"
@@ -55,7 +55,7 @@ type Language struct {
 	Name string `json:"name"`
 }
 
-func DriverManifestsToLangs(drivers []protocol.DriverManifest) []Language {
+func DriverManifestsToLangs(drivers []bblfsh.DriverManifest) []Language {
 	result := make([]Language, len(drivers))
 
 	for i, driver := range drivers {

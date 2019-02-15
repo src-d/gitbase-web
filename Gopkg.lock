@@ -26,23 +26,23 @@
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:717e36544bc2aaa9f037ba61f80bf088aa2e3fd3805320f0f6107089104a787d"
+  digest = "1:9883e4bc6a4b3e0c2266ff322ccfcdf5566d11c889160fe798589a4633edc871"
   name = "github.com/go-chi/chi"
   packages = [
     ".",
     "middleware",
   ]
   pruneopts = "NUT"
-  revision = "e83ac2304db3c50cf03d96a2fcd39009d458bc35"
-  version = "v3.3.2"
+  revision = "1a6bb108ccf279c8dac6f9bad857d773b4f9b421"
+  version = "v4.0.1"
 
 [[projects]]
-  digest = "1:747c1fcb10f8f6734551465ab73c6ed9c551aa6e66250fb6683d1624f554546a"
+  digest = "1:13e9a236e56e18fecb73f5b2f2eb7f60060a1a9bc27e5a7328ab22e275ecb63e"
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "d523deb1b23d913de5bdada721a6071e71283618"
-  version = "v1.4.0"
+  revision = "72cd26f257d44c1114970e19afddcd812016007e"
+  version = "v1.4.1"
 
 [[projects]]
   digest = "1:983cb7d70588854e2706e32c61698bbf0eab4956fca89e86c1c10d7213679a0e"
@@ -73,6 +73,14 @@
   version = "v1.1.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:7b760aa6dbe426378f54934270dde1b176fda379111da2154748f030fffe4d3f"
+  name = "github.com/grpc-ecosystem/grpc-opentracing"
+  packages = ["go/otgrpc"]
+  pruneopts = "NUT"
+  revision = "8e809c8a86450a29b90dcc9efbf062d0fe6d9746"
+
+[[projects]]
   digest = "1:d0fbb40af7faf9cc62d1728be5fdd140ae17ce6e2aac6371971a0a6a2cc139d3"
   name = "github.com/jessevdk/go-flags"
   packages = ["."]
@@ -87,6 +95,14 @@
   pruneopts = "NUT"
   revision = "f611eb38b3875cc3bd991ca91c51d06446afa14c"
   version = "v1.3.0"
+
+[[projects]]
+  digest = "1:4059c14e87a2de3a434430340521b5feece186c1469eff0834c29a63870de3ed"
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "5c8c8bd35d3832f5d134ae1e1e375b69a4d25242"
+  version = "v1.0.1"
 
 [[projects]]
   digest = "1:08c231ec84231a7e23d67e4b58f975e1423695a32467a362ee55a803f9de8061"
@@ -121,6 +137,26 @@
   revision = "9520e82c474b0a04dd04f8a40959027271bab992"
 
 [[projects]]
+  digest = "1:7a880746686307655232135521a665f5c719013a978cf2d560c050fbb27489f0"
+  name = "github.com/moovweb/rubex"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "cb849acea6148000db8a55743f71476b0897ea41"
+  version = "6.3.107"
+
+[[projects]]
+  digest = "1:7da29c22bcc5c2ffb308324377dc00b5084650348c2799e573ed226d8cc9faf0"
+  name = "github.com/opentracing/opentracing-go"
+  packages = [
+    ".",
+    "ext",
+    "log",
+  ]
+  pruneopts = "NUT"
+  revision = "1949ddbfd147afd4d964a9f00b24eb291e0e7c38"
+  version = "v1.0.2"
+
+[[projects]]
   digest = "1:5cf3f025cbee5951a4ee961de067c8a89fc95a5adabead774f82822efabab121"
   name = "github.com/pkg/errors"
   packages = ["."]
@@ -141,8 +177,8 @@
   name = "github.com/pressly/lg"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "1606101ac495c40058c2f7229388a964c7a26149"
-  version = "v1.1.0"
+  revision = "bfbc64b4561fef198c68289c2610ccc4696d57d1"
+  version = "v1.1.1"
 
 [[projects]]
   digest = "1:810d960260b42c751f5254f6dbff5e6c79c8047b90a9bf4a06bba479b99aff1d"
@@ -153,12 +189,12 @@
   version = "v1.4.0"
 
 [[projects]]
-  digest = "1:6989062eb7ccf25cf38bf4fe3dba097ee209f896cda42cefdca3927047bef7b6"
+  digest = "1:e256b859ab89f005f2f639f5ed9807d0873d9135e27c6382f419b840ff9abe71"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
-  version = "v1.0.5"
+  revision = "e1e72e9de974bd926e5c56f83753fba2df402ce5"
+  version = "v1.3.0"
 
 [[projects]]
   digest = "1:fcd6de2209e4598560eb0fdbe1c535553db7f5c2d0f24ee3ece77b7ae8334ce1"
@@ -169,7 +205,7 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:b31059dac028ff111793a8345eacf0f99d0f1150ead34ebf32fdd2b7d54c2d45"
+  digest = "1:478d30bda4aa1674ff097066a5da483e660ab51915a7ba62aef73149915aa938"
   name = "github.com/stretchr/testify"
   packages = [
     "assert",
@@ -177,8 +213,8 @@
     "suite",
   ]
   pruneopts = "NUT"
-  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
-  version = "v1.2.2"
+  revision = "ffdc059bfe9ce6a4e144ba849dbedead332c6053"
+  version = "v1.3.0"
 
 [[projects]]
   branch = "master"
@@ -306,23 +342,23 @@
   version = "v1.15.0"
 
 [[projects]]
-  digest = "1:4fe5671ee9615984167403a07ea67e0cbb7396f3ab335294ef767ac79b972ffc"
+  digest = "1:df28176ae6eed6b64b667963455f4b60c17ecb2594e6ffa72f149b911ea15fa4"
   name = "gopkg.in/DATA-DOG/go-sqlmock.v1"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "d76b18b42f285b792bf985118980ce9eacea9d10"
-  version = "v1.3.0"
+  revision = "472e287dbafe67e526a3797165b64cb14f34705a"
+  version = "v1.3.2"
 
 [[projects]]
-  digest = "1:eba695f96ba6e41be194d11b78981af7c4a3f3d8a0ede3c59160a0cef8b280e6"
+  digest = "1:18e311e08ac180dd41e9614883ecdef2ab708c71b9c26de485bb0a7f9b92a502"
   name = "gopkg.in/bblfsh/client-go.v3"
   packages = [
     ".",
     "tools",
   ]
   pruneopts = "NUT"
-  revision = "675e9da023b6645dcfd9dd39393d1e20541052df"
-  version = "v3.1.0"
+  revision = "f1bb4239c6001f5f0b1f370b7d4a64866464c07b"
+  version = "v3.2.0"
 
 [[projects]]
   digest = "1:85ce4b06f191dd616ad7f4377843ea08db7db003757bd0a67e1b3ac4cbd5c2ef"
@@ -337,7 +373,7 @@
   version = "v1.16.0"
 
 [[projects]]
-  digest = "1:5166e4d339268a5b203719502801a8e879402a109476fb98b294b7d45f2dcc76"
+  digest = "1:365bd710f205af5d464fdf87df8979c37f168ee8785573f430814f8f42017fdf"
   name = "gopkg.in/bblfsh/sdk.v2"
   packages = [
     "driver",
@@ -354,27 +390,30 @@
     "uast/transformer",
   ]
   pruneopts = "NUT"
-  revision = "c40738ca4cc89a0a04a08b9e46ae42a1e7663fe9"
-  version = "v2.6.0"
+  revision = "847010c714c9775fa4f6ac1a27dafcb6718a135c"
+  version = "v2.14.0"
 
 [[projects]]
-  digest = "1:d11329b27b0f34c399185531f3232493d7da40f576574da04776812b0a94f66b"
+  digest = "1:57a3ce4850faf6af62c1a8c9ae41870084cfabaeba01b57cdc81967c11246a04"
   name = "gopkg.in/src-d/enry.v1"
   packages = [
     ".",
     "data",
+    "data/rule",
     "internal/tokenizer",
+    "regex",
   ]
   pruneopts = "NUT"
-  revision = "6712d4219fb747194f38d0fc72121ca0a46ebcea"
-  version = "v1.6.4"
+  revision = "349975078557b0663f7a68ea3e1536de289cc4ca"
+  version = "v1.7.0"
 
 [[projects]]
-  digest = "1:5b120881c392f818b3427e8b3788da19bf6db136b497f4c1bd253932f415fe15"
+  branch = "master"
+  digest = "1:d7584e5306287c1de78a8de5e0d4e76cf556b6db1cc8025571f0d61f2327bc8b"
   name = "gopkg.in/src-d/go-cli.v0"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "b67fb56aacf6ab362e2758a584eb346816a18ff8"
+  revision = "d492247bbc0df2be12b7767179b14ea23430964f"
 
 [[projects]]
   digest = "1:e79c76b3315c08c2c9d4d09d308ef2be7e4a4161fdcbe5c56040b3641f21096c"
@@ -417,7 +456,6 @@
     "gopkg.in/DATA-DOG/go-sqlmock.v1",
     "gopkg.in/bblfsh/client-go.v3",
     "gopkg.in/bblfsh/client-go.v3/tools",
-    "gopkg.in/bblfsh/sdk.v1/protocol",
     "gopkg.in/bblfsh/sdk.v2/uast/nodes",
     "gopkg.in/bblfsh/sdk.v2/uast/nodes/nodesproto",
     "gopkg.in/src-d/enry.v1",

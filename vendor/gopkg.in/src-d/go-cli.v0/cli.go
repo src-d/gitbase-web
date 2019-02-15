@@ -94,9 +94,7 @@ func (a *App) commandHandler(cmd flags.Commander, args []string) error {
 	}
 
 	if v, ok := cmd.(ContextCommander); ok {
-		ctx, cancel := setupContext()
-		defer cancel()
-		return v.ExecuteContext(ctx, args)
+		return executeContextCommander(v, args)
 	}
 
 	return cmd.Execute(args)
