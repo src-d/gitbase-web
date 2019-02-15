@@ -8,11 +8,11 @@
     "bootstrap": "3",
     "codemirror": "^5.43.0",
     "nanoid": "^2.0.1",
-    "prop-types": "^15.6.1",
-    "react": "^16.3.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.2",
     "react-bootstrap": "^0.32.1",
     "react-codemirror2": "^5.0.1",
-    "react-dom": "^16.3.2",
+    "react-dom": "^16.8.2",
     "react-helmet": "^5.2.0",
     "react-scripts": "1.1.4",
     "react-split-pane": "^0.1.85",
@@ -42,7 +42,7 @@
     "react-app-rewire-less": "^2.1.1",
     "react-app-rewire-svg-react-loader": "codebandits/react-app-rewire-svg-react-loader",
     "react-app-rewired": "^1.5.2",
-    "react-test-renderer": "^16.4.0",
+    "react-test-renderer": "^16.8.2",
     "whatwg-url": "^7.0.0"
   },
   "proxy": {
