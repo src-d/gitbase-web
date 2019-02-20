@@ -18,5 +18,5 @@ services:
     volumes:
       - ${GITBASEPG_REPOS_FOLDER}:/opt/repos
   bblfsh:
-    image: "bblfsh/bblfshd:v2.11.6-drivers"
+    image: "bblfsh/bblfshd:v2.11.7-drivers"
     privileged: true

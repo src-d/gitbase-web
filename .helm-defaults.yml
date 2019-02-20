@@ -5,7 +5,7 @@ service:
 bblfshdServer:
   image:
     repository: bblfsh/bblfshd
-    tag: v2.11.6
+    tag: v2.11.7
     pullPolicy: IfNotPresent
   drivers:
     install: true
@@ -36,7 +36,7 @@ bblfshdServer:
         tag: v2.5.0
       csharp:
         repository: bblfsh/csharp-driver
-        tag: v1.2.0
+        tag: v1.3.0
 
 gitbaseServer:
   # commit defaults to HEAD unless given
