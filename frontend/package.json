@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@ungap/url-search-params": "^0.1.2",
-    "enzyme": "^3.8.0",
+    "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.9.1",
     "eslint": "^5.13.0",
     "eslint-config-airbnb-base": "^13.1.0",
