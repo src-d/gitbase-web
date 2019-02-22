@@ -6,7 +6,7 @@
   "dependencies": {
     "abortcontroller-polyfill": "^1.2.3",
     "bootstrap": "3",
-    "codemirror": "^5.43.0",
+    "codemirror": "^5.44.0",
     "nanoid": "^2.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.2",
