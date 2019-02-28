@@ -5,7 +5,7 @@ service:
 bblfshdServer:
   image:
     repository: bblfsh/bblfshd
-    tag: v2.11.7
+    tag: v2.11.8
     pullPolicy: IfNotPresent
   drivers:
     install: true
