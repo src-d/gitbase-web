@@ -31,12 +31,15 @@ jobs:
   include:
     # validate and build
     - stage: validate and build
+      name: 'Test coverage & linters'
       script:
         - make test
+        - make packages
         - make lint
         - make coverage
         - make validate-commit
-    - script:
+    - name: 'Integration tests'
+      script:
       - docker run -d --name bblfshd --privileged --volume $HOME/bblfsh-drivers:/var/lib/bblfshd -p "9432:9432" bblfsh/bblfshd
       - sleep 5
       - docker exec -it bblfshd bblfshctl driver install --force go docker://bblfsh/go-driver:latest
@@ -46,9 +49,8 @@ jobs:
       - docker run -d --name gitbase -p "3367:3306" -e "BBLFSH_ENDPOINT=bblfshd:9432" --volume $HOME/repos:/opt/repos --link bblfshd srcd/gitbase:v0.19.0-rc1
       - sleep 15
       - GITBASEPG_DB_CONNECTION='root@tcp(localhost:3367)/none' GITBASEPG_INTEGRATION_TESTS=true make test
-    - script:
-      - make packages
-    - script:
+    - name: 'Footer test'
+      script:
       - PKG_OS=linux make build
       - make docker-build
       - export FOOTER_HTML='<div class="custom-base64-html"></div>'
@@ -58,6 +60,7 @@ jobs:
       - curl http://127.0.0.1:8080 | grep "$FOOTER_HTML"
     # release to github
     - stage: release to github
+      name: 'Release to GitHub'
       script:
         - make packages
       deploy:
