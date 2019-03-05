@@ -14,7 +14,6 @@ services:
     image: "srcd/gitbase:v0.18.0"
     environment:
       BBLFSH_ENDPOINT: bblfsh:9432
-      GITBASE_UNSTABLE_SQUASH_ENABLE: "true"
     volumes:
       - ${GITBASEPG_REPOS_FOLDER}:/opt/repos
   bblfsh:
