@@ -23,7 +23,7 @@ $ git clone git@github.com:bblfsh/bblfshd.git
 $ git clone git@github.com:src-d/gitbase-web.git
 ```
 
-Next you will need to download the `docker-compose.yml` file from this repository and run `docker-compose`. This tool will run three different containers: the gitbase-web frontend itself, gitbase, and bblfshd. To kill the running containers use `Ctrl+C`.
+Next you will need to download the `docker-compose.yml` file from this repository and run `docker-compose up`. This tool will run three different containers: the gitbase-web frontend itself, gitbase, and bblfshd. To kill the running containers use `Ctrl+C`.
 
 ```bash
 $ wget https://raw.githubusercontent.com/src-d/gitbase-web/master/docker-compose.yml
