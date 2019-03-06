@@ -53,36 +53,37 @@ func genericVals(colTypes []string) []interface{} {
 // the rows as JSON
 func Query(db service.SQLDB) RequestProcessFunc {
 	return func(r *http.Request) (*serializer.Response, error) {
-		var queryRequest queryRequest
+		var queryReq queryRequest
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			return nil, err
 		}
 
-		err = json.Unmarshal(body, &queryRequest)
-		if err != nil || queryRequest.Query == "" {
+		err = json.Unmarshal(body, &queryReq)
+		if err != nil || queryReq.Query == "" {
 			return nil, serializer.NewHTTPError(http.StatusBadRequest,
 				`Bad Request. Expected body: { "query": "SQL statement", "limit": 1234 }`)
 		}
-
-		query, limitSet := addLimit(queryRequest.Query, queryRequest.Limit)
 
 		// go-sql-driver/mysql QueryContext stops waiting for the query results on
 		// context cancel, but it does not actually cancel the query on the server
 
 		c := make(chan error, 1)
 
-		var rows *sql.Rows
 		conn, err := db.Conn(r.Context())
+		if err != nil {
+			return nil, fmt.Errorf("failed to get a DB connection: %s", err)
+		}
 		defer conn.Close()
 
-		connID, err := getConnID(r, conn)
+		connID, err := getConnID(conn)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get connection id: %s", err)
 		}
 
+		var resp *serializer.Response
 		go func() {
-			rows, err = conn.QueryContext(r.Context(), query)
+			resp, err = queryContext(r.Context(), conn, queryReq)
 			c <- err
 		}()
 
@@ -103,40 +104,53 @@ func Query(db service.SQLDB) RequestProcessFunc {
 			return nil, dbError(err)
 		}
 
-		defer rows.Close()
+		return resp, nil
+	}
+}
 
-		columnNames, columnTypes, err := columnsInfo(rows)
+func queryContext(ctx context.Context, conn *sql.Conn, queryReq queryRequest) (*serializer.Response, error) {
+	query, limitSet := addLimit(queryReq.Query, queryReq.Limit)
+
+	var rows *sql.Rows
+
+	rows, err := conn.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	columnNames, columnTypes, err := columnsInfo(rows)
+	if err != nil {
+		return nil, err
+	}
+
+	columnValsPtr := genericVals(columnTypes)
+
+	tableData := make([]map[string]interface{}, 0)
+
+	for rows.Next() {
+		if err := rows.Scan(columnValsPtr...); err != nil {
+			return nil, err
+		}
+
+		colData, err := columnsData(columnNames, columnTypes, columnValsPtr)
 		if err != nil {
 			return nil, err
 		}
 
-		columnValsPtr := genericVals(columnTypes)
-
-		tableData := make([]map[string]interface{}, 0)
-
-		for rows.Next() {
-			if err := rows.Scan(columnValsPtr...); err != nil {
-				return nil, err
-			}
-
-			colData, err := columnsData(columnNames, columnTypes, columnValsPtr)
-			if err != nil {
-				return nil, err
-			}
-
-			tableData = append(tableData, colData)
-		}
-
-		if err := rows.Err(); err != nil {
-			return nil, err
-		}
-
-		return serializer.NewQueryResponse(
-			tableData, columnNames, columnTypes, limitSet, queryRequest.Limit), nil
+		tableData = append(tableData, colData)
 	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return serializer.NewQueryResponse(
+		tableData, columnNames, columnTypes, limitSet, queryReq.Limit), nil
 }
 
-func getConnID(r *http.Request, conn *sql.Conn) (uint32, error) {
+func getConnID(conn *sql.Conn) (uint32, error) {
 	const connIDQuery = "SELECT CONNECTION_ID()"
 	var connID uint32
 
