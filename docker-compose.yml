@@ -11,7 +11,7 @@ services:
     depends_on:
       - gitbase
   gitbase:
-    image: "srcd/gitbase:v0.18.0"
+    image: "srcd/gitbase:v0.19.0"
     environment:
       BBLFSH_ENDPOINT: bblfsh:9432
     volumes:
