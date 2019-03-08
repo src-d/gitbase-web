@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "abortcontroller-polyfill": "^1.2.3",
+    "abortcontroller-polyfill": "^1.2.5",
     "bootstrap": "3",
     "codemirror": "^5.44.0",
     "nanoid": "^2.0.1",
