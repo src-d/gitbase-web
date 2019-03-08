@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import UASTViewer from 'uast-viewer';
+import FlatUASTViewer from 'uast-viewer';
 import { Button } from 'react-bootstrap';
 import './UASTViewerPane.less';
 import ParseModeSwitcher from './ParseModeSwitcher';
 
 const ROOT_ID = 1;
 
-function getSearchResults(uast) {
-  if (!uast) {
+function getSearchResults(flatUast) {
+  if (!flatUast) {
     return null;
   }
 
-  const rootNode = uast[ROOT_ID];
+  const rootNode = flatUast[ROOT_ID];
   if (!rootNode) {
     return null;
   }
@@ -43,15 +43,15 @@ function UASTViewerPane({
 
   if (loading) {
     content = <div>loading...</div>;
-  } else if (uastViewerProps.uast) {
-    const searchResults = getSearchResults(uastViewerProps.uast);
+  } else if (uastViewerProps.flatUast) {
+    const searchResults = getSearchResults(uastViewerProps.flatUast);
     const rootIds = searchResults || [ROOT_ID];
 
     if (searchResults && !searchResults.length) {
       content = <NotFound />;
     } else {
       content = (
-        <UASTViewer
+        <FlatUASTViewer
           {...uastViewerProps}
           rootIds={rootIds}
           showLocations={showLocations}
