@@ -16,7 +16,7 @@ class UASTViewer extends Component {
 
     this.state = {
       loading: false,
-      uast: this.transform(props.uast),
+      flatUast: this.transform(props.uast),
       showLocations: false,
       filter: '',
       error: null
@@ -37,14 +37,14 @@ class UASTViewer extends Component {
   }
 
   handleSearch() {
-    this.setState({ uast: null, error: null, loading: true });
+    this.setState({ flatUast: null, error: null, loading: true });
 
     api
       .filterUAST(this.props.protobufs, this.state.filter)
       .then(uast => {
-        this.setState({ uast: this.transform(uast) });
+        this.setState({ flatUast: this.transform(uast) });
       })
-      .catch(err => this.setState({ uast: null, error: err }))
+      .catch(err => this.setState({ flatUast: null, error: err }))
       .then(() => this.setState({ loading: false }));
   }
 
@@ -65,9 +65,9 @@ class UASTViewer extends Component {
   }
 
   render() {
-    const { uast, error, loading } = this.state;
+    const { flatUast, error, loading } = this.state;
     const { showLocations, filter } = this.state;
-    const uastViewerProps = { uast };
+    const uastViewerProps = { flatUast };
 
     return (
       <div className="pg-uast-viewer">
