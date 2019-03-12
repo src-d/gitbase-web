@@ -190,10 +190,11 @@ class CodeViewer extends Component {
   }
 
   handleModeChange(mode) {
-    this.setState({ mode });
-    if (this.state.showUast) {
-      this.parseCode();
-    }
+    this.setState({ mode }, () => {
+      if (this.state.showUast) {
+        this.parseCode();
+      }
+    });
   }
 
   render() {
