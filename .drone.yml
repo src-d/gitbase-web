@@ -7,7 +7,7 @@ branches: [master]
 # ANCHORS
 
 build: &build
-  image: golang:1.10-stretch
+  image: golang:1.12-stretch
   commands:
     - curl -sL https://deb.nodesource.com/setup_8.x | bash
     - apt-get update
