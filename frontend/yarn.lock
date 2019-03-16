@@ -61,10 +61,10 @@ abbrev@1, abbrev@~1.1.1:
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
-abortcontroller-polyfill@^1.2.7:
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.2.7.tgz#8098f26b4c78eda96cf1ec49a961bacfe4f3d5b8"
-  integrity sha512-lk2K42684+p4JTE281GmRCxV7HkDYYGBkQYb3rIgUhDTl3l5Nwr4VpO2E/UXISmhmF3X6TnvgZTAa5Sh2cnPQQ==
+abortcontroller-polyfill@^1.2.9:
+  version "1.2.9"
+  resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.2.9.tgz#402311d2aac7e8e093ecb045726b45fdafd834fe"
+  integrity sha512-0goWhDrwoWtK6XCdFdzPtvHBmmQU91j3tULNL85MAnDuM7bNlzUDfmL5AZGL819L7pn9kra35HJGWG25UgRCBw==
 
 accepts@~1.3.4, accepts@~1.3.5:
   version "1.3.5"
