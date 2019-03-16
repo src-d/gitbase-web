@@ -137,14 +137,6 @@
   revision = "9520e82c474b0a04dd04f8a40959027271bab992"
 
 [[projects]]
-  digest = "1:7a880746686307655232135521a665f5c719013a978cf2d560c050fbb27489f0"
-  name = "github.com/moovweb/rubex"
-  packages = ["."]
-  pruneopts = "NUT"
-  revision = "cb849acea6148000db8a55743f71476b0897ea41"
-  version = "6.3.107"
-
-[[projects]]
   digest = "1:7da29c22bcc5c2ffb308324377dc00b5084650348c2799e573ed226d8cc9faf0"
   name = "github.com/opentracing/opentracing-go"
   packages = [
@@ -202,6 +194,14 @@
   packages = ["."]
   pruneopts = "NUT"
   revision = "0280e33525f5d88edb71638a80b31724153225ba"
+  version = "v1.0.0"
+
+[[projects]]
+  digest = "1:1e756bf46ac38206112db9743c8960d0eb7a56ea8e6f4c4feb523436c8b6e59a"
+  name = "github.com/src-d/go-oniguruma"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "788303971318a98ac6d485136e6ae95d155c0876"
   version = "v1.0.0"
 
 [[projects]]
@@ -394,7 +394,7 @@
   version = "v2.14.2"
 
 [[projects]]
-  digest = "1:57a3ce4850faf6af62c1a8c9ae41870084cfabaeba01b57cdc81967c11246a04"
+  digest = "1:ae8fa21ce1a1759d939097b704c4dfafacb19a1a3e2db8016008f5ef7fff5c99"
   name = "gopkg.in/src-d/enry.v1"
   packages = [
     ".",
@@ -404,8 +404,8 @@
     "regex",
   ]
   pruneopts = "NUT"
-  revision = "e067e4504402176864d8b5464bfed5b7e6d40307"
-  version = "v1.7.1"
+  revision = "6526da77b3bda1165dc0cb2b9b06102b22c1bb66"
+  version = "v1.7.2"
 
 [[projects]]
   branch = "master"
