@@ -373,7 +373,7 @@
   version = "v1.16.0"
 
 [[projects]]
-  digest = "1:66b86144b638269dbbe254b0e72069ee3aff0ecd77454b012d5f7d43164f3a84"
+  digest = "1:ab193f90b40505021e657ce3063fc8f8318ff485c357dee4c07c99b442c76b89"
   name = "gopkg.in/bblfsh/sdk.v2"
   packages = [
     "driver",
@@ -390,8 +390,8 @@
     "uast/transformer",
   ]
   pruneopts = "NUT"
-  revision = "5a1a268859490ec2772d8106a331be1f7d0d85a3"
-  version = "v2.14.2"
+  revision = "7f43f27c14a259a0a396cc70c911424b8e8b11c1"
+  version = "v2.15.0"
 
 [[projects]]
   digest = "1:ae8fa21ce1a1759d939097b704c4dfafacb19a1a3e2db8016008f5ef7fff5c99"
