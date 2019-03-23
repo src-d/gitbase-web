@@ -390,8 +390,8 @@
     "uast/transformer",
   ]
   pruneopts = "NUT"
-  revision = "7f43f27c14a259a0a396cc70c911424b8e8b11c1"
-  version = "v2.15.0"
+  revision = "82ab50025f39a4d522a9124f69bd9cf5220ed6b9"
+  version = "v2.16.0"
 
 [[projects]]
   digest = "1:ae8fa21ce1a1759d939097b704c4dfafacb19a1a3e2db8016008f5ef7fff5c99"
