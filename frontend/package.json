@@ -9,7 +9,7 @@
     "codemirror": "^5.44.0",
     "nanoid": "^2.0.1",
     "prop-types": "^15.7.2",
-    "react": "^16.8.3",
+    "react": "^16.8.5",
     "react-bootstrap": "^0.32.1",
     "react-codemirror2": "^5.0.1",
     "react-dom": "^16.8.3",
