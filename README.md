@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/src-d/gitbase-web.svg)](https://travis-ci.org/src-d/gitbase-web)
+[![Build Status](https://travis-ci.com/src-d/gitbase-web.svg?branch=master)](https://travis-ci.com/src-d/gitbase-web)
 [![codecov.io](https://codecov.io/github/src-d/gitbase-web/coverage.svg)](https://codecov.io/github/src-d/gitbase-web)
 
 # Gitbase Web
