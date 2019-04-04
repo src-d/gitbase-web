@@ -5,38 +5,38 @@ service:
 bblfshdServer:
   image:
     repository: bblfsh/bblfshd
-    tag: v2.11.8
+    tag: v2.12.0
     pullPolicy: IfNotPresent
   drivers:
     install: true
     languages:
       python:
         repository: bblfsh/python-driver
-        tag: v2.7.0
+        tag: v2.8.2
       cpp:
         repository: bblfsh/cpp-driver
-        tag: v1.1.0
+        tag: v1.2.3
       java:
         repository: bblfsh/java-driver
-        tag: v2.5.0
-      php:
-        repository: bblfsh/php-driver
-        tag: v2.7.0
-      ruby:
-        repository: bblfsh/ruby-driver
-        tag: v2.8.0
+        tag: v2.6.2
       javascript:
         repository: bblfsh/javascript-driver
-        tag: v2.6.0
+        tag: v2.7.2
       bash:
         repository: bblfsh/bash-driver
-        tag: v2.4.0
+        tag: v2.5.1
+      ruby:
+        repository: bblfsh/ruby-driver
+        tag: v2.9.2
       go:
         repository: bblfsh/go-driver
-        tag: v2.5.0
+        tag: v2.5.2
       csharp:
         repository: bblfsh/csharp-driver
-        tag: v1.3.0
+        tag: v1.4.2
+      php:
+        repository: bblfsh/php-driver
+        tag: v2.7.3
 
 gitbaseServer:
   # commit defaults to HEAD unless given
