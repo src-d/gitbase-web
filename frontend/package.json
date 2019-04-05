@@ -14,7 +14,7 @@
     "react-codemirror2": "^5.0.1",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.0",
-    "react-scripts": "1.1.5",
+    "react-scripts": "2.1.8",
     "react-split-pane": "^0.1.87",
     "react-switch": "^4.1.0",
     "react-table": "^6.9.2",
@@ -23,7 +23,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.js'",
     "format": "eslint --fix 'src/**/*.js'"
@@ -32,7 +32,6 @@
     "@ungap/url-search-params": "^0.1.2",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.11.2",
-    "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.16.0",
@@ -45,30 +44,10 @@
     "react-test-renderer": "^16.8.6",
     "whatwg-url": "^7.0.0"
   },
-  "proxy": {
-    "/query": {
-      "target": "http://localhost:8080"
-    },
-    "/export": {
-      "target": "http://localhost:8080"
-    },
-    "/schema": {
-      "target": "http://localhost:8080"
-    },
-    "/detect-lang": {
-      "target": "http://localhost:8080"
-    },
-    "/parse": {
-      "target": "http://localhost:8080"
-    },
-    "/get-languages": {
-      "target": "http://localhost:8080"
-    },
-    "/filter": {
-      "target": "http://localhost:8080"
-    },
-    "/version": {
-      "target": "http://localhost:8080"
-    }
-  }
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
