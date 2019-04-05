@@ -13,7 +13,7 @@ import 'codemirror/addon/hint/sql-hint';
 
 import HelpModal from './HelpModal';
 import './QueryBox.less';
-import HelpIcon from '../icons/help.svg';
+import { ReactComponent as HelpIcon } from '../icons/help.svg';
 
 class QueryBox extends Component {
   constructor(props) {

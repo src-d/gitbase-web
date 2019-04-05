@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import CloseIcon from '../icons/close-query-tab.svg';
+import { ReactComponent as CloseIcon } from '../icons/close-query-tab.svg';
 import './HelpModal.less';
 
 class HelpModal extends Component {

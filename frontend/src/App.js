@@ -12,7 +12,7 @@ import UASTViewer from './components/UASTViewer';
 import api from './api';
 import { STATUS_LOADING, STATUS_ERROR, STATUS_SUCCESS } from './state/query';
 import './App.less';
-import CloseIcon from './icons/close-query-tab.svg';
+import { ReactComponent as CloseIcon } from './icons/close-query-tab.svg';
 
 const INACTIVE_TIMEOUT = 3600000;
 

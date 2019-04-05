@@ -7,7 +7,7 @@ import Switch from 'react-switch';
 import UASTViewerPane from './UASTViewerPane';
 import api from '../api';
 import './CodeViewer.less';
-import CloseIcon from '../icons/close-query-tab.svg';
+import { ReactComponent as CloseIcon } from '../icons/close-query-tab.svg';
 
 function EditorPane({ languages, language, handleLangChange, editorProps }) {
   return (
