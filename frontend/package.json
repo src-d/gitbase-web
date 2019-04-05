@@ -9,6 +9,7 @@
     "bootstrap": "3",
     "codemirror": "^5.45.0",
     "craco-less": "^1.7.0",
+    "http-proxy-middleware": "^0.19.1",
     "nanoid": "^2.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
