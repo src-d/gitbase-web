@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^4.1.0",
     "abortcontroller-polyfill": "^1.3.0",
     "bootstrap": "3",
     "codemirror": "^5.45.0",
@@ -21,9 +22,9 @@
     "uast-viewer": "^0.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.js'",
     "format": "eslint --fix 'src/**/*.js'"
