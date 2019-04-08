@@ -8,7 +8,6 @@ exports[`ResultsTable text with new lines should be shown as code 1`] = `
   <div
     className="rt-table"
     role="grid"
-    style={undefined}
   >
     <div
       className="rt-thead -header"
@@ -21,7 +20,6 @@ exports[`ResultsTable text with new lines should be shown as code 1`] = `
       <div
         className="rt-tr"
         role="row"
-        style={undefined}
       >
         <div
           className="rt-th rt-resizable-header -cursor-pointer"
@@ -88,7 +86,6 @@ exports[`ResultsTable text with new lines should be shown as code 1`] = `
         <div
           className="rt-tr -odd"
           role="row"
-          style={undefined}
         >
           <div
             className="rt-td"
@@ -134,7 +131,6 @@ exports[`ResultsTable text with new lines should be shown as code 1`] = `
   >
     <div
       className="-pagination"
-      style={undefined}
     >
       <div
         className="-previous"

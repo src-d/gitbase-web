@@ -7,7 +7,7 @@ import Switch from 'react-switch';
 import UASTViewerPane from './UASTViewerPane';
 import api from '../api';
 import './CodeViewer.less';
-import CloseIcon from '../icons/close-query-tab.svg';
+import { ReactComponent as CloseIcon } from '../icons/close-query-tab.svg';
 
 function EditorPane({ languages, language, handleLangChange, editorProps }) {
   return (
@@ -132,6 +132,7 @@ class CodeViewer extends Component {
       .catch(err => {
         // we don't have UI for this error and actually it's not very important
         // user can select language manualy
+        // eslint-disable-next-line no-console
         console.error(`can't detect language: ${err}`);
       })
       .then(() => this.setState({ loading: false }));

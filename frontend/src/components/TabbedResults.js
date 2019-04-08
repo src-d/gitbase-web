@@ -13,14 +13,14 @@ import ResultsTable from './ResultsTable';
 import HistoryTable from './HistoryTable';
 import CodeViewer from './CodeViewer';
 import './TabbedResults.less';
-import PencilIcon from '../icons/edit-query-tab-name.svg';
-import CloseIcon from '../icons/close-query-tab.svg';
-import TimerIcon from '../icons/history-tab.svg';
+import { ReactComponent as PencilIcon } from '../icons/edit-query-tab-name.svg';
+import { ReactComponent as CloseIcon } from '../icons/close-query-tab.svg';
+import { ReactComponent as TimerIcon } from '../icons/history-tab.svg';
 import LoadingImg from '../icons/alex-loading-results.gif';
 import SuspendedImg from '../icons/alex-suspended-tab.gif';
 import ErrorImg from '../icons/broken-alex.gif';
-import SuccessIcon from '../icons/success-query.svg';
-import ErrorIcon from '../icons/error-query.svg';
+import { ReactComponent as SuccessIcon } from '../icons/success-query.svg';
+import { ReactComponent as ErrorIcon } from '../icons/error-query.svg';
 
 class TabTitle extends Component {
   constructor(props) {

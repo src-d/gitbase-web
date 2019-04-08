@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './SampleQueries.less';
-import ExampleIcon from '../icons/example-query.svg';
+import { ReactComponent as ExampleIcon } from '../icons/example-query.svg';
 
 function SampleQueries({ onExampleClick, exampleQueries }) {
   return (

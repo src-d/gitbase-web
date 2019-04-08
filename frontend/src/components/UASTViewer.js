@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { expandRootIds, uastV2 } from 'uast-viewer';
 import UASTViewerPane from './UASTViewerPane';
 import api from '../api';
-import CloseIcon from '../icons/close-query-tab.svg';
+import { ReactComponent as CloseIcon } from '../icons/close-query-tab.svg';
 
 // Same values as the ones applied by withUASTEditor in CodeViewer.js
 // https://github.com/bblfsh/uast-viewer/blob/v0.2.0/src/withUASTEditor.js#L208

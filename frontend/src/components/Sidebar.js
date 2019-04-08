@@ -4,8 +4,8 @@ import SplitPane from 'react-split-pane';
 import Schema from './Schema';
 import SampleQueries from './SampleQueries';
 import './Sidebar.less';
-import CollapseIcon from '../icons/collapse-left-column.svg';
-import LinkIcon from '../icons/links.svg';
+import { ReactComponent as CollapseIcon } from '../icons/collapse-left-column.svg';
+import { ReactComponent as LinkIcon } from '../icons/links.svg';
 
 class Sidebar extends Component {
   constructor(props) {

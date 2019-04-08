@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './Schema.less';
-import OpenIcon from '../icons/open-tree.svg';
-import CloseIcon from '../icons/close-tree.svg';
-import ColumnIcon from '../icons/tree-column.svg';
+import { ReactComponent as OpenIcon } from '../icons/open-tree.svg';
+import { ReactComponent as CloseIcon } from '../icons/close-tree.svg';
+import { ReactComponent as ColumnIcon } from '../icons/tree-column.svg';
 
 class SchemaTable extends Component {
   constructor(props) {
