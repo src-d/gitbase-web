@@ -357,8 +357,8 @@
     "tools",
   ]
   pruneopts = "NUT"
-  revision = "f1bb4239c6001f5f0b1f370b7d4a64866464c07b"
-  version = "v3.2.0"
+  revision = "3788acca5c2e4e65d3359b15748aede2a372e4e5"
+  version = "v3.2.1"
 
 [[projects]]
   digest = "1:85ce4b06f191dd616ad7f4377843ea08db7db003757bd0a67e1b3ac4cbd5c2ef"
