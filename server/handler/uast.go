@@ -11,8 +11,8 @@ import (
 	"github.com/src-d/gitbase-web/server/serializer"
 	"github.com/src-d/gitbase-web/server/service"
 
-	"gopkg.in/bblfsh/client-go.v3"
-	"gopkg.in/bblfsh/client-go.v3/tools"
+	bblfsh "github.com/bblfsh/go-client"
+	"github.com/bblfsh/go-client/tools"
 	"gopkg.in/bblfsh/sdk.v2/uast/nodes"
 )
 
