@@ -3,8 +3,7 @@ package handler
 import (
 	"net/http"
 
-	bblfsh "gopkg.in/bblfsh/client-go.v3"
-
+	bblfsh "github.com/bblfsh/go-client"
 	"github.com/src-d/gitbase-web/server/serializer"
 	"github.com/src-d/gitbase-web/server/service"
 )

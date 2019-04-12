@@ -35,10 +35,6 @@
   version = "1.2.2"
 
 [[constraint]]
-  name = "gopkg.in/bblfsh/client-go.v3"
-  version = "3.2.0"
-
-[[constraint]]
   name = "gopkg.in/bblfsh/sdk.v2"
   version = "2.3.0"
 
@@ -53,3 +49,7 @@
 [[constraint]]
   name = "gopkg.in/src-d/go-cli.v0"
   branch= "master"
+
+[[constraint]]
+  name = "github.com/bblfsh/go-client"
+  version = "4.0.0"

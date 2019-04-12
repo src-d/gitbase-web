@@ -18,6 +18,17 @@
   revision = "3de91f3991a1af6e495d49c9218318b5544b20e3"
 
 [[projects]]
+  digest = "1:ef4a4792c7964d4c42edc790702bd920223d0e679de3d76d6da7a2498b755f7f"
+  name = "github.com/bblfsh/go-client"
+  packages = [
+    ".",
+    "tools",
+  ]
+  pruneopts = "NUT"
+  revision = "33384029f8b7ae4c89d810b4d280d7d6bf4df033"
+  version = "v4.0.0"
+
+[[projects]]
   digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
@@ -350,17 +361,6 @@
   version = "v1.3.3"
 
 [[projects]]
-  digest = "1:18e311e08ac180dd41e9614883ecdef2ab708c71b9c26de485bb0a7f9b92a502"
-  name = "gopkg.in/bblfsh/client-go.v3"
-  packages = [
-    ".",
-    "tools",
-  ]
-  pruneopts = "NUT"
-  revision = "3788acca5c2e4e65d3359b15748aede2a372e4e5"
-  version = "v3.2.1"
-
-[[projects]]
   digest = "1:85ce4b06f191dd616ad7f4377843ea08db7db003757bd0a67e1b3ac4cbd5c2ef"
   name = "gopkg.in/bblfsh/sdk.v1"
   packages = [
@@ -443,6 +443,8 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/bblfsh/go-client",
+    "github.com/bblfsh/go-client/tools",
     "github.com/go-chi/chi",
     "github.com/go-chi/chi/middleware",
     "github.com/go-sql-driver/mysql",
@@ -454,8 +456,6 @@
     "github.com/stretchr/testify/require",
     "github.com/stretchr/testify/suite",
     "gopkg.in/DATA-DOG/go-sqlmock.v1",
-    "gopkg.in/bblfsh/client-go.v3",
-    "gopkg.in/bblfsh/client-go.v3/tools",
     "gopkg.in/bblfsh/sdk.v2/uast/nodes",
     "gopkg.in/bblfsh/sdk.v2/uast/nodes/nodesproto",
     "gopkg.in/src-d/enry.v1",

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	bblfsh "gopkg.in/bblfsh/client-go.v3"
+	bblfsh "github.com/bblfsh/go-client"
 	"gopkg.in/bblfsh/sdk.v2/uast/nodes"
 	"gopkg.in/bblfsh/sdk.v2/uast/nodes/nodesproto"
 	errors "gopkg.in/src-d/go-errors.v1"
