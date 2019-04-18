@@ -16,7 +16,7 @@ class UASTViewer extends Component {
 
     this.state = {
       loading: false,
-      flatUast: this.transform(props.uast),
+      initialFlatUast: this.transform(props.uast),
       showLocations: false,
       filter: '',
       error: null
@@ -65,9 +65,9 @@ class UASTViewer extends Component {
   }
 
   render() {
-    const { flatUast, error, loading } = this.state;
+    const { initialFlatUast, error, loading } = this.state;
     const { showLocations, filter } = this.state;
-    const uastViewerProps = { flatUast };
+    const uastViewerProps = { initialFlatUast };
 
     return (
       <div className="pg-uast-viewer">
