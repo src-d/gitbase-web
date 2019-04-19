@@ -41,10 +41,11 @@ function UASTViewerPane({
 }) {
   let content = null;
 
+  const uast = uastViewerProps.flatUast || uastViewerProps.initialFlatUast;
   if (loading) {
     content = <div>loading...</div>;
-  } else if (uastViewerProps.flatUast) {
-    const searchResults = getSearchResults(uastViewerProps.flatUast);
+  } else if (uast) {
+    const searchResults = getSearchResults(uast);
     const rootIds = searchResults || [ROOT_ID];
 
     if (searchResults && !searchResults.length) {
