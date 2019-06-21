@@ -29,8 +29,8 @@ docker_image: &docker_image
 helm_deploy: &helm_deploy
   image: quay.io/ipedrazas/drone-helm:master-9b37211
   skip_tls_verify: true
-  helm_repos: srcd-charts=https://src-d.github.io/charts/
-  chart: srcd-charts/gitbase-web
+  helm_repos: srcd-stable=https://src-d.github.io/charts/stable/
+  chart: srcd-stable/gitbase-web
   chart-version: 0.5.0
   release: gp
   tiller_ns: kube-system
